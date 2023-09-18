@@ -1,0 +1,7 @@
+{
+  "thisFieldRequired": "فیلد الزامی است",
+  "wrongEmail": "ایمیل وارد شده صحیح نیست",
+  "phoneNumberIsWrong": "شماره موبایل وارد شده صحیح نیست",
+  "eneteredNumberIsNotCorrect": "شماره وارد شده صحیح نیست",
+  "error": "خطا"
+}
