@@ -24,6 +24,7 @@ class _MainPageState extends State<MainPage> with MainController {
           items: <AdminMenuItem>[
             AdminMenuItem(title: 'داشبورد', route: MainPageType.dashboard.title, icon: Icons.dashboard),
             AdminMenuItem(title: 'دسته بندی', route: MainPageType.category.title, icon: Icons.category),
+            AdminMenuItem(title: "محصولات", route: MainPageType.product.title, icon: Icons.shopping_cart_rounded),
             AdminMenuItem(
               title: 'محتوا',
               icon: Icons.file_copy,
@@ -38,6 +39,7 @@ class _MainPageState extends State<MainPage> with MainController {
             if (item.route == MainPageType.about.title) changePage(MainPageType.about);
             if (item.route == MainPageType.terms.title) changePage(MainPageType.terms);
             if (item.route == MainPageType.category.title) changePage(MainPageType.category);
+            if (item.route == MainPageType.product.title) changePage(MainPageType.product);
           },
           selectedRoute: '',
         ),
@@ -46,6 +48,7 @@ class _MainPageState extends State<MainPage> with MainController {
           if (mainPageType.value == MainPageType.terms) return terms();
           if (mainPageType.value == MainPageType.about) return about();
           if (mainPageType.value == MainPageType.category) return category();
+          if (mainPageType.value == MainPageType.product) return products();
           return const Placeholder();
         }),
         // body: Text("kkkkk"),

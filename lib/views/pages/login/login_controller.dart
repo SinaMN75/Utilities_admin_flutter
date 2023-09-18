@@ -15,8 +15,9 @@ mixin LoginController {
   void login() {
     showEasyLoading();
     _userDataSource.loginWithPassword(
-      dto: LoginWithPassword(email: controllerUserName.text, password: controllerPassword.text),
+      dto: LoginWithPasswordDto(email: controllerUserName.text, password: controllerPassword.text),
       onResponse: (final GenericResponse<UserReadDto> response) {
+        setData(UtilitiesConstants.userId, response.result?.id);
         setData(UtilitiesConstants.token, response.result?.token);
         offAll(const MainPage());
         dismissEasyLoading();

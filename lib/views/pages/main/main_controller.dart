@@ -1,12 +1,15 @@
 import 'package:utilities/utilities.dart';
 import 'package:utilities_admin_flutter/views/pages/about/about_page.dart';
 import 'package:utilities_admin_flutter/views/pages/categories/category_page.dart';
+import 'package:utilities_admin_flutter/views/pages/dashboard/dashboard_page.dart';
+import 'package:utilities_admin_flutter/views/pages/products/product_page.dart';
 import 'package:utilities_admin_flutter/views/pages/terms/terms_page.dart';
 
 enum MainPageType {
   dashboard("dashboard"),
   terms("terms"),
   about("about"),
+  product("product"),
   category("category");
 
   const MainPageType(this.title);
@@ -24,7 +27,7 @@ mixin MainController {
 
   void changePage(final MainPageType type) => mainPageType(type);
 
-  Widget dashboard() => const Scaffold(body: Text("dasboard"));
+  Widget dashboard() => const DashboardPage();
 
   Widget about() => const AboutPage();
 
@@ -32,7 +35,7 @@ mixin MainController {
 
   Widget category() => const CategoryPage();
 
-  Widget products() => const Scaffold(body: Text("product"));
+  Widget products() => const ProductPage();
 
   Widget users() => const Scaffold(body: Text("users"));
 }
