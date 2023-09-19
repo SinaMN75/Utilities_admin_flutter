@@ -2,7 +2,7 @@ import 'package:flutter_admin_scaffold/admin_scaffold.dart';
 import 'package:utilities/utilities.dart';
 import 'package:utilities_admin_flutter/views/pages/about/about_page.dart';
 import 'package:utilities_admin_flutter/views/pages/categories/category_page.dart';
-import 'package:utilities_admin_flutter/views/pages/dashboard/dashboard/dashboard_screen.dart';
+import 'package:utilities_admin_flutter/views/pages/dashboard/dashboard_page.dart';
 import 'package:utilities_admin_flutter/views/pages/main/main_controller.dart';
 import 'package:utilities_admin_flutter/views/pages/products/product_page.dart';
 import 'package:utilities_admin_flutter/views/pages/report/report_page.dart';
@@ -52,7 +52,7 @@ class _MainPageState extends State<MainPage> with MainController {
           selectedRoute: '',
         ),
         body: Obx(() {
-          if (mainPageType.value == MainPageType.dashboard) return const DashboardScreen();
+          if (mainPageType.value == MainPageType.dashboard) return const DashboardPage();
           if (mainPageType.value == MainPageType.terms) return const TermsPage();
           if (mainPageType.value == MainPageType.about) return const AboutPage();
           if (mainPageType.value == MainPageType.category) return const CategoryPage();

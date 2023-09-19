@@ -18,7 +18,7 @@ mixin LoginController {
       dto: LoginWithPasswordDto(email: controllerUserName.text, password: controllerPassword.text),
       onResponse: (final GenericResponse<UserReadDto> response) {
         setData(UtilitiesConstants.userId, response.result?.id);
-        setData(UtilitiesConstants.token, response.result?.token);
+        setData(UtilitiesConstants.token, "Bearer ${response.result?.token}");
         offAll(const MainPage());
         dismissEasyLoading();
       },

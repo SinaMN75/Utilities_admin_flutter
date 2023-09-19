@@ -14,5 +14,5 @@ abstract class Core {
   static RxList<CategoryReadDto> categories = <CategoryReadDto>[].obs;
   static RxList<ContentReadDto> contents = <ContentReadDto>[].obs;
   static late AppSettingsReadDto appSettingsReadDto;
-  static late Rx<UserReadDto> profile;
+  static late UserReadDto profile;
 }

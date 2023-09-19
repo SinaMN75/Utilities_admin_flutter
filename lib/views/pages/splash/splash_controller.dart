@@ -15,10 +15,13 @@ mixin SplashController {
       } else {
         _userDataSource.readById(
           id: getString(AppConstants.userId)!,
-          onResponse: (final GenericResponse<UserReadDto> response) {},
+          onResponse: (final GenericResponse<UserReadDto> response) {
+            Core.profile = response.result!;
+
+            offAll(const MainPage());
+          },
           onError: (final GenericResponse<dynamic> response) {},
         );
-        offAll(const MainPage());
       }
     });
   }
