@@ -1,17 +1,12 @@
 import 'package:utilities/utilities.dart';
-import 'package:utilities_admin_flutter/views/pages/about/about_page.dart';
-import 'package:utilities_admin_flutter/views/pages/categories/category_page.dart';
-import 'package:utilities_admin_flutter/views/pages/dashboard/dashboard/dashboard_screen.dart';
-import 'package:utilities_admin_flutter/views/pages/dashboard/dashboard_page.dart';
-import 'package:utilities_admin_flutter/views/pages/products/product_page.dart';
-import 'package:utilities_admin_flutter/views/pages/terms/terms_page.dart';
 
 enum MainPageType {
   dashboard("dashboard"),
   terms("terms"),
   about("about"),
   product("product"),
-  category("category");
+  category("category"),
+  report("report");
 
   const MainPageType(this.title);
 
@@ -25,18 +20,4 @@ mixin MainController {
   final Rx<MainPageType> mainPageType = MainPageType.dashboard.obs;
 
   void init() {}
-
-  void changePage(final MainPageType type) => mainPageType(type);
-
-  Widget dashboard() => const DashboardScreen();
-
-  Widget about() => const AboutPage();
-
-  Widget terms() => const TermsPage();
-
-  Widget category() => const CategoryPage();
-
-  Widget products() => const ProductPage();
-
-  Widget users() => const Scaffold(body: Text("users"));
 }

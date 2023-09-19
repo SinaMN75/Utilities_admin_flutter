@@ -44,8 +44,8 @@ class _LoginPageState extends State<LoginPage> with LoginController {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            textField(hintText: "نام کاربری").paddingSymmetric(vertical: 8),
-            textField(hintText: "رمز عبور").paddingSymmetric(vertical: 8),
+            textField(hintText: "نام کاربری", controller: controllerUserName).paddingSymmetric(vertical: 8),
+            textField(hintText: "رمز عبور", controller: controllerPassword).paddingSymmetric(vertical: 8),
             button(title: "ورود", onTap: login).paddingSymmetric(vertical: 8),
           ],
         ),
