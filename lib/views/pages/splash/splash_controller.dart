@@ -11,14 +11,13 @@ mixin SplashController {
   void init() {
     delay(1000, () {
       if (getString(UtilitiesConstants.token) == null) {
+        offAll(const LoginPage());
+      } else {
         _userDataSource.readById(
           id: getString(AppConstants.userId)!,
           onResponse: (final GenericResponse<UserReadDto> response) {},
           onError: (final GenericResponse<dynamic> response) {},
         );
-
-        offAll(const LoginPage());
-      } else {
         offAll(const MainPage());
       }
     });

@@ -13,7 +13,7 @@ abstract class AppThemes {
   static const Color darkPrimaryColor = Colors.yellow;
   static Color darkSecondaryColor = Colors.yellow.shade900;
 
-  static String? font = isWeb ? null : "IranSans";
+  static String? font = "IranSans";
 
   static ThemeData light = ThemeData(
     useMaterial3: true,

@@ -1,6 +1,7 @@
 import 'package:utilities/utilities.dart';
 import 'package:utilities_admin_flutter/views/pages/about/about_page.dart';
 import 'package:utilities_admin_flutter/views/pages/categories/category_page.dart';
+import 'package:utilities_admin_flutter/views/pages/dashboard/dashboard/dashboard_screen.dart';
 import 'package:utilities_admin_flutter/views/pages/dashboard/dashboard_page.dart';
 import 'package:utilities_admin_flutter/views/pages/products/product_page.dart';
 import 'package:utilities_admin_flutter/views/pages/terms/terms_page.dart';
@@ -27,7 +28,7 @@ mixin MainController {
 
   void changePage(final MainPageType type) => mainPageType(type);
 
-  Widget dashboard() => const DashboardPage();
+  Widget dashboard() => const DashboardScreen();
 
   Widget about() => const AboutPage();
 

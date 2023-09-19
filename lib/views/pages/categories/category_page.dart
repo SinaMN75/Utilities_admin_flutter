@@ -35,21 +35,9 @@ class _CategoryPageState extends State<CategoryPage> with CategoryController {
                   children: <Widget>[
                     Row(
                       children: <Widget>[
-                        textField(
-                          text: "عنوان",
-                          controller: controllerTitle,
-                          onChanged: (final String value) {
-                            filter();
-                          },
-                        ).expanded(),
+                        textField(text: "عنوان", controller: controllerTitle, onChanged: (final String value) => filter()).expanded(),
                         const SizedBox(width: 20),
-                        textField(
-                          text: "عنوان انگلیسی",
-                          controller: controllerTitleTr1,
-                          onChanged: (final String value) {
-                            filter();
-                          },
-                        ).expanded(),
+                        textField(text: "عنوان انگلیسی", controller: controllerTitleTr1, onChanged: (final String value) => filter()).expanded(),
                       ],
                     ),
                     const SizedBox(height: 20),
@@ -98,7 +86,7 @@ class _CategoryPageState extends State<CategoryPage> with CategoryController {
                               )
                               .toList(),
                         ],
-                      ),
+                      ).container(width: context.width),
                     ).expanded(),
                   ],
                 )
