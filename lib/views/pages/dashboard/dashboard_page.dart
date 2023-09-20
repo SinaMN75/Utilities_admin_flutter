@@ -69,32 +69,45 @@ class _DashboardPageState extends State<DashboardPage> with DashboardController 
           color: context.theme.colorScheme.background,
           borderRadius: const BorderRadius.all(Radius.circular(10)),
         ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            const Text("Storage Details", style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500)),
-            const SizedBox(height: 16),
-            doughnutChart(
-              data: <DoughnutChartData>[
-                DoughnutChartData("iphone", 50),
-                DoughnutChartData("android", 30),
-                DoughnutChartData("mac", 70),
-                DoughnutChartData("windows", 120),
-              ],
-            ),
-            _chartDataCard(svgSrc: "lib/assets/icons/Documents.svg", title: "Documents Files", amountOfFiles: "1.3GB", numOfFiles: 1328),
-            _chartDataCard(svgSrc: "lib/assets/icons/media.svg", title: "Media Files", amountOfFiles: "15.3GB", numOfFiles: 1328),
-            _chartDataCard(svgSrc: "lib/assets/icons/folder.svg", title: "Other Files", amountOfFiles: "1.3GB", numOfFiles: 1328),
-            _chartDataCard(svgSrc: "lib/assets/icons/unknown.svg", title: "Unknown", amountOfFiles: "1.3GB", numOfFiles: 140),
-          ],
+        child: Obx(
+          () => productsState.isLoaded() ? Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              const Text("Storage Details", style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500)),
+              const SizedBox(height: 16),
+              doughnutChart(
+                data: <DoughnutChartData>[
+                  DoughnutChartData("iphone", 50),
+                  DoughnutChartData("android", 30),
+                  DoughnutChartData("mac", 70),
+                  DoughnutChartData("windows", 120),
+                ],
+              ),
+              const Text("محصولات").headlineSmall().bold(),
+              _chartDataCard(
+                iconData: Icons.queue,
+                title: "در صف بررسی",
+                trailing: products.where((final ProductReadDto i) => i.tags!.contains(TagProduct.inQueue.title)).length.toString(),
+              ),
+              _chartDataCard(
+                iconData: Icons.done,
+                title: "منتشر شده",
+                trailing: products.where((final ProductReadDto i) => i.tags!.contains(TagProduct.released.title)).length.toString(),
+              ),
+              _chartDataCard(
+                iconData: Icons.remove,
+                title: "رد شده",
+                trailing: products.where((final ProductReadDto i) => i.tags!.contains(TagProduct.notAccepted.title)).length.toString(),
+              ),
+            ],
+          ) : const CircularProgressIndicator().alignAtCenter(),
         ),
       );
 
   Widget _chartDataCard({
     required final String title,
-    required final String svgSrc,
-    required final String amountOfFiles,
-    required final int numOfFiles,
+    required final IconData iconData,
+    required final String trailing,
   }) =>
       Container(
         margin: const EdgeInsets.only(top: 16),
@@ -105,23 +118,9 @@ class _DashboardPageState extends State<DashboardPage> with DashboardController 
         ),
         child: Row(
           children: <Widget>[
-            SizedBox(height: 20, width: 20, child: SvgPicture.asset(svgSrc)),
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text(title, maxLines: 1, overflow: TextOverflow.ellipsis),
-                    Text(
-                      "$numOfFiles Files",
-                      style: Theme.of(context).textTheme.bodySmall!.copyWith(color: Colors.white70),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            Text(amountOfFiles),
+            Icon(iconData),
+            Text(title, maxLines: 1, overflow: TextOverflow.ellipsis).paddingSymmetric(horizontal: 16).expanded(),
+            Text(trailing),
           ],
         ),
       );
@@ -172,14 +171,18 @@ class _DashboardPageState extends State<DashboardPage> with DashboardController 
           ),
           const SizedBox(height: 16),
           Obx(
-            () => cardsState.isLoaded() ? Wrap(
-              children: <Widget>[
-                _card(title: "دسته‌بندی‌ها", count: dashboardDataReadDto.categories.toString(), color: Colors.red, iconData: Icons.category_outlined),
-                _card(title: "کاربران", count: dashboardDataReadDto.users.toString(), color: Colors.blue, iconData: Icons.person_outline),
-                _card(title: "سفارشات", count: dashboardDataReadDto.orders.toString(), color: Colors.green, iconData: Icons.shopping_cart_outlined),
-                _card(title: "محصولات", count: dashboardDataReadDto.products.toString(), color: Colors.orange, iconData: Icons.dashboard_outlined),
-              ],
-            ) : const CircularProgressIndicator().alignAtCenter(),
+            () => cardsState.isLoaded()
+                ? Wrap(
+                    children: <Widget>[
+                      _card(title: "دسته‌بندی‌ها", count: dashboardDataReadDto.categories.toString(), color: Colors.red, iconData: Icons.category_outlined),
+                      _card(title: "کاربران", count: dashboardDataReadDto.users.toString(), color: Colors.blue, iconData: Icons.person_outline),
+                      _card(title: "سفارشات", count: dashboardDataReadDto.orders.toString(), color: Colors.green, iconData: Icons.shopping_cart_outlined),
+                      _card(title: "محصولات", count: dashboardDataReadDto.products.toString(), color: Colors.orange, iconData: Icons.dashboard_outlined),
+                      _card(title: "فایل‌ها", count: dashboardDataReadDto.media.toString(), color: Colors.purple, iconData: Icons.dashboard_outlined),
+                      _card(title: "تراکنش‌ها", count: dashboardDataReadDto.transactions.toString(), color: Colors.indigo, iconData: Icons.dashboard_outlined),
+                    ],
+                  )
+                : const CircularProgressIndicator().alignAtCenter(),
           ),
         ],
       );
