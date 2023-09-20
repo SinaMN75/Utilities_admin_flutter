@@ -36,13 +36,13 @@ class _DashboardPageState extends State<DashboardPage> with DashboardController 
                       _cards(),
                       const SizedBox(height: 16),
                       Obx(() => orderState.isLoaded() ? _completedOrders() : const CircularProgressIndicator().alignAtCenter()),
-                      if (Responsive.isMobile(context)) const SizedBox(height: 16),
-                      if (Responsive.isMobile(context)) _chart(),
+                      if (Responsive.isMobile()) const SizedBox(height: 16),
+                      if (Responsive.isMobile()) _chart(),
                     ],
                   ),
                 ),
-                if (!Responsive.isMobile(context)) const SizedBox(width: 16),
-                if (!Responsive.isMobile(context)) Expanded(flex: 2, child: _chart()),
+                if (!Responsive.isMobile()) const SizedBox(width: 16),
+                if (!Responsive.isMobile()) Expanded(flex: 2, child: _chart()),
               ],
             )
           ],
@@ -51,9 +51,9 @@ class _DashboardPageState extends State<DashboardPage> with DashboardController 
 
   Widget _header() => Row(
         children: <Widget>[
-          if (!Responsive.isDesktop(context)) IconButton(icon: const Icon(Icons.menu), onPressed: () {}),
-          if (!Responsive.isMobile(context)) Text("داشبورد مدیریت دایرکت‌شد", style: Theme.of(context).textTheme.titleLarge),
-          if (!Responsive.isMobile(context)) Spacer(flex: Responsive.isDesktop(context) ? 2 : 1),
+          if (!Responsive.isDesktop()) IconButton(icon: const Icon(Icons.menu), onPressed: () {}),
+          if (!Responsive.isMobile()) Text("داشبورد مدیریت دایرکت‌شد", style: Theme.of(context).textTheme.titleLarge),
+          if (!Responsive.isMobile()) Spacer(flex: Responsive.isDesktop() ? 2 : 1),
           Text(Core.profile.firstName ?? "").paddingSymmetric(horizontal: 16 / 2).container(
                 radius: 10,
                 backgroundColor: context.theme.colorScheme.secondary.withOpacity(0.1),
@@ -172,14 +172,14 @@ class _DashboardPageState extends State<DashboardPage> with DashboardController 
           ),
           const SizedBox(height: 16),
           Obx(
-            () => Wrap(
+            () => cardsState.isLoaded() ? Wrap(
               children: <Widget>[
-                _card(title: "دسته‌بندی‌ها", count: categoriesCount.toString(), color: Colors.red, iconData: Icons.category_outlined),
-                _card(title: "کاربران", count: usersCount.toString(), color: Colors.blue, iconData: Icons.person_outline),
-                _card(title: "سفارشات", count: ordersCount.toString(), color: Colors.green, iconData: Icons.shopping_cart_outlined),
-                _card(title: "محصولات", count: productsCount.toString(), color: Colors.yellow, iconData: Icons.dashboard_outlined),
+                _card(title: "دسته‌بندی‌ها", count: dashboardDataReadDto.categories.toString(), color: Colors.red, iconData: Icons.category_outlined),
+                _card(title: "کاربران", count: dashboardDataReadDto.users.toString(), color: Colors.blue, iconData: Icons.person_outline),
+                _card(title: "سفارشات", count: dashboardDataReadDto.orders.toString(), color: Colors.green, iconData: Icons.shopping_cart_outlined),
+                _card(title: "محصولات", count: dashboardDataReadDto.products.toString(), color: Colors.orange, iconData: Icons.dashboard_outlined),
               ],
-            ),
+            ) : const CircularProgressIndicator().alignAtCenter(),
           ),
         ],
       );

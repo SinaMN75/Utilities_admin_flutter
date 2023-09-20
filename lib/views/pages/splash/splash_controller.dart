@@ -9,7 +9,7 @@ mixin SplashController {
   final UserDataSource _userDataSource = UserDataSource(baseUrl: AppConstants.baseUrl);
 
   void init() {
-    delay(1000, () {
+    delay(100, () {
       if (getString(UtilitiesConstants.token) == null) {
         offAll(const LoginPage());
       } else {
@@ -17,7 +17,6 @@ mixin SplashController {
           id: getString(AppConstants.userId)!,
           onResponse: (final GenericResponse<UserReadDto> response) {
             Core.profile = response.result!;
-
             offAll(const MainPage());
           },
           onError: (final GenericResponse<dynamic> response) {},

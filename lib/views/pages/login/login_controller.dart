@@ -19,6 +19,7 @@ mixin LoginController {
       onResponse: (final GenericResponse<UserReadDto> response) {
         setData(UtilitiesConstants.userId, response.result?.id);
         setData(UtilitiesConstants.token, "Bearer ${response.result?.token}");
+        Core.profile = response.result!;
         offAll(const MainPage());
         dismissEasyLoading();
       },
