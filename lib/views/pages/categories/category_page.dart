@@ -27,6 +27,7 @@ class _CategoryPageState extends State<CategoryPage> with CategoryController {
           title: const Text("دسته بندی‌ها"),
           actions: <Widget>[
             IconButton(onPressed: () => create(dto: widget.dto), icon: const Icon(Icons.add_box_outlined, size: 40)),
+            IconButton(onPressed: createCategoryFromExcel, icon: const Icon(Icons.grid_on_outlined, size: 40)),
           ],
         ),
         body: Obx(

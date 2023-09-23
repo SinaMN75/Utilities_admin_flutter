@@ -122,4 +122,32 @@ mixin CategoryController {
       ),
     );
   }
+
+  void createCategoryFromExcel() {
+    uploadExcel(
+      result: (final List<CategoryReadDto> categories) {
+        categories.forEach((final CategoryReadDto i) {
+          delay(100, () {
+            _categoryDataSource.create(
+              dto: CategoryCreateUpdateDto(
+                id: i.id,
+                title: i.title,
+                titleTr1: i.titleTr1,
+                parentId: i.parentId != '-' ? i.parentId : null,
+                tags: <int>[TagCategory.category.number],
+                isUnique: true,
+              ),
+              onResponse: (final GenericResponse<CategoryReadDto> response) => state.loaded(),
+              onError: (final GenericResponse<dynamic> response) {},
+            );
+          });
+        });
+      },
+    );
+  }
+
+  void uploadExcel({required final Function(List<CategoryReadDto> categories) result}) async {
+    final ExcelToJson2 excelToJson = ExcelToJson2();
+    await excelToJson.categoryConvert(result: result);
+  }
 }
