@@ -6,6 +6,8 @@ enum MainPageType {
   about("about"),
   product("product"),
   category("category"),
+  transactions("transactions"),
+  banners("banners"),
   report("report");
 
   const MainPageType(this.title);

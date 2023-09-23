@@ -1,12 +1,14 @@
 import 'package:flutter_admin_scaffold/admin_scaffold.dart';
 import 'package:utilities/utilities.dart';
 import 'package:utilities_admin_flutter/views/pages/about/about_page.dart';
+import 'package:utilities_admin_flutter/views/pages/banners/banners_page.dart';
 import 'package:utilities_admin_flutter/views/pages/categories/category_page.dart';
 import 'package:utilities_admin_flutter/views/pages/dashboard/dashboard_page.dart';
 import 'package:utilities_admin_flutter/views/pages/main/main_controller.dart';
 import 'package:utilities_admin_flutter/views/pages/products/product_page.dart';
 import 'package:utilities_admin_flutter/views/pages/report/report_page.dart';
 import 'package:utilities_admin_flutter/views/pages/terms/terms_page.dart';
+import 'package:utilities_admin_flutter/views/pages/tractions/transactions_page.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
@@ -32,12 +34,14 @@ class _MainPageState extends State<MainPage> with MainController {
             AdminMenuItem(title: 'دسته بندی', route: MainPageType.category.title, icon: Icons.category),
             AdminMenuItem(title: "محصولات", route: MainPageType.product.title, icon: Icons.shopping_cart_rounded),
             AdminMenuItem(title: "ریپورت‌ها", route: MainPageType.report.title, icon: Icons.report_outlined),
+            AdminMenuItem(title: "تراکنش‌ها", route: MainPageType.transactions.title, icon: Icons.credit_card_outlined),
             AdminMenuItem(
               title: 'محتوا',
               icon: Icons.file_copy,
               children: <AdminMenuItem>[
                 AdminMenuItem(title: 'درباره ما', route: MainPageType.about.title),
                 AdminMenuItem(title: 'قوانین و مقررات', route: MainPageType.terms.title),
+                AdminMenuItem(title: 'بنر‌ها', route: MainPageType.banners.title),
               ],
             ),
           ],
@@ -48,6 +52,8 @@ class _MainPageState extends State<MainPage> with MainController {
             if (item.route == MainPageType.category.title) mainPageType(MainPageType.category);
             if (item.route == MainPageType.product.title) mainPageType(MainPageType.product);
             if (item.route == MainPageType.report.title) mainPageType(MainPageType.report);
+            if (item.route == MainPageType.transactions.title) mainPageType(MainPageType.transactions);
+            if (item.route == MainPageType.banners.title) mainPageType(MainPageType.banners);
           },
           selectedRoute: '',
         ),
@@ -58,6 +64,8 @@ class _MainPageState extends State<MainPage> with MainController {
           if (mainPageType.value == MainPageType.category) return const CategoryPage();
           if (mainPageType.value == MainPageType.product) return const ProductPage();
           if (mainPageType.value == MainPageType.report) return const ReportPage();
+          if (mainPageType.value == MainPageType.transactions) return const TransactionsPage();
+          if (mainPageType.value == MainPageType.banners) return const BannersPage();
           return const Placeholder();
         }),
         // body: Text("kkkkk"),

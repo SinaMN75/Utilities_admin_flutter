@@ -24,7 +24,7 @@ class _TermsPageState extends State<TermsPage> with TermsController {
             textField(text: "عنوان", controller: controllerTitle),
             textField(text: "متن", controller: controllerDescription, lines: 20),
             const Spacer(),
-            button(title: "ثبت", onTap: () {}),
+            button(title: "ثبت", onTap: createUpdate),
           ],
         ),
       );

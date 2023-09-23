@@ -19,13 +19,15 @@ class _AboutPageState extends State<AboutPage> with AboutController {
   Widget build(final BuildContext context) => scaffold(
         padding: const EdgeInsets.all(20),
         appBar: AppBar(title: const Text("درباره ما")),
-        body: Column(
-          children: <Widget>[
-            textField(text: "عنوان", controller: controllerTitle),
-            textField(text: "متن", controller: controllerDescription, lines: 20),
-            const Spacer(),
-            button(title: "ثبت", onTap: () {}),
-          ],
+        body: Obx(
+          () => state.isLoaded() ? Column(
+            children: <Widget>[
+              textField(text: "عنوان", controller: controllerTitle),
+              textField(text: "متن", controller: controllerDescription, lines: 20),
+              const Spacer(),
+              button(title: "ثبت", onTap: createUpdate),
+            ],
+          ) : const CircularProgressIndicator(),
         ),
       );
 }
