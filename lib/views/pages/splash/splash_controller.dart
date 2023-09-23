@@ -7,12 +7,20 @@ mixin SplashController {
   Rx<PageState> state = PageState.initial.obs;
 
   final UserDataSource _userDataSource = UserDataSource(baseUrl: AppConstants.baseUrl);
+  final ContentDataSource _contentDataSource = ContentDataSource(baseUrl: AppConstants.baseUrl);
 
   void init() {
     delay(100, () {
       if (getString(UtilitiesConstants.token) == null) {
         offAll(const LoginPage());
       } else {
+        _contentDataSource.read(
+          onResponse: (final GenericResponse<ContentReadDto> response) {
+            Core.contents = response.resultList!;
+          },
+          onError: (final GenericResponse<dynamic> response) {},
+        );
+
         _userDataSource.readById(
           id: getString(AppConstants.userId)!,
           onResponse: (final GenericResponse<UserReadDto> response) {

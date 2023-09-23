@@ -1,5 +1,4 @@
 import 'package:utilities/utilities.dart';
-import 'package:utilities_admin_flutter/views/pages/categories/category_controller.dart';
 import 'package:utilities_admin_flutter/views/pages/products/product_controller.dart';
 
 class ProductPage extends StatefulWidget {
@@ -61,6 +60,7 @@ class _ProductPageState extends State<ProductPage> with ProductController {
                           DataColumn(label: const Text("ردیف").headlineSmall()),
                           DataColumn(label: const Text("عنوان").headlineSmall()),
                           DataColumn(label: const Text("عملیات‌ها").headlineSmall()),
+                          DataColumn(label: const Text("وضعیت").headlineSmall()),
                         ],
                         rows: <DataRow>[
                           ...filteredList
@@ -69,6 +69,9 @@ class _ProductPageState extends State<ProductPage> with ProductController {
                                   cells: <DataCell>[
                                     DataCell(Text(index.toString()).bodyLarge().paddingAll(8)),
                                     DataCell(Text(i.title ?? "").bodyLarge().paddingAll(8)),
+                                    DataCell(
+                                      Text(UtilitiesTagUtils.tagProductTitleFromTagList(i.tags!)).bodyLarge().paddingAll(8),
+                                    ),
                                     DataCell(
                                       Row(
                                         children: <Widget>[

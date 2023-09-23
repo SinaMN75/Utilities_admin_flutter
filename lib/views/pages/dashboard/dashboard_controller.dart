@@ -40,7 +40,7 @@ mixin DashboardController {
       );
 
   void readProducts() => _productDataSource.filter(
-        dto: ProductFilterDto(tags: <int>[TagProduct.released.title, TagProduct.inQueue.title, TagProduct.notAccepted.title]),
+        dto: ProductFilterDto(tags: <int>[TagProduct.released.number, TagProduct.inQueue.number, TagProduct.notAccepted.number]),
         onResponse: (final GenericResponse<ProductReadDto> response) {
           products = response.resultList!;
           productsState.loaded();

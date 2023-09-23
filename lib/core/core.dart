@@ -12,7 +12,7 @@ part 'utils.dart';
 abstract class Core {
   static String appVersion = "1.0.0";
   static RxList<CategoryReadDto> categories = <CategoryReadDto>[].obs;
-  static RxList<ContentReadDto> contents = <ContentReadDto>[].obs;
+  static List<ContentReadDto> contents = <ContentReadDto>[];
   static late AppSettingsReadDto appSettingsReadDto;
   static late UserReadDto profile;
 }

@@ -50,10 +50,9 @@ class _DashboardPageState extends State<DashboardPage> with DashboardController 
       );
 
   Widget _header() => Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
-          if (!Responsive.isDesktop()) IconButton(icon: const Icon(Icons.menu), onPressed: () {}),
-          if (!Responsive.isMobile()) Text("داشبورد مدیریت دایرکت‌شد", style: Theme.of(context).textTheme.titleLarge),
-          if (!Responsive.isMobile()) Spacer(flex: Responsive.isDesktop() ? 2 : 1),
+          const Text("داشبورد مدیریت دایرکت‌شد").titleLarge(),
           Text(Core.profile.firstName ?? "").paddingSymmetric(horizontal: 16 / 2).container(
                 radius: 10,
                 backgroundColor: context.theme.colorScheme.secondary.withOpacity(0.1),
@@ -70,37 +69,39 @@ class _DashboardPageState extends State<DashboardPage> with DashboardController 
           borderRadius: const BorderRadius.all(Radius.circular(10)),
         ),
         child: Obx(
-          () => productsState.isLoaded() ? Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              const Text("Storage Details", style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500)),
-              const SizedBox(height: 16),
-              doughnutChart(
-                data: <DoughnutChartData>[
-                  DoughnutChartData("iphone", 50),
-                  DoughnutChartData("android", 30),
-                  DoughnutChartData("mac", 70),
-                  DoughnutChartData("windows", 120),
-                ],
-              ),
-              const Text("محصولات").headlineSmall().bold(),
-              _chartDataCard(
-                iconData: Icons.queue,
-                title: "در صف بررسی",
-                trailing: products.where((final ProductReadDto i) => i.tags!.contains(TagProduct.inQueue.title)).length.toString(),
-              ),
-              _chartDataCard(
-                iconData: Icons.done,
-                title: "منتشر شده",
-                trailing: products.where((final ProductReadDto i) => i.tags!.contains(TagProduct.released.title)).length.toString(),
-              ),
-              _chartDataCard(
-                iconData: Icons.remove,
-                title: "رد شده",
-                trailing: products.where((final ProductReadDto i) => i.tags!.contains(TagProduct.notAccepted.title)).length.toString(),
-              ),
-            ],
-          ) : const CircularProgressIndicator().alignAtCenter(),
+          () => productsState.isLoaded()
+              ? Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    const Text("Storage Details", style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500)),
+                    const SizedBox(height: 16),
+                    doughnutChart(
+                      data: <DoughnutChartData>[
+                        DoughnutChartData("iphone", 50),
+                        DoughnutChartData("android", 30),
+                        DoughnutChartData("mac", 70),
+                        DoughnutChartData("windows", 120),
+                      ],
+                    ),
+                    const Text("محصولات").headlineSmall().bold(),
+                    _chartDataCard(
+                      iconData: Icons.queue,
+                      title: "در صف بررسی",
+                      trailing: products.where((final ProductReadDto i) => i.tags!.contains(TagProduct.inQueue.number)).length.toString(),
+                    ),
+                    _chartDataCard(
+                      iconData: Icons.done,
+                      title: "منتشر شده",
+                      trailing: products.where((final ProductReadDto i) => i.tags!.contains(TagProduct.released.number)).length.toString(),
+                    ),
+                    _chartDataCard(
+                      iconData: Icons.remove,
+                      title: "رد شده",
+                      trailing: products.where((final ProductReadDto i) => i.tags!.contains(TagProduct.notAccepted.number)).length.toString(),
+                    ),
+                  ],
+                )
+              : const CircularProgressIndicator().alignAtCenter(),
         ),
       );
 
@@ -180,6 +181,8 @@ class _DashboardPageState extends State<DashboardPage> with DashboardController 
                       _card(title: "محصولات", count: dashboardDataReadDto.products.toString(), color: Colors.orange, iconData: Icons.dashboard_outlined),
                       _card(title: "فایل‌ها", count: dashboardDataReadDto.media.toString(), color: Colors.purple, iconData: Icons.dashboard_outlined),
                       _card(title: "تراکنش‌ها", count: dashboardDataReadDto.transactions.toString(), color: Colors.indigo, iconData: Icons.dashboard_outlined),
+                      _card(title: "ریپورت‌ها", count: dashboardDataReadDto.reports.toString(), color: Colors.brown, iconData: Icons.dashboard_outlined),
+                      _card(title: "آدرس‌ها", count: dashboardDataReadDto.address.toString(), color: Colors.teal, iconData: Icons.dashboard_outlined),
                     ],
                   )
                 : const CircularProgressIndicator().alignAtCenter(),
