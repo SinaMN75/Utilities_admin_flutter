@@ -17,37 +17,29 @@ class _LoginPageState extends State<LoginPage> with LoginController {
 
   @override
   Widget build(final BuildContext context) => scaffold(
-        constraints: const BoxConstraints(),
-        body: Row(
+    constraints: const BoxConstraints(),
+    body: Row(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: <Widget>[
+        image(AppImages.loginImage, fit: BoxFit.cover).expanded(),
+        Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            image(AppImages.loginImage, fit: BoxFit.cover).container(
-              height: context.height,
-              width: context.width / 2,
-              backgroundColor: context.theme.colorScheme.background,
+            image(AppImages.logo),
+            const SizedBox(height: 24),
+            Form(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: <Widget>[
+                  textField(hintText: "نام کاربری", controller: controllerUserName).paddingSymmetric(vertical: 8),
+                  textField(hintText: "رمز عبور", controller: controllerPassword).paddingSymmetric(vertical: 8),
+                  button(title: "ورود", onTap: login).paddingSymmetric(vertical: 8),
+                ],
+              ).paddingSymmetric(horizontal: context.width / 10),
             ),
-            Container(
-              height: context.height,
-              width: context.width / 2,
-              color: context.theme.colorScheme.background,
-              child: Container(
-                padding: const EdgeInsets.all(42),
-                width: context.width / 3,
-                height: context.height / 1.5,
-                child: Column(children: <Widget>[image(AppImages.logo), const SizedBox(height: 24), _loginScreen(context)]),
-              ).alignAtCenter(),
-            )
           ],
-        ),
-      );
-
-  Widget _loginScreen(final BuildContext context) => Form(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: <Widget>[
-            textField(hintText: "نام کاربری", controller: controllerUserName).paddingSymmetric(vertical: 8),
-            textField(hintText: "رمز عبور", controller: controllerPassword).paddingSymmetric(vertical: 8),
-            button(title: "ورود", onTap: login).paddingSymmetric(vertical: 8),
-          ],
-        ),
-      );
+        ).expanded(),
+      ],
+    ),
+  );
 }
