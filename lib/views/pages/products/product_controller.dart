@@ -8,7 +8,10 @@ mixin ProductController {
   final RxList<ProductReadDto> filteredList = <ProductReadDto>[].obs;
 
   final TextEditingController controllerTitle = TextEditingController();
-  final TextEditingController controllerTitleTr1 = TextEditingController();
+  final RxInt selectedProductTag = TagProduct.inQueue.number.obs;
+
+  int pageNumber = 1;
+  int pageCount = 0;
 
   final ProductDataSource _productDataSource = ProductDataSource(baseUrl: AppConstants.baseUrl);
 
@@ -19,14 +22,17 @@ mixin ProductController {
       state.loaded();
   }
 
-  void filter() {
-  }
-
   void read() {
     state.loading();
     _productDataSource.filter(
-      dto: ProductFilterDto(),
+      dto: ProductFilterDto(
+        pageSize: 20,
+        pageNumber: pageNumber,
+        query: controllerTitle.text,
+        tags: <int>[TagProduct.product.number, selectedProductTag.value],
+      ),
       onResponse: (final GenericResponse<ProductReadDto> response) {
+        pageCount = response.pageCount!;
         list(response.resultList);
         filteredList(list);
         state.loaded();
