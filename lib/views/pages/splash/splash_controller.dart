@@ -8,12 +8,20 @@ mixin SplashController {
 
   final UserDataSource _userDataSource = UserDataSource(baseUrl: AppConstants.baseUrl);
   final ContentDataSource _contentDataSource = ContentDataSource(baseUrl: AppConstants.baseUrl);
+  final CategoryDataSource _categoryDataSource = CategoryDataSource(baseUrl: AppConstants.baseUrl);
 
   void init() {
     delay(100, () {
       if (getString(UtilitiesConstants.token) == null) {
         offAll(const LoginPage());
       } else {
+        _categoryDataSource.filter(
+          dto: CategoryFilterDto(),
+          onResponse: (final GenericResponse<CategoryReadDto> response) {
+            Core.categories = response.resultList!;
+          },
+          onError: (final GenericResponse<dynamic> response) {},
+        );
         _contentDataSource.read(
           onResponse: (final GenericResponse<ContentReadDto> response) {
             Core.contents = response.resultList!;

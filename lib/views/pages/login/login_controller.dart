@@ -1,6 +1,6 @@
 import 'package:utilities/utilities.dart';
 import 'package:utilities_admin_flutter/core/core.dart';
-import 'package:utilities_admin_flutter/views/pages/main/main_page.dart';
+import 'package:utilities_admin_flutter/views/pages/splash/splash_page.dart';
 
 mixin LoginController {
   Rx<PageState> state = PageState.initial.obs;
@@ -20,7 +20,7 @@ mixin LoginController {
         setData(UtilitiesConstants.userId, response.result?.id);
         setData(UtilitiesConstants.token, "Bearer ${response.result?.token}");
         Core.profile = response.result!;
-        offAll(const MainPage());
+        offAll(const SplashPage());
         dismissEasyLoading();
       },
       onError: (final GenericResponse<dynamic> response) {},

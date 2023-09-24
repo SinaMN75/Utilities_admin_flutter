@@ -22,7 +22,7 @@ class _BannersPageState extends State<BannersPage> with BannersController {
         body: ListView(
           children: <Widget>[
             const Text("بنر ۱"),
-            image(Sample.loremPicsum, height: 200, fit: BoxFit.cover).paddingSymmetric(vertical: 20),
+            image(Sample.loremPicsum, height: 200, fit: BoxFit.cover).paddingSymmetric(vertical: 20).onTap(createUpdateHomeBanner1),
             const Text("بنر ۲"),
             image(Sample.loremPicsum, height: 200, fit: BoxFit.cover).paddingSymmetric(vertical: 20),
             const Text("بنرک ۱"),
