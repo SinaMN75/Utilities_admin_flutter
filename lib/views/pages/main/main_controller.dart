@@ -5,10 +5,13 @@ enum MainPageType {
   terms("terms"),
   about("about"),
   product("product"),
+  productDetail("productDetail"),
   category("category"),
-  transactions("transactions"),
-  banners("banners"),
-  report("report");
+  transaction("transactions"),
+  banner("banners"),
+  order("order"),
+  report("report"),
+  user("user");
 
   const MainPageType(this.title);
 
@@ -19,7 +22,6 @@ enum MainPageType {
 
 mixin MainController {
   Rx<PageState> state = PageState.initial.obs;
-  final Rx<MainPageType> mainPageType = MainPageType.dashboard.obs;
 
   void init() {}
 }

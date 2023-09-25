@@ -81,6 +81,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.3.0"
+  charcode:
+    dependency: transitive
+    description:
+      name: charcode
+      sha256: fb98c0f6d12c920a02ee2d998da788bca066ca5f148492b7085ee23372b12306
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.3.1"
   checked_yaml:
     dependency: transitive
     description:
@@ -350,6 +358,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.3"
+  flutter_contacts:
+    dependency: transitive
+    description:
+      name: flutter_contacts
+      sha256: "4fb4910fbe401ff234bc672304ef37f90319144920e940d1349b96fe089c6da7"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.1.7+1"
   flutter_easyloading:
     dependency: transitive
     description:
@@ -1032,6 +1048,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.6.0"
+  persian_fonts:
+    dependency: transitive
+    description:
+      name: persian_fonts
+      sha256: d340dda1895ad6af0b96f283056f622e52944cf9f7dc918570811ad4c01e29b3
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.5"
   persian_tools:
     dependency: transitive
     description:
@@ -1397,6 +1421,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.3.1"
+  universal_html:
+    dependency: transitive
+    description:
+      name: universal_html
+      sha256: "56536254004e24d9d8cfdb7dbbf09b74cf8df96729f38a2f5c238163e3d58971"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.2.4"
   universal_io:
     dependency: transitive
     description:

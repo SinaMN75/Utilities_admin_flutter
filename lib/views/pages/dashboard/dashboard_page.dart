@@ -3,6 +3,7 @@ import 'package:utilities/utilities.dart';
 import 'package:utilities_admin_flutter/core/core.dart';
 import 'package:utilities_admin_flutter/responsive.dart';
 import 'package:utilities_admin_flutter/views/pages/dashboard/dashboard_controller.dart';
+import 'package:utilities_admin_flutter/views/pages/main/main_controller.dart';
 
 class DashboardPage extends StatefulWidget {
   const DashboardPage({super.key});
@@ -128,10 +129,7 @@ class _DashboardPageState extends State<DashboardPage> with DashboardController 
 
   Widget _completedOrders() => Container(
         padding: const EdgeInsets.all(16),
-        decoration: BoxDecoration(
-          color: context.theme.colorScheme.background,
-          borderRadius: const BorderRadius.all(Radius.circular(10)),
-        ),
+        decoration: BoxDecoration(color: context.theme.colorScheme.background, borderRadius: const BorderRadius.all(Radius.circular(10))),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
@@ -175,14 +173,54 @@ class _DashboardPageState extends State<DashboardPage> with DashboardController 
             () => cardsState.isLoaded()
                 ? Wrap(
                     children: <Widget>[
-                      _card(title: "دسته‌بندی‌ها", count: dashboardDataReadDto.categories.toString(), color: Colors.red, iconData: Icons.category_outlined),
-                      _card(title: "کاربران", count: dashboardDataReadDto.users.toString(), color: Colors.blue, iconData: Icons.person_outline),
-                      _card(title: "سفارشات", count: dashboardDataReadDto.orders.toString(), color: Colors.green, iconData: Icons.shopping_cart_outlined),
-                      _card(title: "محصولات", count: dashboardDataReadDto.products.toString(), color: Colors.orange, iconData: Icons.dashboard_outlined),
-                      _card(title: "فایل‌ها", count: dashboardDataReadDto.media.toString(), color: Colors.purple, iconData: Icons.dashboard_outlined),
-                      _card(title: "تراکنش‌ها", count: dashboardDataReadDto.transactions.toString(), color: Colors.indigo, iconData: Icons.dashboard_outlined),
-                      _card(title: "ریپورت‌ها", count: dashboardDataReadDto.reports.toString(), color: Colors.brown, iconData: Icons.dashboard_outlined),
-                      _card(title: "آدرس‌ها", count: dashboardDataReadDto.address.toString(), color: Colors.teal, iconData: Icons.dashboard_outlined),
+                      _card(
+                        title: "دسته‌بندی‌ها",
+                        count: dashboardDataReadDto.categories.toString(),
+                        color: Colors.red,
+                        iconData: Icons.category_outlined,
+                      ).onTap(() => Core.mainPageType(MainPageType.category)),
+                      _card(
+                        title: "کاربران",
+                        count: dashboardDataReadDto.users.toString(),
+                        color: Colors.blue,
+                        iconData: Icons.person_outline,
+                      ),
+                      _card(
+                        title: "سفارشات",
+                        count: dashboardDataReadDto.orders.toString(),
+                        color: Colors.green,
+                        iconData: Icons.shopping_cart_outlined,
+                      ),
+                      _card(
+                        title: "محصولات",
+                        count: dashboardDataReadDto.products.toString(),
+                        color: Colors.orange,
+                        iconData: Icons.dashboard_outlined,
+                      ).onTap(() => Core.mainPageType(MainPageType.product)),
+                      _card(
+                        title: "فایل‌ها",
+                        count: dashboardDataReadDto.media.toString(),
+                        color: Colors.purple,
+                        iconData: Icons.dashboard_outlined,
+                      ),
+                      _card(
+                        title: "تراکنش‌ها",
+                        count: dashboardDataReadDto.transactions.toString(),
+                        color: Colors.indigo,
+                        iconData: Icons.dashboard_outlined,
+                      ).onTap(() => Core.mainPageType(MainPageType.transaction)),
+                      _card(
+                        title: "ریپورت‌ها",
+                        count: dashboardDataReadDto.reports.toString(),
+                        color: Colors.brown,
+                        iconData: Icons.dashboard_outlined,
+                      ).onTap(() => Core.mainPageType(MainPageType.report)),
+                      _card(
+                        title: "آدرس‌ها",
+                        count: dashboardDataReadDto.address.toString(),
+                        color: Colors.teal,
+                        iconData: Icons.dashboard_outlined,
+                      ),
                     ],
                   )
                 : const CircularProgressIndicator().alignAtCenter(),
@@ -217,68 +255,3 @@ class _DashboardPageState extends State<DashboardPage> with DashboardController 
         ),
       );
 }
-
-class RecentFile {
-  RecentFile({this.icon, this.title, this.date, this.size});
-
-  final String? icon;
-  final String? title;
-  final String? date;
-  final String? size;
-}
-
-List<RecentFile> demoRecentFiles = <RecentFile>[
-  RecentFile(icon: "lib/assets/icons/xd_file.svg", title: "XD File", date: "01-03-2021", size: "3.5mb"),
-  RecentFile(icon: "lib/assets/icons/Figma_file.svg", title: "Figma File", date: "27-02-2021", size: "19.0mb"),
-  RecentFile(icon: "lib/assets/icons/doc_file.svg", title: "Document", date: "23-02-2021", size: "32.5mb"),
-  RecentFile(icon: "lib/assets/icons/sound_file.svg", title: "Sound File", date: "21-02-2021", size: "3.5mb"),
-  RecentFile(icon: "lib/assets/icons/media_file.svg", title: "Media File", date: "23-02-2021", size: "2.5gb"),
-  RecentFile(icon: "lib/assets/icons/pdf_file.svg", title: "Sales PDF", date: "25-02-2021", size: "3.5mb"),
-  RecentFile(icon: "lib/assets/icons/excel_file.svg", title: "Excel File", date: "25-02-2021", size: "34.5mb"),
-];
-
-class CloudStorageInfo {
-  CloudStorageInfo({this.svgSrc, this.title, this.totalStorage, this.numOfFiles, this.percentage, this.color});
-
-  final String? svgSrc;
-  final String? title;
-  final String? totalStorage;
-  final int? percentage;
-  final int? numOfFiles;
-  final Color? color;
-}
-
-List<CloudStorageInfo> demoMyFiles = <CloudStorageInfo>[
-  CloudStorageInfo(
-    title: "Documents",
-    numOfFiles: 1328,
-    svgSrc: "lib/assets/icons/Documents.svg",
-    totalStorage: "1.9GB",
-    color: Colors.green,
-    percentage: 35,
-  ),
-  CloudStorageInfo(
-    title: "Google Drive",
-    numOfFiles: 1328,
-    svgSrc: "lib/assets/icons/google_drive.svg",
-    totalStorage: "2.9GB",
-    color: const Color(0xFFFFA113),
-    percentage: 35,
-  ),
-  CloudStorageInfo(
-    title: "One Drive",
-    numOfFiles: 1328,
-    svgSrc: "lib/assets/icons/one_drive.svg",
-    totalStorage: "1GB",
-    color: const Color(0xFFA4CDFF),
-    percentage: 10,
-  ),
-  CloudStorageInfo(
-    title: "Documents",
-    numOfFiles: 5328,
-    svgSrc: "lib/assets/icons/drop_box.svg",
-    totalStorage: "7.3GB",
-    color: const Color(0xFF007EE5),
-    percentage: 78,
-  ),
-];

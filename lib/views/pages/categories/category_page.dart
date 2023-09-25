@@ -36,9 +36,17 @@ class _CategoryPageState extends State<CategoryPage> with CategoryController {
                   children: <Widget>[
                     Row(
                       children: <Widget>[
-                        textField(text: "عنوان", controller: controllerTitle, onChanged: (final String value) => filter()).expanded(),
+                        textField(
+                          text: "عنوان",
+                          controller: controllerTitle,
+                          onChanged: (final String value) => filter(),
+                        ).expanded(),
                         const SizedBox(width: 20),
-                        textField(text: "عنوان انگلیسی", controller: controllerTitleTr1, onChanged: (final String value) => filter()).expanded(),
+                        textField(
+                          text: "عنوان انگلیسی",
+                          controller: controllerTitleTr1,
+                          onChanged: (final String value) => filter(),
+                        ).expanded(),
                       ],
                     ),
                     const SizedBox(height: 20),
@@ -46,7 +54,9 @@ class _CategoryPageState extends State<CategoryPage> with CategoryController {
                       child: DataTable(
                         sortColumnIndex: 0,
                         sortAscending: false,
-                        headingRowColor: MaterialStateColor.resolveWith((final Set<MaterialState> states) => context.theme.colorScheme.primaryContainer),
+                        headingRowColor: MaterialStateColor.resolveWith(
+                          (final Set<MaterialState> states) => context.theme.colorScheme.primaryContainer,
+                        ),
                         headingRowHeight: 60,
                         showCheckboxColumn: false,
                         columns: <DataColumn>[
@@ -74,7 +84,6 @@ class _CategoryPageState extends State<CategoryPage> with CategoryController {
                                             onPressed: () => update(dto: i),
                                             icon: Icon(Icons.edit, color: context.theme.colorScheme.primary),
                                           ).paddingSymmetric(horizontal: 8),
-                                          if (!i.children.isNullOrEmpty())
                                             TextButton(
                                               onPressed: () => push(CategoryPage(dto: i)),
                                               child: const Text("نمایش زیر دسته"),
