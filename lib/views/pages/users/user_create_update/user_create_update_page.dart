@@ -2,7 +2,9 @@ import 'package:utilities/utilities.dart';
 import 'package:utilities_admin_flutter/views/pages/users/user_create_update/user_create_update_controller.dart';
 
 class UserCreateUpdatePage extends StatefulWidget {
-  const UserCreateUpdatePage({super.key});
+  const UserCreateUpdatePage({required this.dto, super.key});
+
+  final UserReadDto dto;
 
   @override
   State<UserCreateUpdatePage> createState() => _UserCreateUpdatePageState();
