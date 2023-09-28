@@ -9,7 +9,11 @@ mixin ProductController {
   final RxList<ProductReadDto> filteredList = <ProductReadDto>[].obs;
 
   final TextEditingController controllerTitle = TextEditingController();
-  final RxInt selectedProductTag = TagProduct.inQueue.number.obs;
+  final RxInt selectedProductTag = TagProduct.all.number.obs;
+  late Rx<CategoryReadDto> selectedCategory;
+  late Rx<CategoryReadDto> selectedSubCategory;
+  RxList<CategoryReadDto> categories = Core.categories.where((final CategoryReadDto e) => !e.children.isNullOrEmpty()).toList().obs;
+  RxList<CategoryReadDto> subCategories = (Core.categories.first.children ?? <CategoryReadDto>[]).obs;
 
   int pageNumber = 1;
   int pageCount = 0;
@@ -17,10 +21,23 @@ mixin ProductController {
   final ProductDataSource _productDataSource = ProductDataSource(baseUrl: AppConstants.baseUrl);
 
   void init() {
-    if (list.isEmpty)
+    if (list.isEmpty) {
       read();
-    else
+      selectedCategory = categories.first.obs;
+      selectedSubCategory = (categories.first.children ?? <CategoryReadDto>[]).first.obs;
+    } else {
       state.loaded();
+    }
+  }
+
+  void selectCategory(final CategoryReadDto? dto) {
+    selectedCategory(dto);
+    subCategories(categories.singleWhere((final CategoryReadDto e) => e.id == selectedCategory.value.id).children);
+    selectedSubCategory(subCategories.where((final CategoryReadDto e) => e.parentId == selectedCategory.value.id).first);
+  }
+
+  void selectSubCategory(final CategoryReadDto? dto) {
+    selectedSubCategory(dto);
   }
 
   void read() {
@@ -30,6 +47,9 @@ mixin ProductController {
         pageSize: 20,
         pageNumber: pageNumber,
         query: controllerTitle.text,
+        showCategories: true,
+        showChildren: true,
+        showVisitProducts: true,
         tags: <int>[TagProduct.product.number, selectedProductTag.value],
       ),
       onResponse: (final GenericResponse<ProductReadDto> response) {

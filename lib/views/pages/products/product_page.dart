@@ -31,11 +31,10 @@ class _ProductPageState extends State<ProductPage> with ProductController {
               ? SingleChildScrollView(
                   child: Column(
                     children: <Widget>[
-                      Row(
+                      Wrap(
                         children: <Widget>[
-                          textField(hintText: "عنوان", controller: controllerTitle).paddingAll(12).expanded(),
-                          DropdownButton<int>(
-                            underline: const SizedBox(),
+                          textField(hintText: "عنوان", controller: controllerTitle).container(width: 300),
+                          DropdownButtonFormField<int>(
                             value: selectedProductTag.value,
                             items: <DropdownMenuItem<int>>[
                               DropdownMenuItem<int>(value: TagProduct.all.number, child: const Text("همه")),
@@ -44,7 +43,35 @@ class _ProductPageState extends State<ProductPage> with ProductController {
                               DropdownMenuItem<int>(value: TagProduct.inQueue.number, child: const Text("در انتظار بررسی")),
                             ],
                             onChanged: selectedProductTag,
-                          ).paddingAll(12).expanded(),
+                          ).container(width: 200),
+                          DropdownButtonFormField<CategoryReadDto>(
+                            value: selectedCategory.value,
+                            items: <DropdownMenuItem<CategoryReadDto>>[
+                              ...categories
+                                  .map(
+                                    (final CategoryReadDto e) => DropdownMenuItem<CategoryReadDto>(
+                                  value: e,
+                                  child: Text(e.title ?? ""),
+                                ),
+                              )
+                                  .toList(),
+                            ],
+                            onChanged: selectCategory,
+                          ).container(width: 200),
+                          DropdownButtonFormField<CategoryReadDto>(
+                            value: selectedSubCategory.value,
+                            items: <DropdownMenuItem<CategoryReadDto>>[
+                              ...subCategories
+                                  .map(
+                                    (final CategoryReadDto e) => DropdownMenuItem<CategoryReadDto>(
+                                  value: e,
+                                  child: Text(e.title ?? ""),
+                                ),
+                              )
+                                  .toList(),
+                            ],
+                            onChanged: (final CategoryReadDto? value) {},
+                          ).container(width: 200),
                         ],
                       ),
                       button(title: "فیلتر", onTap: read),
@@ -57,9 +84,11 @@ class _ProductPageState extends State<ProductPage> with ProductController {
                         showCheckboxColumn: false,
                         columns: <DataColumn>[
                           DataColumn(label: const Text("ردیف").headlineSmall()),
+                          DataColumn(label: const Text("دسته بندی").headlineSmall()),
                           DataColumn(label: const Text("عنوان").headlineSmall()),
-                          DataColumn(label: const Text("عملیات‌ها").headlineSmall()),
                           DataColumn(label: const Text("وضعیت").headlineSmall()),
+                          DataColumn(label: const Text("تعداد بازدید").headlineSmall()),
+                          DataColumn(label: const Text("عملیات‌ها").headlineSmall()),
                         ],
                         rows: <DataRow>[
                           ...filteredList
@@ -67,9 +96,18 @@ class _ProductPageState extends State<ProductPage> with ProductController {
                                 (final int index, final ProductReadDto i) => DataRow(
                                   cells: <DataCell>[
                                     DataCell(Text(index.toString()).bodyLarge().paddingAll(8)),
-                                    DataCell(Text(i.title ?? "").bodyLarge().paddingAll(8)),
                                     DataCell(
-                                      Text(UtilitiesTagUtils.tagProductTitleFromTagList(i.tags!)).bodyLarge().paddingAll(8),
+                                      Text(
+                                        "${i.categories!.firstWhereOrNull((final CategoryReadDto i) => i.parentId == null)?.title ?? ""} / ${i.categories!.firstWhereOrNull((final CategoryReadDto i) => i.parentId != null)?.title ?? ""}",
+                                      ).bodyLarge().paddingAll(8),
+                                    ),
+                                    DataCell(Text(i.title ?? "").bodyLarge().paddingAll(8)),
+                                    DataCell(Text(UtilitiesTagUtils.tagProductTitleFromTagList(i.tags!)).bodyLarge().paddingAll(8)),
+                                    DataCell(
+                                      iconTextHorizontal(
+                                        leading: const Icon(Icons.remove_red_eye),
+                                        trailing: Text((i.visitProducts ?? <ProductInsight>[]).length.toString()).bodyLarge().paddingAll(8),
+                                      ),
                                     ),
                                     DataCell(
                                       Row(
