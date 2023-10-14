@@ -46,7 +46,7 @@ class _UserPageState extends State<UserPage> with UserController {
                                 DataCell(Text(i.firstName ?? "").bodyLarge().paddingAll(8)),
                                 DataCell(Text(i.appUserName ?? "").bodyLarge().paddingAll(8)),
                                 DataCell(IconButton(
-                                  onPressed: () {},
+                                  onPressed: () => edit(i),
                                   icon: const Icon(Icons.edit),
                                 )),
                               ],

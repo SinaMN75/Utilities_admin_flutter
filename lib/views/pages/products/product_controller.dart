@@ -21,10 +21,10 @@ mixin ProductController {
   final ProductDataSource _productDataSource = ProductDataSource(baseUrl: AppConstants.baseUrl);
 
   void init() {
+    selectedCategory = categories.first.obs;
+    selectedSubCategory = (categories.first.children ?? <CategoryReadDto>[]).first.obs;
     if (list.isEmpty) {
       read();
-      selectedCategory = categories.first.obs;
-      selectedSubCategory = (categories.first.children ?? <CategoryReadDto>[]).first.obs;
     } else {
       state.loaded();
     }
@@ -47,10 +47,11 @@ mixin ProductController {
         pageSize: 20,
         pageNumber: pageNumber,
         query: controllerTitle.text,
+        categories: <String>[selectedCategory.value.id, selectedSubCategory.value.id],
         showCategories: true,
         showChildren: true,
         showVisitProducts: true,
-        tags: <int>[TagProduct.product.number, selectedProductTag.value],
+        tags: <int>[TagProduct.physical.number],
       ),
       onResponse: (final GenericResponse<ProductReadDto> response) {
         pageCount = response.pageCount!;

@@ -5,19 +5,15 @@ mixin DashboardController {
   Rx<PageState> state = PageState.initial.obs;
   Rx<PageState> orderState = PageState.initial.obs;
   Rx<PageState> cardsState = PageState.initial.obs;
-  Rx<PageState> productsState = PageState.initial.obs;
   List<OrderReadDto> orders = <OrderReadDto>[];
-  List<ProductReadDto> products = <ProductReadDto>[];
   late DashboardDataReadDto dashboardDataReadDto;
 
   final OrderDataSource _orderDataSource = OrderDataSource(baseUrl: AppConstants.baseUrl);
   final AppSettingsDataSource _appSettingsDataSource = AppSettingsDataSource(baseUrl: AppConstants.baseUrl);
-  final ProductDataSource _productDataSource = ProductDataSource(baseUrl: AppConstants.baseUrl);
 
   void init() {
     readOrders();
     readDashboardData();
-    readProducts();
   }
 
   void readOrders() => _orderDataSource.filter(
@@ -33,15 +29,6 @@ mixin DashboardController {
         onResponse: (final GenericResponse<DashboardDataReadDto> response) {
           dashboardDataReadDto = response.result!;
           cardsState.loaded();
-        },
-        onError: (final GenericResponse<dynamic> response) {},
-      );
-
-  void readProducts() => _productDataSource.filter(
-        dto: ProductFilterDto(tags: <int>[TagProduct.released.number, TagProduct.inQueue.number, TagProduct.notAccepted.number]),
-        onResponse: (final GenericResponse<ProductReadDto> response) {
-          products = response.resultList!;
-          productsState.loaded();
         },
         onError: (final GenericResponse<dynamic> response) {},
       );

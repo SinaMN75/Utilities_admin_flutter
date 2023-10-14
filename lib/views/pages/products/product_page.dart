@@ -31,51 +31,7 @@ class _ProductPageState extends State<ProductPage> with ProductController {
               ? SingleChildScrollView(
                   child: Column(
                     children: <Widget>[
-                      Wrap(
-                        children: <Widget>[
-                          textField(hintText: "عنوان", controller: controllerTitle).container(width: 300),
-                          DropdownButtonFormField<int>(
-                            value: selectedProductTag.value,
-                            items: <DropdownMenuItem<int>>[
-                              DropdownMenuItem<int>(value: TagProduct.all.number, child: const Text("همه")),
-                              DropdownMenuItem<int>(value: TagProduct.released.number, child: const Text("منتشر شده")),
-                              DropdownMenuItem<int>(value: TagProduct.notAccepted.number, child: const Text("رد شده")),
-                              DropdownMenuItem<int>(value: TagProduct.inQueue.number, child: const Text("در انتظار بررسی")),
-                            ],
-                            onChanged: selectedProductTag,
-                          ).container(width: 200),
-                          DropdownButtonFormField<CategoryReadDto>(
-                            value: selectedCategory.value,
-                            items: <DropdownMenuItem<CategoryReadDto>>[
-                              ...categories
-                                  .map(
-                                    (final CategoryReadDto e) => DropdownMenuItem<CategoryReadDto>(
-                                  value: e,
-                                  child: Text(e.title ?? ""),
-                                ),
-                              )
-                                  .toList(),
-                            ],
-                            onChanged: selectCategory,
-                          ).container(width: 200),
-                          DropdownButtonFormField<CategoryReadDto>(
-                            value: selectedSubCategory.value,
-                            items: <DropdownMenuItem<CategoryReadDto>>[
-                              ...subCategories
-                                  .map(
-                                    (final CategoryReadDto e) => DropdownMenuItem<CategoryReadDto>(
-                                  value: e,
-                                  child: Text(e.title ?? ""),
-                                ),
-                              )
-                                  .toList(),
-                            ],
-                            onChanged: (final CategoryReadDto? value) {},
-                          ).container(width: 200),
-                        ],
-                      ),
-                      button(title: "فیلتر", onTap: read),
-                      const SizedBox(height: 20),
+                      _filters(),
                       DataTable(
                         sortColumnIndex: 0,
                         sortAscending: false,
@@ -88,6 +44,7 @@ class _ProductPageState extends State<ProductPage> with ProductController {
                           DataColumn(label: const Text("عنوان").headlineSmall()),
                           DataColumn(label: const Text("وضعیت").headlineSmall()),
                           DataColumn(label: const Text("تعداد بازدید").headlineSmall()),
+                          DataColumn(label: const Text("زیر مجموعه").headlineSmall()),
                           DataColumn(label: const Text("عملیات‌ها").headlineSmall()),
                         ],
                         rows: <DataRow>[
@@ -109,6 +66,7 @@ class _ProductPageState extends State<ProductPage> with ProductController {
                                         trailing: Text((i.visitProducts ?? <ProductInsight>[]).length.toString()).bodyLarge().paddingAll(8),
                                       ),
                                     ),
+                                    DataCell(Text((i.children ?? <ProductReadDto>[]).map((final ProductReadDto e) => e.title).toList().toString())),
                                     DataCell(
                                       Row(
                                         children: <Widget>[
@@ -143,5 +101,51 @@ class _ProductPageState extends State<ProductPage> with ProductController {
                 )
               : const CircularProgressIndicator().alignAtCenter(),
         ),
+      );
+
+  Widget _filters() => Wrap(
+        crossAxisAlignment: WrapCrossAlignment.center,
+        children: <Widget>[
+          textField(hintText: "عنوان", controller: controllerTitle).container(width: 300),
+          DropdownButtonFormField<int>(
+            value: selectedProductTag.value,
+            items: <DropdownMenuItem<int>>[
+              DropdownMenuItem<int>(value: TagProduct.all.number, child: const Text("همه")),
+              DropdownMenuItem<int>(value: TagProduct.released.number, child: const Text("منتشر شده")),
+              DropdownMenuItem<int>(value: TagProduct.notAccepted.number, child: const Text("رد شده")),
+              DropdownMenuItem<int>(value: TagProduct.inQueue.number, child: const Text("در انتظار بررسی")),
+            ],
+            onChanged: selectedProductTag,
+          ).container(width: 200, margin: const EdgeInsets.all(8)),
+          DropdownButtonFormField<CategoryReadDto>(
+            value: selectedCategory.value,
+            items: <DropdownMenuItem<CategoryReadDto>>[
+              ...categories
+                  .map(
+                    (final CategoryReadDto e) => DropdownMenuItem<CategoryReadDto>(
+                      value: e,
+                      child: Text(e.title ?? ""),
+                    ),
+                  )
+                  .toList(),
+            ],
+            onChanged: selectCategory,
+          ).container(width: 250, margin: const EdgeInsets.all(8)),
+          DropdownButtonFormField<CategoryReadDto>(
+            value: selectedSubCategory.value,
+            items: <DropdownMenuItem<CategoryReadDto>>[
+              ...subCategories
+                  .map(
+                    (final CategoryReadDto e) => DropdownMenuItem<CategoryReadDto>(
+                      value: e,
+                      child: Text(e.title ?? ""),
+                    ),
+                  )
+                  .toList(),
+            ],
+            onChanged: (final CategoryReadDto? value) {},
+          ).container(width: 250, margin: const EdgeInsets.all(8)),
+          button(title: "فیلتر", onTap: read, width: 200),
+        ],
       );
 }

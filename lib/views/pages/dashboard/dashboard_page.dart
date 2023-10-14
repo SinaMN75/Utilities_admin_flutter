@@ -69,7 +69,7 @@ class _DashboardPageState extends State<DashboardPage> with DashboardController 
           borderRadius: const BorderRadius.all(Radius.circular(10)),
         ),
         child: Obx(
-          () => productsState.isLoaded()
+          () => cardsState.isLoaded()
               ? Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
@@ -87,17 +87,17 @@ class _DashboardPageState extends State<DashboardPage> with DashboardController 
                     _chartDataCard(
                       iconData: Icons.queue,
                       title: "در صف بررسی",
-                      trailing: products.where((final ProductReadDto i) => i.tags!.contains(TagProduct.inQueue.number)).length.toString(),
+                      trailing: dashboardDataReadDto.inQueueProducts.toString(),
                     ),
                     _chartDataCard(
                       iconData: Icons.done,
                       title: "منتشر شده",
-                      trailing: products.where((final ProductReadDto i) => i.tags!.contains(TagProduct.released.number)).length.toString(),
+                      trailing: dashboardDataReadDto.releasedProducts.toString(),
                     ),
                     _chartDataCard(
                       iconData: Icons.remove,
                       title: "رد شده",
-                      trailing: products.where((final ProductReadDto i) => i.tags!.contains(TagProduct.notAccepted.number)).length.toString(),
+                      trailing: dashboardDataReadDto.notAcceptedProducts.toString(),
                     ),
                   ],
                 )

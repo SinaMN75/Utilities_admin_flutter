@@ -19,11 +19,11 @@ mixin TransactionsController {
       state.loaded();
   }
 
-  void filter() {
-  }
+  void filter() {}
 
   void read() {
-    _transactionDataSource.read(
+    _transactionDataSource.filter(
+      dto: TransactionFilterDto(),
       onResponse: (final GenericResponse<TransactionReadDto> response) {
         list(response.resultList);
         filteredList(list);

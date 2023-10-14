@@ -1,5 +1,6 @@
 import 'package:utilities/utilities.dart';
 import 'package:utilities_admin_flutter/core/core.dart';
+import 'package:utilities_admin_flutter/views/pages/users/user_create_update/user_create_update_page.dart';
 
 mixin UserController {
   Rx<PageState> state = PageState.initial.obs;
@@ -28,5 +29,9 @@ mixin UserController {
       },
       onError: (final GenericResponse<dynamic> response) {},
     );
+  }
+
+  void edit(final UserReadDto dto) {
+    push(UserCreateUpdatePage(dto: dto));
   }
 }
