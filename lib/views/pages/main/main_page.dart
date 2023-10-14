@@ -29,26 +29,57 @@ class _MainPageState extends State<MainPage> with MainController {
 
   @override
   Widget build(final BuildContext context) => AdminScaffold(
-        backgroundColor: Colors.white,
-        appBar: AppBar(title: const Text('Sample')),
+        appBar: AppBar(title: const Text('ادمین پنل')),
         sideBar: SideBar(
           items: <AdminMenuItem>[
             AdminMenuItem(title: 'داشبورد', route: MainPageType.dashboard.title, icon: Icons.dashboard),
-            AdminMenuItem(title: 'دسته بندی', route: MainPageType.category.title, icon: Icons.category),
-            AdminMenuItem(title: "محصولات", route: MainPageType.product.title, icon: Icons.card_travel_outlined),
-            AdminMenuItem(title: "کاربران", route: MainPageType.user.title, icon: Icons.person_outline),
-            AdminMenuItem(title: "ریپورت‌ها", route: MainPageType.report.title, icon: Icons.report_outlined),
-            AdminMenuItem(title: "تراکنش‌ها", route: MainPageType.transaction.title, icon: Icons.credit_card_outlined),
-            AdminMenuItem(title: "سفارشات", route: MainPageType.order.title, icon: Icons.shopping_cart_outlined),
-            AdminMenuItem(
-              title: 'محتوا',
-              icon: Icons.file_copy,
-              children: <AdminMenuItem>[
-                AdminMenuItem(title: 'درباره ما', route: MainPageType.about.title),
-                AdminMenuItem(title: 'قوانین و مقررات', route: MainPageType.terms.title),
-                AdminMenuItem(title: 'بنر‌ها', route: MainPageType.banner.title),
-              ],
-            ),
+            if (Core.user.tags!.contains(TagUser.adminCategoryRead.number))
+              AdminMenuItem(
+                title: 'دسته بندی',
+                route: MainPageType.category.title,
+                icon: Icons.category,
+              ),
+            if (Core.user.tags!.contains(TagUser.adminProductRead.number))
+              AdminMenuItem(
+                title: "محصولات",
+                route: MainPageType.product.title,
+                icon: Icons.card_travel_outlined,
+              ),
+            if (Core.user.tags!.contains(TagUser.adminUserRead.number))
+              AdminMenuItem(
+                title: "کاربران",
+                route: MainPageType.user.title,
+                icon: Icons.person_outline,
+              ),
+            if (Core.user.tags!.contains(TagUser.adminReportRead.number))
+              AdminMenuItem(
+                title: "ریپورت‌ها",
+                route: MainPageType.report.title,
+                icon: Icons.report_outlined,
+              ),
+            if (Core.user.tags!.contains(TagUser.adminTransactionRead.number))
+              AdminMenuItem(
+                title: "تراکنش‌ها",
+                route: MainPageType.transaction.title,
+                icon: Icons.credit_card_outlined,
+              ),
+            if (Core.user.tags!.contains(TagUser.adminOrderRead.number))
+              AdminMenuItem(
+                title: "سفارشات",
+                route: MainPageType.order.title,
+                icon: Icons.shopping_cart_outlined,
+              ),
+            if (Core.user.tags!.contains(TagUser.adminContentRead.number))
+              AdminMenuItem(
+                title: 'محتوا',
+                icon: Icons.file_copy,
+                children: <AdminMenuItem>[
+                  AdminMenuItem(title: 'درباره ما', route: MainPageType.about.title),
+                  AdminMenuItem(title: 'قوانین و مقررات', route: MainPageType.terms.title),
+                  AdminMenuItem(title: 'بنر‌ها', route: MainPageType.banner.title),
+                ],
+              ),
+            const AdminMenuItem(title: 'خروج از سیستم', icon: Icons.logout, route: "logout"),
           ],
           onSelected: (final AdminMenuItem item) {
             if (item.route == MainPageType.dashboard.title) Core.mainPageType(MainPageType.dashboard);
@@ -62,6 +93,7 @@ class _MainPageState extends State<MainPage> with MainController {
             if (item.route == MainPageType.productDetail.title) Core.mainPageType(MainPageType.productDetail);
             if (item.route == MainPageType.user.title) Core.mainPageType(MainPageType.user);
             if (item.route == MainPageType.order.title) Core.mainPageType(MainPageType.order);
+            if (item.route == "logout") logout();
           },
           selectedRoute: '',
         ),

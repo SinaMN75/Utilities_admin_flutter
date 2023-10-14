@@ -1,4 +1,5 @@
 import 'package:utilities/utilities.dart';
+import 'package:utilities_admin_flutter/views/pages/splash/splash_page.dart';
 
 enum MainPageType {
   dashboard("dashboard"),
@@ -24,4 +25,10 @@ mixin MainController {
   Rx<PageState> state = PageState.initial.obs;
 
   void init() {}
+
+
+  void logout() {
+    clearData();
+    offAll(const SplashPage());
+  }
 }

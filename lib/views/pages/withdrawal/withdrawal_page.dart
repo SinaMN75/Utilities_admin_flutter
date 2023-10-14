@@ -30,13 +30,6 @@ class _WithdrawalPageState extends State<WithdrawalPage> with WithdrawalControll
                     const SizedBox(height: 20),
                     SingleChildScrollView(
                       child: DataTable(
-                        sortColumnIndex: 0,
-                        sortAscending: false,
-                        headingRowColor: MaterialStateColor.resolveWith(
-                          (final Set<MaterialState> states) => context.theme.colorScheme.primaryContainer,
-                        ),
-                        headingRowHeight: 60,
-                        showCheckboxColumn: false,
                         columns: <DataColumn>[
                           DataColumn(label: const Text("ردیف").headlineSmall()),
                           DataColumn(label: const Text("نام کاربر").headlineSmall()),

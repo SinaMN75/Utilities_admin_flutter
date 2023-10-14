@@ -14,6 +14,6 @@ abstract class Core {
   static List<CategoryReadDto> categories = <CategoryReadDto>[];
   static List<ContentReadDto> contents = <ContentReadDto>[];
   static late AppSettingsReadDto appSettingsReadDto;
-  static late UserReadDto profile;
+  static late UserReadDto user;
   static final Rx<MainPageType> mainPageType = MainPageType.dashboard.obs;
 }

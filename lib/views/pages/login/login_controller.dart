@@ -7,8 +7,8 @@ mixin LoginController {
 
   final UserDataSource _userDataSource = UserDataSource(baseUrl: AppConstants.baseUrl);
 
-  final TextEditingController controllerUserName = TextEditingController(text: "sina@gmail.com");
-  final TextEditingController controllerPassword = TextEditingController(text: "1234");
+  final TextEditingController controllerUserName = TextEditingController(text: "admin");
+  final TextEditingController controllerPassword = TextEditingController(text: "123456789");
 
   void init() {}
 
@@ -19,7 +19,7 @@ mixin LoginController {
       onResponse: (final GenericResponse<UserReadDto> response) {
         setData(UtilitiesConstants.userId, response.result?.id);
         setData(UtilitiesConstants.token, "Bearer ${response.result?.token}");
-        Core.profile = response.result!;
+        Core.user = response.result!;
         offAll(const SplashPage());
         dismissEasyLoading();
       },

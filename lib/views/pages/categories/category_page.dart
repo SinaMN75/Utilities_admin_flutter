@@ -1,4 +1,5 @@
 import 'package:utilities/utilities.dart';
+import 'package:utilities_admin_flutter/core/core.dart';
 import 'package:utilities_admin_flutter/views/pages/categories/category_controller.dart';
 
 class CategoryPage extends StatefulWidget {
@@ -52,13 +53,6 @@ class _CategoryPageState extends State<CategoryPage> with CategoryController {
                     const SizedBox(height: 20),
                     SingleChildScrollView(
                       child: DataTable(
-                        sortColumnIndex: 0,
-                        sortAscending: false,
-                        headingRowColor: MaterialStateColor.resolveWith(
-                          (final Set<MaterialState> states) => context.theme.colorScheme.primaryContainer,
-                        ),
-                        headingRowHeight: 60,
-                        showCheckboxColumn: false,
                         columns: <DataColumn>[
                           DataColumn(label: const Text("ردیف").headlineSmall()),
                           DataColumn(label: const Text("عنوان").headlineSmall()),
@@ -76,18 +70,20 @@ class _CategoryPageState extends State<CategoryPage> with CategoryController {
                                     DataCell(
                                       Row(
                                         children: <Widget>[
-                                          IconButton(
+                                          if (Core.user.tags!.contains(TagUser.adminCategoryUpdate.number))
+                                            IconButton(
                                             onPressed: () => delete(dto: i),
                                             icon: Icon(Icons.delete, color: context.theme.colorScheme.error),
                                           ).paddingSymmetric(horizontal: 8),
-                                          IconButton(
+                                          if (Core.user.tags!.contains(TagUser.adminCategoryUpdate.number))
+                                            IconButton(
                                             onPressed: () => update(dto: i),
                                             icon: Icon(Icons.edit, color: context.theme.colorScheme.primary),
                                           ).paddingSymmetric(horizontal: 8),
-                                            TextButton(
-                                              onPressed: () => push(CategoryPage(dto: i)),
-                                              child: const Text("نمایش زیر دسته"),
-                                            ).paddingSymmetric(horizontal: 8),
+                                          TextButton(
+                                            onPressed: () => push(CategoryPage(dto: i)),
+                                            child: const Text("نمایش زیر دسته"),
+                                          ).paddingSymmetric(horizontal: 8),
                                         ],
                                       ),
                                     ),

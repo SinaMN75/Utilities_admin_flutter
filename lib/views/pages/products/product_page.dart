@@ -1,5 +1,6 @@
 import 'package:utilities/components/pagination.dart';
 import 'package:utilities/utilities.dart';
+import 'package:utilities_admin_flutter/core/core.dart';
 import 'package:utilities_admin_flutter/views/pages/products/product_controller.dart';
 
 class ProductPage extends StatefulWidget {
@@ -33,11 +34,6 @@ class _ProductPageState extends State<ProductPage> with ProductController {
                     children: <Widget>[
                       _filters(),
                       DataTable(
-                        sortColumnIndex: 0,
-                        sortAscending: false,
-                        headingRowColor: MaterialStateColor.resolveWith((final Set<MaterialState> states) => context.theme.colorScheme.primaryContainer),
-                        headingRowHeight: 60,
-                        showCheckboxColumn: false,
                         columns: <DataColumn>[
                           DataColumn(label: const Text("ردیف").headlineSmall()),
                           DataColumn(label: const Text("دسته بندی").headlineSmall()),
@@ -45,7 +41,7 @@ class _ProductPageState extends State<ProductPage> with ProductController {
                           DataColumn(label: const Text("وضعیت").headlineSmall()),
                           DataColumn(label: const Text("تعداد بازدید").headlineSmall()),
                           DataColumn(label: const Text("زیر مجموعه").headlineSmall()),
-                          DataColumn(label: const Text("عملیات‌ها").headlineSmall()),
+                          if (Core.user.tags!.contains(TagUser.adminProductUpdate.number)) DataColumn(label: const Text("عملیات‌ها").headlineSmall()),
                         ],
                         rows: <DataRow>[
                           ...filteredList
@@ -67,20 +63,21 @@ class _ProductPageState extends State<ProductPage> with ProductController {
                                       ),
                                     ),
                                     DataCell(Text((i.children ?? <ProductReadDto>[]).map((final ProductReadDto e) => e.title).toList().toString())),
-                                    DataCell(
-                                      Row(
-                                        children: <Widget>[
-                                          IconButton(
-                                            onPressed: () => delete(dto: i),
-                                            icon: Icon(Icons.delete, color: context.theme.colorScheme.error),
-                                          ).paddingSymmetric(horizontal: 8),
-                                          IconButton(
-                                            onPressed: () => update(dto: i),
-                                            icon: Icon(Icons.edit, color: context.theme.colorScheme.primary),
-                                          ).paddingSymmetric(horizontal: 8),
-                                        ],
+                                    if (Core.user.tags!.contains(TagUser.adminCategoryUpdate.number))
+                                      DataCell(
+                                        Row(
+                                          children: <Widget>[
+                                            IconButton(
+                                              onPressed: () => delete(dto: i),
+                                              icon: Icon(Icons.delete, color: context.theme.colorScheme.error),
+                                            ).paddingSymmetric(horizontal: 8),
+                                            IconButton(
+                                              onPressed: () => update(dto: i),
+                                              icon: Icon(Icons.edit, color: context.theme.colorScheme.primary),
+                                            ).paddingSymmetric(horizontal: 8),
+                                          ],
+                                        ),
                                       ),
-                                    ),
                                   ],
                                 ),
                               )

@@ -53,7 +53,7 @@ class _DashboardPageState extends State<DashboardPage> with DashboardController 
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
           const Text("داشبورد مدیریت دایرکت‌شد").titleLarge(),
-          Text(Core.profile.firstName ?? "").paddingSymmetric(horizontal: 16 / 2).container(
+          Text(Core.user.firstName ?? "").paddingSymmetric(horizontal: 16 / 2).container(
                 radius: 10,
                 backgroundColor: context.theme.colorScheme.secondary.withOpacity(0.1),
                 margin: const EdgeInsets.only(left: 16),
@@ -136,7 +136,6 @@ class _DashboardPageState extends State<DashboardPage> with DashboardController 
             SizedBox(
               width: double.infinity,
               child: DataTable(
-                columnSpacing: 16,
                 columns: const <DataColumn>[
                   DataColumn(label: Text("فروشنده")),
                   DataColumn(label: Text("خریدار")),

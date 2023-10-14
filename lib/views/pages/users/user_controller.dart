@@ -31,7 +31,5 @@ mixin UserController {
     );
   }
 
-  void edit(final UserReadDto dto) {
-    push(UserCreateUpdatePage(dto: dto));
-  }
+  void edit(final UserReadDto dto) => push(UserCreateUpdatePage(dto: dto));
 }

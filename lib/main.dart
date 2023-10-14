@@ -50,7 +50,6 @@ class _AppState extends State<App> {
         locale: const Locale("fa"),
         textDirection: TextDirection.rtl,
         theme: AppThemes.light,
-        darkTheme: AppThemes.dark,
         themeMode: ThemeMode.light,
         home: const SplashPage(),
         builder: EasyLoading.init(),

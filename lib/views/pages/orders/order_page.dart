@@ -25,28 +25,10 @@ class _OrderPageState extends State<OrderPage> with OrderController {
           () => state.isLoaded()
               ? SingleChildScrollView(
                   child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      Row(
-                        children: <Widget>[
-                          textField(hintText: "عنوان", controller: controllerTitle).paddingAll(12).expanded(),
-                          DropdownButton<int>(
-                            underline: const SizedBox(),
-                            value: selectedProductTag.value,
-                            items: <DropdownMenuItem<int>>[
-                              const DropdownMenuItem<int>(value: 0, child: Text("همه")),
-                              DropdownMenuItem<int>(value: TagOrder.paid.number, child: const Text("پرداخت شده")),
-                              DropdownMenuItem<int>(value: TagOrder.inProcess.number, child: const Text("درحال بررسی")),
-                              DropdownMenuItem<int>(value: TagOrder.shipping.number, child: const Text("در حال ارسال")),
-                              DropdownMenuItem<int>(value: TagOrder.complete.number, child: const Text("تکمیل شده")),
-                            ],
-                            onChanged: selectedProductTag,
-                          ).paddingAll(12).expanded(),
-                        ],
-                      ),
-                      button(title: "فیلتر", onTap: read),
-                      const SizedBox(height: 20),
+                      _filters(),
                       DataTable(
-                        columnSpacing: 16,
                         columns: const <DataColumn>[
                           DataColumn(label: Text("فروشنده")),
                           DataColumn(label: Text("خریدار")),
@@ -78,5 +60,24 @@ class _OrderPageState extends State<OrderPage> with OrderController {
                 )
               : const CircularProgressIndicator().alignAtCenter(),
         ),
+      );
+
+  Widget _filters() => Wrap(
+        crossAxisAlignment: WrapCrossAlignment.center,
+        children: <Widget>[
+          textField(hintText: "عنوان", controller: controllerTitle).container(width: 200, margin: const EdgeInsets.all(10)),
+          DropdownButtonFormField<int>(
+            value: selectedOrderTag.value,
+            items: <DropdownMenuItem<int>>[
+              const DropdownMenuItem<int>(value: 0, child: Text("همه")),
+              DropdownMenuItem<int>(value: TagOrder.paid.number, child: const Text("پرداخت شده")),
+              DropdownMenuItem<int>(value: TagOrder.inProcess.number, child: const Text("درحال بررسی")),
+              DropdownMenuItem<int>(value: TagOrder.shipping.number, child: const Text("در حال ارسال")),
+              DropdownMenuItem<int>(value: TagOrder.complete.number, child: const Text("تکمیل شده")),
+            ],
+            onChanged: selectedOrderTag,
+          ).container(width: 200, margin: const EdgeInsets.all(10)),
+          button(title: "فیلتر", onTap: read, width: 200),
+        ],
       );
 }

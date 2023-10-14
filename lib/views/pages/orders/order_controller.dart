@@ -9,7 +9,7 @@ mixin OrderController {
   final RxList<OrderReadDto> filteredList = <OrderReadDto>[].obs;
 
   final TextEditingController controllerTitle = TextEditingController();
-  final RxInt selectedProductTag = TagProduct.inQueue.number.obs;
+  final RxInt selectedOrderTag = TagOrder.paid.number.obs;
 
   int pageNumber = 1;
   int pageCount = 0;
@@ -29,7 +29,7 @@ mixin OrderController {
       dto: OrderFilterDto(
         pageSize: 20,
         pageNumber: pageNumber,
-        tags: selectedProductTag.value == 0 ? null : <int>[selectedProductTag.value],
+        tags: selectedOrderTag.value == 0 ? null : <int>[selectedOrderTag.value],
       ),
       onResponse: (final GenericResponse<OrderReadDto> response) {
         pageCount = response.pageCount!;

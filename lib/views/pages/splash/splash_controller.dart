@@ -32,7 +32,7 @@ mixin SplashController {
         _userDataSource.readById(
           id: getString(AppConstants.userId)!,
           onResponse: (final GenericResponse<UserReadDto> response) {
-            Core.profile = response.result!;
+            Core.user = response.result!;
             offAll(const MainPage());
           },
           onError: (final GenericResponse<dynamic> response) {},
