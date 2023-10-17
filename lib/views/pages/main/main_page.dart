@@ -110,6 +110,5 @@ class _MainPageState extends State<MainPage> with MainController {
           if (Core.mainPageType.value == MainPageType.order) return const OrderPage();
           return const Placeholder();
         }),
-        // body: Text("kkkkk"),
       );
 }

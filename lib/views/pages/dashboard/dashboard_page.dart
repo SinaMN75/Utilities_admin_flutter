@@ -73,44 +73,17 @@ class _DashboardPageState extends State<DashboardPage> with DashboardController 
               ? Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    const Text("Storage Details", style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500)),
-                    const SizedBox(height: 16),
-                    doughnutChart(
-                      data: <DoughnutChartData>[
-                        DoughnutChartData("iphone", 50),
-                        DoughnutChartData("android", 30),
-                        DoughnutChartData("mac", 70),
-                        DoughnutChartData("windows", 120),
-                      ],
-                    ),
                     const Text("محصولات").headlineSmall().bold(),
-                    _chartDataCard(
-                      iconData: Icons.queue,
-                      title: "در صف بررسی",
-                      trailing: dashboardDataReadDto.inQueueProducts.toString(),
-                    ),
-                    _chartDataCard(
-                      iconData: Icons.done,
-                      title: "منتشر شده",
-                      trailing: dashboardDataReadDto.releasedProducts.toString(),
-                    ),
-                    _chartDataCard(
-                      iconData: Icons.remove,
-                      title: "رد شده",
-                      trailing: dashboardDataReadDto.notAcceptedProducts.toString(),
-                    ),
+                    _chartDataCard(iconData: Icons.queue, title: "در صف بررسی", trailing: dashboardDataReadDto.inQueueProducts.toString()),
+                    _chartDataCard(iconData: Icons.done, title: "منتشر شده", trailing: dashboardDataReadDto.releasedProducts.toString()),
+                    _chartDataCard(iconData: Icons.remove, title: "رد شده", trailing: dashboardDataReadDto.notAcceptedProducts.toString()),
                   ],
                 )
               : const CircularProgressIndicator().alignAtCenter(),
         ),
       );
 
-  Widget _chartDataCard({
-    required final String title,
-    required final IconData iconData,
-    required final String trailing,
-  }) =>
-      Container(
+  Widget _chartDataCard({required final String title, required final IconData iconData, required final String trailing}) => Container(
         margin: const EdgeInsets.only(top: 16),
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
@@ -160,12 +133,7 @@ class _DashboardPageState extends State<DashboardPage> with DashboardController 
 
   Widget _cards() => Column(
         children: <Widget>[
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              Text("گزارش‌ها", style: Theme.of(context).textTheme.titleMedium),
-            ],
-          ),
+          const Text("گزارش‌ها").titleMedium(),
           const SizedBox(height: 16),
           Obx(
             () => cardsState.isLoaded()
@@ -176,7 +144,7 @@ class _DashboardPageState extends State<DashboardPage> with DashboardController 
                         count: dashboardDataReadDto.categories.toString(),
                         color: Colors.red,
                         iconData: Icons.category_outlined,
-                      ).onTap(() => Core.mainPageType(MainPageType.category)),
+                      ).onTap(() => Core.user.tags!.contains(TagUser.adminCategoryRead.number) ? Core.mainPageType(MainPageType.category) : null),
                       _card(
                         title: "کاربران",
                         count: dashboardDataReadDto.users.toString(),
@@ -194,7 +162,7 @@ class _DashboardPageState extends State<DashboardPage> with DashboardController 
                         count: dashboardDataReadDto.products.toString(),
                         color: Colors.orange,
                         iconData: Icons.dashboard_outlined,
-                      ).onTap(() => Core.mainPageType(MainPageType.product)),
+                      ).onTap(() => Core.user.tags!.contains(TagUser.adminProductRead.number) ? Core.mainPageType(MainPageType.product) : null),
                       _card(
                         title: "فایل‌ها",
                         count: dashboardDataReadDto.media.toString(),
@@ -206,13 +174,13 @@ class _DashboardPageState extends State<DashboardPage> with DashboardController 
                         count: dashboardDataReadDto.transactions.toString(),
                         color: Colors.indigo,
                         iconData: Icons.dashboard_outlined,
-                      ).onTap(() => Core.mainPageType(MainPageType.transaction)),
+                      ).onTap(() => Core.user.tags!.contains(TagUser.adminTransactionRead.number) ? Core.mainPageType(MainPageType.transaction) : null),
                       _card(
                         title: "ریپورت‌ها",
                         count: dashboardDataReadDto.reports.toString(),
                         color: Colors.brown,
                         iconData: Icons.dashboard_outlined,
-                      ).onTap(() => Core.mainPageType(MainPageType.report)),
+                      ).onTap(() => Core.user.tags!.contains(TagUser.adminReportRead.number) ? Core.mainPageType(MainPageType.report) : null),
                       _card(
                         title: "آدرس‌ها",
                         count: dashboardDataReadDto.address.toString(),
@@ -232,24 +200,21 @@ class _DashboardPageState extends State<DashboardPage> with DashboardController 
     required final Color color,
     required final IconData iconData,
   }) =>
-      Container(
+      Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          Icon(iconData, color: color).container(padding: const EdgeInsets.all(8), backgroundColor: color.withOpacity(0.1), radius: 12),
+          Text(title, maxLines: 1, overflow: TextOverflow.ellipsis),
+          LinearProgressIndicator(color: color, value: 1),
+          Text(count).bodySmall(color: color),
+        ],
+      ).container(
         width: 250,
         height: 170,
         padding: const EdgeInsets.all(16),
         margin: const EdgeInsets.all(12),
-        decoration: BoxDecoration(
-          color: color.withOpacity(0.1),
-          borderRadius: const BorderRadius.all(Radius.circular(10)),
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            Icon(iconData, color: color).container(padding: const EdgeInsets.all(8), backgroundColor: color.withOpacity(0.1), radius: 12),
-            Text(title, maxLines: 1, overflow: TextOverflow.ellipsis),
-            LinearProgressIndicator(color: color, value: 1),
-            Text(count).bodySmall(color: color),
-          ],
-        ),
+        backgroundColor: color.withOpacity(0.1),
+        radius: 10,
       );
 }

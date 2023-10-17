@@ -8,7 +8,7 @@ mixin LoginController {
   final UserDataSource _userDataSource = UserDataSource(baseUrl: AppConstants.baseUrl);
 
   final TextEditingController controllerUserName = TextEditingController(text: "admin");
-  final TextEditingController controllerPassword = TextEditingController(text: "123456789");
+  final TextEditingController controllerPassword = TextEditingController(text: "1234");
 
   void init() {}
 

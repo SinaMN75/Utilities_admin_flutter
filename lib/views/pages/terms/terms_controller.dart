@@ -31,7 +31,11 @@ mixin TermsController {
     state.loading();
     if (contentReadDto == null)
       _contentDataSource.create(
-        dto: ContentCreateUpdateDto(title: controllerTitle.text, description: controllerDescription.text, tags: <int>[TagContent.terms.number]),
+        dto: ContentCreateUpdateDto(
+          title: controllerTitle.text,
+          description: controllerDescription.text,
+          tags: <int>[TagContent.terms.number],
+        ),
         onResponse: (final GenericResponse<ContentReadDto> response) {
           state.loaded();
         },
@@ -39,7 +43,12 @@ mixin TermsController {
       );
     else
       _contentDataSource.update(
-        dto: ContentCreateUpdateDto(id: contentReadDto!.id, title: controllerTitle.text, description: controllerDescription.text),
+        dto: ContentCreateUpdateDto(
+          id: contentReadDto!.id,
+          title: controllerTitle.text,
+          description: controllerDescription.text,
+          tags: <int>[TagContent.terms.number],
+        ),
         onResponse: (final GenericResponse<ContentReadDto> response) {
           state.loaded();
         },

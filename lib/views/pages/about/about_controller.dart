@@ -33,7 +33,7 @@ mixin AboutController {
       _contentDataSource.create(
         dto: ContentCreateUpdateDto(title: controllerTitle.text, description: controllerDescription.text, tags: <int>[TagContent.aboutUs.number]),
         onResponse: (final GenericResponse<ContentReadDto> response) {
-          state.loaded();
+          init();
         },
         onError: (final GenericResponse<dynamic> response) {},
       );
@@ -41,7 +41,7 @@ mixin AboutController {
       _contentDataSource.update(
         dto: ContentCreateUpdateDto(id: contentReadDto!.id, title: controllerTitle.text, description: controllerDescription.text),
         onResponse: (final GenericResponse<ContentReadDto> response) {
-          state.loaded();
+          init();
         },
         onError: (final GenericResponse<dynamic> response) {},
       );

@@ -30,11 +30,12 @@ mixin BannersController {
   void createUpdateHomeBanner1() async {
     if (homeBanner1 == null) {
       state.loading();
+      final XFile? file = await imagePicker();
+      if (file != null)
       await _contentDataSource.create(
         dto: ContentCreateUpdateDto(tags: <int>[TagContent.homeBanner1.number]),
         onResponse: (final GenericResponse<ContentReadDto> response) async {
-          final XFile? file = await imagePicker();
-          if (file != null) uploadImage(byte: await file.readAsBytes(), form: MapEntry<String, String>("ContentId", response.result!.id!));
+          uploadImage(byte: await file.readAsBytes(), form: MapEntry<String, String>("ContentId", response.result!.id!));
           state.loaded();
         },
         onError: (final GenericResponse<dynamic> response) {},
@@ -44,12 +45,8 @@ mixin BannersController {
       if (file != null) {
         state.loading();
         await _mediaDataSource.delete(
-          id: homeBanner1!.media!.first.id!,
+          id: homeBanner1?.media?.firstOrNull?.id ?? "",
           onResponse: (final GenericResponse<dynamic> response) async {
-            uploadImage(
-              byte: await file.readAsBytes(),
-              form: MapEntry<String, String>("ContentId", homeBanner1!.id!),
-            );
             state.loaded();
           },
           onError: (final GenericResponse<dynamic> response) {},
@@ -61,11 +58,12 @@ mixin BannersController {
   void createUpdateHomeBanner2() async {
     if (homeBanner2 == null) {
       state.loading();
+      final XFile? file = await imagePicker();
+      if (file != null)
       await _contentDataSource.create(
         dto: ContentCreateUpdateDto(tags: <int>[TagContent.homeBanner2.number]),
         onResponse: (final GenericResponse<ContentReadDto> response) async {
-          final XFile? file = await imagePicker();
-          if (file != null) uploadImage(byte: await file.readAsBytes(), form: MapEntry<String, String>("ContentId", response.result!.id!));
+          uploadImage(byte: await file.readAsBytes(), form: MapEntry<String, String>("ContentId", response.result!.id!));
           state.loaded();
         },
         onError: (final GenericResponse<dynamic> response) {},
@@ -75,9 +73,8 @@ mixin BannersController {
       if (file != null) {
         state.loading();
         await _mediaDataSource.delete(
-          id: homeBanner2!.media!.first.id!,
+          id: homeBanner2?.media?.firstOrNull?.id ?? "",
           onResponse: (final GenericResponse<dynamic> response) async {
-            uploadImage(byte: await file.readAsBytes(), form: MapEntry<String, String>("ContentId", homeBanner2!.id!));
             state.loaded();
           },
           onError: (final GenericResponse<dynamic> response) {},
@@ -89,11 +86,12 @@ mixin BannersController {
   void createUpdateHomeBannerSmall1() async {
     if (homeBannerSmall1 == null) {
       state.loading();
+      final XFile? file = await imagePicker();
+      if (file != null)
       await _contentDataSource.create(
         dto: ContentCreateUpdateDto(tags: <int>[TagContent.homeBannerSmall1.number]),
         onResponse: (final GenericResponse<ContentReadDto> response) async {
-          final XFile? file = await imagePicker();
-          if (file != null) uploadImage(byte: await file.readAsBytes(), form: MapEntry<String, String>("ContentId", response.result!.id!));
+          uploadImage(byte: await file.readAsBytes(), form: MapEntry<String, String>("ContentId", response.result!.id!));
           state.loaded();
         },
         onError: (final GenericResponse<dynamic> response) {},
@@ -103,9 +101,8 @@ mixin BannersController {
       if (file != null) {
         state.loading();
         await _mediaDataSource.delete(
-          id: homeBannerSmall1!.media!.first.id!,
+          id: homeBannerSmall1?.media?.firstOrNull?.id ?? "",
           onResponse: (final GenericResponse<dynamic> response) async {
-            uploadImage(byte: await file.readAsBytes(), form: MapEntry<String, String>("ContentId", homeBannerSmall1!.id!));
             state.loaded();
           },
           onError: (final GenericResponse<dynamic> response) {},
@@ -117,11 +114,12 @@ mixin BannersController {
   void createUpdateHomeBannerSmall2() async {
     if (homeBannerSmall2 == null) {
       state.loading();
+      final XFile? file = await imagePicker();
+      if (file != null)
       await _contentDataSource.create(
         dto: ContentCreateUpdateDto(tags: <int>[TagContent.homeBannerSmall2.number]),
         onResponse: (final GenericResponse<ContentReadDto> response) async {
-          final XFile? file = await imagePicker();
-          if (file != null) uploadImage(byte: await file.readAsBytes(), form: MapEntry<String, String>("ContentId", response.result!.id!));
+          uploadImage(byte: await file.readAsBytes(), form: MapEntry<String, String>("ContentId", response.result!.id!));
           state.loaded();
         },
         onError: (final GenericResponse<dynamic> response) {},
@@ -131,9 +129,8 @@ mixin BannersController {
       if (file != null) {
         state.loading();
         await _mediaDataSource.delete(
-          id: homeBannerSmall2!.media!.first.id!,
+          id: homeBannerSmall2?.media?.firstOrNull?.id ?? "",
           onResponse: (final GenericResponse<dynamic> response) async {
-            uploadImage(byte: await file.readAsBytes(), form: MapEntry<String, String>("ContentId", homeBannerSmall2!.id!));
             state.loaded();
           },
           onError: (final GenericResponse<dynamic> response) {},
