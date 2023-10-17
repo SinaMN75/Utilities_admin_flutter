@@ -7,22 +7,34 @@ mixin UserController {
 
   final RxList<UserReadDto> list = <UserReadDto>[].obs;
 
-  final TextEditingController controllerTitle = TextEditingController();
-  final TextEditingController controllerTitleTr1 = TextEditingController();
+  final TextEditingController controllerFirstName = TextEditingController();
+  final TextEditingController controllerLastName = TextEditingController();
+  final TextEditingController controllerPhoneNumber = TextEditingController();
+  final TextEditingController controllerUserName = TextEditingController();
+
+  int pageNumber = 1;
+  int pageCount = 0;
 
   final UserDataSource _dataSource = UserDataSource(baseUrl: AppConstants.baseUrl);
 
   void init() {
     if (list.isEmpty)
-      read();
+      filter();
     else
       state.loaded();
   }
 
-  void read() {
+  void filter() {
     state.loading();
     _dataSource.filter(
-      dto: UserFilterDto(),
+      dto: UserFilterDto(
+        firstName: controllerFirstName.text.nullIfEmpty(),
+        lastName: controllerLastName.text.nullIfEmpty(),
+        phoneNumber: controllerPhoneNumber.text.nullIfEmpty(),
+        appUserName: controllerUserName.text.nullIfEmpty(),
+        pageSize: 20,
+        pageNumber: pageNumber,
+      ),
       onResponse: (final GenericResponse<UserReadDto> response) {
         list(response.resultList);
         state.loaded();
