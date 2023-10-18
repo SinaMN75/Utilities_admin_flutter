@@ -29,22 +29,19 @@ class _DashboardPageState extends State<DashboardPage> with DashboardController 
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                Expanded(
-                  flex: 5,
-                  child: Column(
-                    children: <Widget>[
-                      _cards(),
-                      const SizedBox(height: 16),
-                      Obx(() => orderState.isLoaded() ? _completedOrders() : const CircularProgressIndicator().alignAtCenter()),
-                      if (Responsive.isMobile()) const SizedBox(height: 16),
-                      if (Responsive.isMobile()) _chart(),
-                    ],
-                  ),
-                ),
+                Column(
+                  children: <Widget>[
+                    _cards(),
+                    const SizedBox(height: 16),
+                    Obx(() => orderState.isLoaded() ? _completedOrders() : const CircularProgressIndicator().alignAtCenter()),
+                    if (Responsive.isMobile()) const SizedBox(height: 16),
+                    if (Responsive.isMobile()) _products(),
+                  ],
+                ).expanded(flex: 5),
                 if (!Responsive.isMobile()) const SizedBox(width: 16),
-                if (!Responsive.isMobile()) Expanded(flex: 2, child: _chart()),
+                if (!Responsive.isMobile()) Expanded(flex: 2, child: _products()),
               ],
-            )
+            ),
           ],
         ),
       );
@@ -53,82 +50,96 @@ class _DashboardPageState extends State<DashboardPage> with DashboardController 
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
           const Text("داشبورد مدیریت دایرکت‌شد").titleLarge(),
-          Text(Core.user.firstName ?? "").paddingSymmetric(horizontal: 16 / 2).container(
-                radius: 10,
-                backgroundColor: context.theme.colorScheme.secondary.withOpacity(0.1),
-                margin: const EdgeInsets.only(left: 16),
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16 / 2),
-              ),
+          Text(Core.user.firstName ?? "").container(
+            radius: 10,
+            backgroundColor: context.theme.colorScheme.secondary.withOpacity(0.1),
+            margin: const EdgeInsets.only(left: 16),
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16 / 2),
+          ),
         ],
       );
 
-  Widget _chart() => Container(
-        padding: const EdgeInsets.all(16),
-        decoration: BoxDecoration(
-          color: context.theme.colorScheme.background,
-          borderRadius: const BorderRadius.all(Radius.circular(10)),
-        ),
-        child: Obx(
-          () => cardsState.isLoaded()
-              ? Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    const Text("محصولات").headlineSmall().bold(),
-                    _chartDataCard(iconData: Icons.queue, title: "در صف بررسی", trailing: dashboardDataReadDto.inQueueProducts.toString()),
-                    _chartDataCard(iconData: Icons.done, title: "منتشر شده", trailing: dashboardDataReadDto.releasedProducts.toString()),
-                    _chartDataCard(iconData: Icons.remove, title: "رد شده", trailing: dashboardDataReadDto.notAcceptedProducts.toString()),
-                  ],
-                )
-              : const CircularProgressIndicator().alignAtCenter(),
-        ),
-      );
-
-  Widget _chartDataCard({required final String title, required final IconData iconData, required final String trailing}) => Container(
-        margin: const EdgeInsets.only(top: 16),
-        padding: const EdgeInsets.all(16),
-        decoration: BoxDecoration(
-          border: Border.all(width: 2, color: context.theme.colorScheme.primary.withOpacity(0.15)),
-          borderRadius: const BorderRadius.all(Radius.circular(16)),
-        ),
-        child: Row(
-          children: <Widget>[
-            Icon(iconData),
-            Text(title, maxLines: 1, overflow: TextOverflow.ellipsis).paddingSymmetric(horizontal: 16).expanded(),
-            Text(trailing),
-          ],
-        ),
-      );
-
-  Widget _completedOrders() => Container(
-        padding: const EdgeInsets.all(16),
-        decoration: BoxDecoration(color: context.theme.colorScheme.background, borderRadius: const BorderRadius.all(Radius.circular(10))),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Text("سفارشات تکمیل شده اخیر", style: Theme.of(context).textTheme.titleMedium),
-            SizedBox(
-              width: double.infinity,
-              child: DataTable(
-                columns: const <DataColumn>[
-                  DataColumn(label: Text("فروشنده")),
-                  DataColumn(label: Text("خریدار")),
-                  DataColumn(label: Text("قیمت کل")),
+  Widget _products() => Obx(
+        () => cardsState.isLoaded()
+            ? Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  const Text("محصولات").headlineSmall().bold(),
+                  _chartDataCard(
+                    iconData: Icons.queue,
+                    title: "در صف بررسی",
+                    trailing: dashboardDataReadDto.inQueueProducts.toString(),
+                    onTap: () => Core.user.tags!.contains(TagUser.adminProductRead.number) ? Core.mainPageType(MainPageType.product) : null,
+                  ),
+                  _chartDataCard(
+                    iconData: Icons.done,
+                    title: "منتشر شده",
+                    trailing: dashboardDataReadDto.releasedProducts.toString(),
+                    onTap: () => Core.user.tags!.contains(TagUser.adminProductRead.number) ? Core.mainPageType(MainPageType.product) : null,
+                  ),
+                  _chartDataCard(
+                    iconData: Icons.remove,
+                    title: "رد شده",
+                    trailing: dashboardDataReadDto.notAcceptedProducts.toString(),
+                    onTap: () => Core.user.tags!.contains(TagUser.adminProductRead.number) ? Core.mainPageType(MainPageType.product) : null,
+                  ),
                 ],
-                rows: orders
-                    .map(
-                      (final OrderReadDto i) => DataRow(
-                        cells: <DataCell>[
-                          DataCell(Text(i.productOwner?.fullName ?? "").bodyMedium()),
-                          DataCell(Text(i.user?.fullName ?? "").bodyMedium()),
-                          DataCell(Text(i.totalPrice.toTomanMoneyPersian()).bodyMedium()),
-                        ],
-                      ),
-                    )
-                    .toList(),
-              ),
+              )
+            : const CircularProgressIndicator().alignAtCenter(),
+      ).container(padding: const EdgeInsets.all(16), backgroundColor: context.theme.colorScheme.background, radius: 10);
+
+  Widget _chartDataCard({
+    required final String title,
+    required final IconData iconData,
+    required final String trailing,
+    required final VoidCallback onTap,
+  }) =>
+      Row(
+        children: <Widget>[
+          Icon(iconData),
+          Text(title, maxLines: 1, overflow: TextOverflow.ellipsis).paddingSymmetric(horizontal: 16).expanded(),
+          Text(trailing),
+        ],
+      )
+          .container(
+            margin: const EdgeInsets.only(top: 16),
+            padding: const EdgeInsets.all(16),
+            radius: 16,
+            borderColor: context.theme.colorScheme.primary.withOpacity(0.15),
+            width: 4,
+          )
+          .onTap(onTap);
+
+  Widget _completedOrders() => Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Text("سفارشات تکمیل شده اخیر", style: Theme.of(context).textTheme.titleMedium),
+          SizedBox(
+            width: double.infinity,
+            child: DataTable(
+              columns: const <DataColumn>[
+                DataColumn(label: Text("فروشنده")),
+                DataColumn(label: Text("خریدار")),
+                DataColumn(label: Text("قیمت کل")),
+              ],
+              rows: orders
+                  .map(
+                    (final OrderReadDto i) => DataRow(
+                      cells: <DataCell>[
+                        DataCell(Text(i.productOwner?.fullName ?? "").bodyMedium()),
+                        DataCell(Text(i.user?.fullName ?? "").bodyMedium()),
+                        DataCell(Text(i.totalPrice.toTomanMoneyPersian()).bodyMedium()),
+                      ],
+                    ),
+                  )
+                  .toList(),
             ),
-          ],
-        ),
+          ),
+        ],
+      ).container(
+        backgroundColor: context.theme.colorScheme.background,
+        radius: 12,
+        padding: const EdgeInsets.all(16),
       );
 
   Widget _cards() => Column(
