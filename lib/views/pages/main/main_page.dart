@@ -4,6 +4,7 @@ import 'package:utilities_admin_flutter/core/core.dart';
 import 'package:utilities_admin_flutter/views/pages/about/about_page.dart';
 import 'package:utilities_admin_flutter/views/pages/banners/banners_page.dart';
 import 'package:utilities_admin_flutter/views/pages/categories/category_page.dart';
+import 'package:utilities_admin_flutter/views/pages/comments/comments_page.dart';
 import 'package:utilities_admin_flutter/views/pages/dashboard/dashboard_page.dart';
 import 'package:utilities_admin_flutter/views/pages/main/main_controller.dart';
 import 'package:utilities_admin_flutter/views/pages/orders/order_page.dart';
@@ -44,6 +45,12 @@ class _MainPageState extends State<MainPage> with MainController {
                 title: "محصولات",
                 route: MainPageType.product.title,
                 icon: Icons.card_travel_outlined,
+              ),
+            if (Core.user.tags!.contains(TagUser.adminCategoryRead.number))
+              AdminMenuItem(
+                title: "نظرات",
+                route: MainPageType.comment.title,
+                icon: Icons.comment_outlined,
               ),
             if (Core.user.tags!.contains(TagUser.adminUserRead.number))
               AdminMenuItem(
@@ -87,6 +94,7 @@ class _MainPageState extends State<MainPage> with MainController {
             if (item.route == MainPageType.terms.title) Core.mainPageType(MainPageType.terms);
             if (item.route == MainPageType.category.title) Core.mainPageType(MainPageType.category);
             if (item.route == MainPageType.product.title) Core.mainPageType(MainPageType.product);
+            if (item.route == MainPageType.comment.title) Core.mainPageType(MainPageType.comment);
             if (item.route == MainPageType.report.title) Core.mainPageType(MainPageType.report);
             if (item.route == MainPageType.transaction.title) Core.mainPageType(MainPageType.transaction);
             if (item.route == MainPageType.banner.title) Core.mainPageType(MainPageType.banner);
@@ -103,6 +111,7 @@ class _MainPageState extends State<MainPage> with MainController {
           if (Core.mainPageType.value == MainPageType.about) return const AboutPage();
           if (Core.mainPageType.value == MainPageType.category) return const CategoryPage();
           if (Core.mainPageType.value == MainPageType.product) return const ProductPage();
+          if (Core.mainPageType.value == MainPageType.comment) return const CommentsPage();
           if (Core.mainPageType.value == MainPageType.report) return const ReportPage();
           if (Core.mainPageType.value == MainPageType.transaction) return const TransactionsPage();
           if (Core.mainPageType.value == MainPageType.banner) return const BannersPage();

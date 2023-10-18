@@ -37,6 +37,8 @@ mixin UserCreateUpdateController {
     TagUser.adminOrderUpdate,
     TagUser.adminContentRead,
     TagUser.adminContentUpdate,
+    TagUser.adminCommentRead,
+    TagUser.adminCommentUpdate,
   ].obs;
 
   RxList<int> selectedAdminAccess = <int>[].obs;

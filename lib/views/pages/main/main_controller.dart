@@ -6,6 +6,7 @@ enum MainPageType {
   terms("terms"),
   about("about"),
   product("product"),
+  comment("comment"),
   productDetail("productDetail"),
   category("category"),
   transaction("transactions"),
