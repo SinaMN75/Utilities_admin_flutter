@@ -1,5 +1,6 @@
 import 'package:utilities/utilities.dart';
 import 'package:utilities_admin_flutter/core/core.dart';
+import 'package:utilities_admin_flutter/views/pages/main/main_controller.dart';
 import 'package:utilities_admin_flutter/views/pages/users/user_create_update/user_create_update_page.dart';
 
 mixin UserController {
@@ -43,5 +44,5 @@ mixin UserController {
     );
   }
 
-  void edit(final UserReadDto dto) => push(UserCreateUpdatePage(dto: dto));
+  void edit(final UserReadDto dto) => mainWidget(UserCreateUpdatePage(dto: dto));
 }

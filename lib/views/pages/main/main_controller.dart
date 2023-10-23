@@ -1,5 +1,8 @@
 import 'package:utilities/utilities.dart';
+import 'package:utilities_admin_flutter/views/pages/dashboard/dashboard_page.dart';
 import 'package:utilities_admin_flutter/views/pages/splash/splash_page.dart';
+
+Rx<Widget> mainWidget = const DashboardPage().container().obs;
 
 enum MainPageType {
   dashboard("dashboard"),
@@ -13,6 +16,7 @@ enum MainPageType {
   banner("banners"),
   order("order"),
   report("report"),
+  withdrawal("withdrawal"),
   user("user");
 
   const MainPageType(this.title);
@@ -26,7 +30,6 @@ mixin MainController {
   Rx<PageState> state = PageState.initial.obs;
 
   void init() {}
-
 
   void logout() {
     clearData();

@@ -1,7 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:utilities/utilities.dart';
 import 'package:utilities_admin_flutter/generated/l10n.dart';
-import 'package:utilities_admin_flutter/views/pages/main/main_controller.dart';
 
 part 'constants.dart';
 
@@ -15,5 +14,4 @@ abstract class Core {
   static List<ContentReadDto> contents = <ContentReadDto>[];
   static late AppSettingsReadDto appSettingsReadDto;
   static late UserReadDto user;
-  static final Rx<MainPageType> mainPageType = MainPageType.dashboard.obs;
 }

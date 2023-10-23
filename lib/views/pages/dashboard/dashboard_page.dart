@@ -1,8 +1,12 @@
 import 'package:utilities/utilities.dart';
 import 'package:utilities_admin_flutter/core/core.dart';
 import 'package:utilities_admin_flutter/responsive.dart';
+import 'package:utilities_admin_flutter/views/pages/categories/category_page.dart';
 import 'package:utilities_admin_flutter/views/pages/dashboard/dashboard_controller.dart';
 import 'package:utilities_admin_flutter/views/pages/main/main_controller.dart';
+import 'package:utilities_admin_flutter/views/pages/products/product_page.dart';
+import 'package:utilities_admin_flutter/views/pages/report/report_page.dart';
+import 'package:utilities_admin_flutter/views/pages/tractions/transactions_page.dart';
 
 class DashboardPage extends StatefulWidget {
   const DashboardPage({super.key});
@@ -69,19 +73,19 @@ class _DashboardPageState extends State<DashboardPage> with DashboardController 
                     iconData: Icons.queue,
                     title: "در صف بررسی",
                     trailing: dashboardDataReadDto.inQueueProducts.toString(),
-                    onTap: () => Core.user.tags!.contains(TagUser.adminProductRead.number) ? Core.mainPageType(MainPageType.product) : null,
+                    onTap: () => Core.user.tags!.contains(TagUser.adminProductRead.number) ? mainWidget(const ProductPage().container()) : null,
                   ),
                   _chartDataCard(
                     iconData: Icons.done,
                     title: "منتشر شده",
                     trailing: dashboardDataReadDto.releasedProducts.toString(),
-                    onTap: () => Core.user.tags!.contains(TagUser.adminProductRead.number) ? Core.mainPageType(MainPageType.product) : null,
+                    onTap: () => Core.user.tags!.contains(TagUser.adminProductRead.number) ? mainWidget(const ProductPage().container()) : null,
                   ),
                   _chartDataCard(
                     iconData: Icons.remove,
                     title: "رد شده",
                     trailing: dashboardDataReadDto.notAcceptedProducts.toString(),
-                    onTap: () => Core.user.tags!.contains(TagUser.adminProductRead.number) ? Core.mainPageType(MainPageType.product) : null,
+                    onTap: () => Core.user.tags!.contains(TagUser.adminProductRead.number) ? mainWidget(const ProductPage().container()) : null,
                   ),
                 ],
               )
@@ -105,8 +109,8 @@ class _DashboardPageState extends State<DashboardPage> with DashboardController 
             margin: const EdgeInsets.only(top: 16),
             padding: const EdgeInsets.all(16),
             radius: 16,
-            borderColor: context.theme.colorScheme.primary.withOpacity(0.15),
-            width: 4,
+            borderColor: context.theme.colorScheme.primary,
+            borderWidth: 2,
           )
           .onTap(onTap);
 
@@ -155,7 +159,7 @@ class _DashboardPageState extends State<DashboardPage> with DashboardController 
                         count: dashboardDataReadDto.categories.toString(),
                         color: Colors.red,
                         iconData: Icons.category_outlined,
-                      ).onTap(() => Core.user.tags!.contains(TagUser.adminCategoryRead.number) ? Core.mainPageType(MainPageType.category) : null),
+                      ).onTap(() => Core.user.tags!.contains(TagUser.adminCategoryRead.number) ? mainWidget(const CategoryPage().container()) : null),
                       _card(
                         title: "کاربران",
                         count: dashboardDataReadDto.users.toString(),
@@ -173,7 +177,7 @@ class _DashboardPageState extends State<DashboardPage> with DashboardController 
                         count: dashboardDataReadDto.products.toString(),
                         color: Colors.orange,
                         iconData: Icons.dashboard_outlined,
-                      ).onTap(() => Core.user.tags!.contains(TagUser.adminProductRead.number) ? Core.mainPageType(MainPageType.product) : null),
+                      ).onTap(() => Core.user.tags!.contains(TagUser.adminProductRead.number) ? mainWidget(const ProductPage().container()) : null),
                       _card(
                         title: "فایل‌ها",
                         count: dashboardDataReadDto.media.toString(),
@@ -185,13 +189,13 @@ class _DashboardPageState extends State<DashboardPage> with DashboardController 
                         count: dashboardDataReadDto.transactions.toString(),
                         color: Colors.indigo,
                         iconData: Icons.dashboard_outlined,
-                      ).onTap(() => Core.user.tags!.contains(TagUser.adminTransactionRead.number) ? Core.mainPageType(MainPageType.transaction) : null),
+                      ).onTap(() => Core.user.tags!.contains(TagUser.adminTransactionRead.number) ? mainWidget(const TransactionsPage().container()) : null),
                       _card(
                         title: "ریپورت‌ها",
                         count: dashboardDataReadDto.reports.toString(),
                         color: Colors.brown,
                         iconData: Icons.dashboard_outlined,
-                      ).onTap(() => Core.user.tags!.contains(TagUser.adminReportRead.number) ? Core.mainPageType(MainPageType.report) : null),
+                      ).onTap(() => Core.user.tags!.contains(TagUser.adminReportRead.number) ? mainWidget(const ReportPage().container()) : null),
                       _card(
                         title: "آدرس‌ها",
                         count: dashboardDataReadDto.address.toString(),

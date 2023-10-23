@@ -1,6 +1,7 @@
 import 'package:utilities/utilities.dart';
 import 'package:utilities_admin_flutter/core/core.dart';
 import 'package:utilities_admin_flutter/views/pages/categories/category_controller.dart';
+import 'package:utilities_admin_flutter/views/pages/main/main_controller.dart';
 
 class CategoryPage extends StatefulWidget {
   const CategoryPage({super.key, this.dto});
@@ -72,16 +73,16 @@ class _CategoryPageState extends State<CategoryPage> with CategoryController {
                                         children: <Widget>[
                                           if (Core.user.tags!.contains(TagUser.adminCategoryUpdate.number))
                                             IconButton(
-                                            onPressed: () => delete(dto: i),
-                                            icon: Icon(Icons.delete, color: context.theme.colorScheme.error),
-                                          ).paddingSymmetric(horizontal: 8),
+                                              onPressed: () => delete(dto: i),
+                                              icon: Icon(Icons.delete, color: context.theme.colorScheme.error),
+                                            ).paddingSymmetric(horizontal: 8),
                                           if (Core.user.tags!.contains(TagUser.adminCategoryUpdate.number))
                                             IconButton(
-                                            onPressed: () => update(dto: i),
-                                            icon: Icon(Icons.edit, color: context.theme.colorScheme.primary),
-                                          ).paddingSymmetric(horizontal: 8),
+                                              onPressed: () => update(dto: i),
+                                              icon: Icon(Icons.edit, color: context.theme.colorScheme.primary),
+                                            ).paddingSymmetric(horizontal: 8),
                                           TextButton(
-                                            onPressed: () => push(CategoryPage(dto: i)),
+                                            onPressed: () => mainWidget(CategoryPage(dto: i)),
                                             child: const Text("نمایش زیر دسته"),
                                           ).paddingSymmetric(horizontal: 8),
                                         ],

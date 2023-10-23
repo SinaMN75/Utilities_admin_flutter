@@ -9,7 +9,9 @@ mixin WithdrawalController {
 
   final WithdrawDataSource _dataSource = WithdrawDataSource(baseUrl: AppConstants.baseUrl);
 
-  void init() {}
+  void init() {
+    read();
+  }
 
   void read() {
     state.loading();

@@ -13,6 +13,7 @@ import 'package:utilities_admin_flutter/views/pages/report/report_page.dart';
 import 'package:utilities_admin_flutter/views/pages/terms/terms_page.dart';
 import 'package:utilities_admin_flutter/views/pages/tractions/transactions_page.dart';
 import 'package:utilities_admin_flutter/views/pages/users/user_page.dart';
+import 'package:utilities_admin_flutter/views/pages/withdrawal/withdrawal_page.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
@@ -33,7 +34,11 @@ class _MainPageState extends State<MainPage> with MainController {
         appBar: AppBar(title: const Text('ادمین پنل')),
         sideBar: SideBar(
           items: <AdminMenuItem>[
-            AdminMenuItem(title: 'داشبورد', route: MainPageType.dashboard.title, icon: Icons.dashboard),
+            AdminMenuItem(
+              title: 'داشبورد',
+              route: MainPageType.dashboard.title,
+              icon: Icons.dashboard,
+            ),
             if (Core.user.tags!.contains(TagUser.adminCategoryRead.number))
               AdminMenuItem(
                 title: 'دسته بندی',
@@ -70,6 +75,12 @@ class _MainPageState extends State<MainPage> with MainController {
                 route: MainPageType.transaction.title,
                 icon: Icons.credit_card_outlined,
               ),
+            if (Core.user.tags!.contains(TagUser.adminTransactionRead.number))
+              AdminMenuItem(
+                title: "درخواست‌های برداشت",
+                route: MainPageType.withdrawal.title,
+                icon: Icons.attach_money_outlined,
+              ),
             if (Core.user.tags!.contains(TagUser.adminOrderRead.number))
               AdminMenuItem(
                 title: "سفارشات",
@@ -89,35 +100,24 @@ class _MainPageState extends State<MainPage> with MainController {
             const AdminMenuItem(title: 'خروج از سیستم', icon: Icons.logout, route: "logout"),
           ],
           onSelected: (final AdminMenuItem item) {
-            if (item.route == MainPageType.dashboard.title) Core.mainPageType(MainPageType.dashboard);
-            if (item.route == MainPageType.about.title) Core.mainPageType(MainPageType.about);
-            if (item.route == MainPageType.terms.title) Core.mainPageType(MainPageType.terms);
-            if (item.route == MainPageType.category.title) Core.mainPageType(MainPageType.category);
-            if (item.route == MainPageType.product.title) Core.mainPageType(MainPageType.product);
-            if (item.route == MainPageType.comment.title) Core.mainPageType(MainPageType.comment);
-            if (item.route == MainPageType.report.title) Core.mainPageType(MainPageType.report);
-            if (item.route == MainPageType.transaction.title) Core.mainPageType(MainPageType.transaction);
-            if (item.route == MainPageType.banner.title) Core.mainPageType(MainPageType.banner);
-            if (item.route == MainPageType.productDetail.title) Core.mainPageType(MainPageType.productDetail);
-            if (item.route == MainPageType.user.title) Core.mainPageType(MainPageType.user);
-            if (item.route == MainPageType.order.title) Core.mainPageType(MainPageType.order);
+            if (item.route == MainPageType.dashboard.title) mainWidget(const DashboardPage().container());
+            if (item.route == MainPageType.about.title) mainWidget(const AboutPage().container());
+            if (item.route == MainPageType.terms.title) mainWidget(const TermsPage().container());
+            if (item.route == MainPageType.category.title) mainWidget(const CategoryPage().container());
+            if (item.route == MainPageType.product.title) mainWidget(const ProductPage().container());
+            if (item.route == MainPageType.comment.title) mainWidget(const CommentsPage().container());
+            if (item.route == MainPageType.report.title) mainWidget(const ReportPage().container());
+            if (item.route == MainPageType.transaction.title) mainWidget(const TransactionsPage().container());
+            if (item.route == MainPageType.banner.title) mainWidget(const BannersPage().container());
+            if (item.route == MainPageType.productDetail.title) mainWidget(const BannersPage().container());
+            if (item.route == MainPageType.user.title) mainWidget(const UserPage().container());
+            if (item.route == MainPageType.order.title) mainWidget(const OrderPage().container());
+            if (item.route == MainPageType.withdrawal.title) mainWidget(const WithdrawalPage().container());
             if (item.route == "logout") logout();
+            Get.forceAppUpdate();
           },
           selectedRoute: '',
         ),
-        body: Obx(() {
-          if (Core.mainPageType.value == MainPageType.dashboard) return const DashboardPage();
-          if (Core.mainPageType.value == MainPageType.terms) return const TermsPage();
-          if (Core.mainPageType.value == MainPageType.about) return const AboutPage();
-          if (Core.mainPageType.value == MainPageType.category) return const CategoryPage();
-          if (Core.mainPageType.value == MainPageType.product) return const ProductPage();
-          if (Core.mainPageType.value == MainPageType.comment) return const CommentsPage();
-          if (Core.mainPageType.value == MainPageType.report) return const ReportPage();
-          if (Core.mainPageType.value == MainPageType.transaction) return const TransactionsPage();
-          if (Core.mainPageType.value == MainPageType.banner) return const BannersPage();
-          if (Core.mainPageType.value == MainPageType.user) return const UserPage();
-          if (Core.mainPageType.value == MainPageType.order) return const OrderPage();
-          return const Placeholder();
-        }),
+        body: Obx(() => mainWidget()),
       );
 }
