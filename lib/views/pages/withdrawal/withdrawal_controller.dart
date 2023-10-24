@@ -16,11 +16,21 @@ mixin WithdrawalController {
   void read() {
     state.loading();
     _dataSource.filter(
-      dto: WithdrawFilterDto(),
+      dto: WithdrawFilterDto(showUser: true),
       onResponse: (final GenericResponse<WithdrawReadDto> response) {
         list = response.resultList!;
         filteredList(list);
         state.loaded();
+      },
+      onError: (final GenericResponse<dynamic> response) {},
+    );
+  }
+
+  void update({required final WithdrawUpdateDto dto}) {
+    _dataSource.update(
+      dto: WithdrawUpdateDto(id: dto.id, state: dto.state),
+      onResponse: (final GenericResponse<WithdrawReadDto> response) {
+        snackbarDone();
       },
       onError: (final GenericResponse<dynamic> response) {},
     );
