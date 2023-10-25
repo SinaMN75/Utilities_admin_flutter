@@ -1,7 +1,5 @@
 import 'package:utilities/utilities.dart';
 import 'package:utilities_admin_flutter/core/core.dart';
-import 'package:utilities_admin_flutter/views/pages/main/main_controller.dart';
-import 'package:utilities_admin_flutter/views/pages/products/product_create_update/product_create_update_page.dart';
 
 mixin OrderController {
   Rx<PageState> state = PageState.initial.obs;
@@ -41,6 +39,4 @@ mixin OrderController {
       onError: (final GenericResponse<dynamic> response) {},
     );
   }
-
-  void update({required final OrderReadDto dto}) => mainWidget(const ProductCreateUpdatePage());
 }

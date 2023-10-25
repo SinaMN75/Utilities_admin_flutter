@@ -1,5 +1,7 @@
 import 'package:utilities/utilities.dart';
 import 'package:utilities_admin_flutter/core/core.dart';
+import 'package:utilities_admin_flutter/views/pages/main/main_controller.dart';
+import 'package:utilities_admin_flutter/views/pages/products/product_create_update/add_product_page.dart';
 
 mixin ProductController {
   Rx<PageState> state = PageState.initial.obs;
@@ -50,7 +52,7 @@ mixin ProductController {
         showCategories: true,
         showChildren: true,
         showVisitProducts: true,
-        tags: <int>[TagProduct.physical.number],
+        tags: <int>[TagProduct.physical.number, selectedProductTag.value],
       ),
       onResponse: (final GenericResponse<ProductReadDto> response) {
         pageCount = response.pageCount!;
@@ -83,61 +85,10 @@ mixin ProductController {
       );
 
   void create({final CategoryReadDto? dto}) {
-    final TextEditingController controllerTitle = TextEditingController();
-    bottomSheet(
-      child: column(
-        mainAxisSize: MainAxisSize.min,
-        height: 500,
-        children: <Widget>[
-          if (dto != null) Text("زیردسته برای ${dto.title ?? ""}"),
-          textField(text: "عنوان"),
-          const SizedBox(height: 20),
-          button(
-            width: 400,
-            title: "ثبت",
-            onTap: () {
-              showEasyLoading();
-              _productDataSource.create(
-                dto: ProductCreateUpdateDto(title: controllerTitle.text, parentId: dto?.id),
-                onResponse: (final GenericResponse<ProductReadDto> response) {
-                  dismissEasyLoading();
-                  controllerTitle.clear();
-                },
-                onError: (final GenericResponse<dynamic> response) {},
-              );
-            },
-          ),
-        ],
-      ),
-    );
+    mainWidget(const AddProductPage().container());
   }
 
   void update({required final ProductReadDto dto}) {
-    final TextEditingController controllerTitle = TextEditingController(text: dto.title);
-    bottomSheet(
-      child: column(
-        mainAxisSize: MainAxisSize.min,
-        height: 500,
-        children: <Widget>[
-          textField(text: "عنوان", controller: controllerTitle),
-          const SizedBox(height: 20),
-          button(
-            width: 400,
-            title: "ثبت",
-            onTap: () {
-              showEasyLoading();
-              _productDataSource.update(
-                dto: ProductCreateUpdateDto(id: dto.id, title: controllerTitle.text),
-                onResponse: (final GenericResponse<ProductReadDto> response) {
-                  dismissEasyLoading();
-                  controllerTitle.clear();
-                },
-                onError: (final GenericResponse<dynamic> response) {},
-              );
-            },
-          ),
-        ],
-      ),
-    );
+    mainWidget(AddProductPage(dto: dto).container());
   }
 }
