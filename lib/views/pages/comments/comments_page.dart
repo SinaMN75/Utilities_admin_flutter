@@ -1,6 +1,5 @@
 import 'package:utilities/components/pagination.dart';
 import 'package:utilities/utilities.dart';
-import 'package:utilities_admin_flutter/core/core.dart';
 import 'package:utilities_admin_flutter/views/pages/comments/comments_controller.dart';
 
 class CommentsPage extends StatefulWidget {
@@ -19,8 +18,8 @@ class _CommentsPageState extends State<CommentsPage> with CommentsController {
 
   @override
   Widget build(final BuildContext context) => scaffold(
-        padding: const EdgeInsets.symmetric(horizontal: 40),
         constraints: const BoxConstraints(),
+        padding: const EdgeInsets.symmetric(horizontal: 20),
         appBar: AppBar(title: const Text("نظرات")),
         body: Obx(
           () => state.isLoaded()

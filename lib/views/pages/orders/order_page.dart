@@ -18,8 +18,8 @@ class _OrderPageState extends State<OrderPage> with OrderController {
 
   @override
   Widget build(final BuildContext context) => scaffold(
-        padding: const EdgeInsets.symmetric(horizontal: 40),
         constraints: const BoxConstraints(),
+        padding: const EdgeInsets.symmetric(horizontal: 20),
         appBar: AppBar(title: const Text("سفارشات")),
         body: Obx(
           () => state.isLoaded()
@@ -65,7 +65,6 @@ class _OrderPageState extends State<OrderPage> with OrderController {
   Widget _filters() => Wrap(
         crossAxisAlignment: WrapCrossAlignment.center,
         children: <Widget>[
-          textField(hintText: "عنوان", controller: controllerTitle).container(width: 200, margin: const EdgeInsets.all(10)),
           DropdownButtonFormField<int>(
             value: selectedOrderTag.value,
             items: <DropdownMenuItem<int>>[
@@ -73,7 +72,8 @@ class _OrderPageState extends State<OrderPage> with OrderController {
               DropdownMenuItem<int>(value: TagOrder.paid.number, child: const Text("پرداخت شده")),
               DropdownMenuItem<int>(value: TagOrder.inProcess.number, child: const Text("درحال بررسی")),
               DropdownMenuItem<int>(value: TagOrder.shipping.number, child: const Text("در حال ارسال")),
-              DropdownMenuItem<int>(value: TagOrder.complete.number, child: const Text("تکمیل شده")),
+              DropdownMenuItem<int>(value: TagOrder.complete.number, child: const Text("تحویل شده")),
+              DropdownMenuItem<int>(value: TagOrder.complete.number, child: const Text("اختلاف")),
             ],
             onChanged: selectedOrderTag,
           ).container(width: 200, margin: const EdgeInsets.all(10)),

@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:utilities/utilities.dart';
 import 'package:utilities_admin_flutter/core/core.dart';
 
@@ -7,18 +6,21 @@ mixin CategoryController {
 
   final RxList<CategoryReadDto> list = <CategoryReadDto>[].obs;
   final RxList<CategoryReadDto> filteredList = <CategoryReadDto>[].obs;
+  CategoryReadDto? dto;
 
   final TextEditingController controllerTitle = TextEditingController();
   final TextEditingController controllerTitleTr1 = TextEditingController();
 
   final CategoryDataSource _categoryDataSource = CategoryDataSource(baseUrl: AppConstants.baseUrl);
-  final MediaDataSource _mediaDataSource = MediaDataSource(baseUrl: AppConstants.baseUrl);
 
   void init() {
-    if (list.isEmpty)
+    if (dto == null) {
       read();
-    else
+    } else {
+      list(dto?.children);
+      filteredList(dto?.children);
       state.loaded();
+    }
   }
 
   void filter() => filteredList(
@@ -36,7 +38,7 @@ mixin CategoryController {
   void read() {
     state.loading();
     _categoryDataSource.filter(
-      dto: CategoryFilterDto(showMedia: true),
+      dto: CategoryFilterDto(showMedia: true, tags: <int>[TagCategory.category.number]),
       onResponse: (final GenericResponse<CategoryReadDto> response) {
         list(response.resultList);
         filteredList(list);
@@ -68,7 +70,6 @@ mixin CategoryController {
 
   void create({final CategoryReadDto? dto}) {
     final TextEditingController controllerTitle = TextEditingController();
-    Uint8List? fileByte;
     bottomSheet(
       child: column(
         mainAxisSize: MainAxisSize.min,
@@ -77,12 +78,6 @@ mixin CategoryController {
           if (dto != null) Text("زیردسته برای ${dto.title ?? ""}"),
           textField(text: "عنوان", controller: controllerTitle),
           const SizedBox(height: 20),
-          customWebImageCropper(
-            maxImages: 1,
-            result: (final List<CroppedFile> cropFiles) async {
-              fileByte = await cropFiles.first.readAsBytes();
-            },
-          ),
           button(
             width: 400,
             title: "ثبت",
@@ -93,7 +88,6 @@ mixin CategoryController {
                 onResponse: (final GenericResponse<CategoryReadDto> response) {
                   dismissEasyLoading();
                   controllerTitle.clear();
-                  if (fileByte != null) uploadImage(byte: fileByte!, form: MapEntry<String, String>("CategoryId", response.result!.id));
                   back();
                 },
                 onError: (final GenericResponse<dynamic> response) {},
@@ -107,7 +101,6 @@ mixin CategoryController {
 
   void update({required final CategoryReadDto dto}) {
     final TextEditingController controllerTitle = TextEditingController(text: dto.title);
-    Uint8List? fileByte;
     bottomSheet(
       child: column(
         mainAxisSize: MainAxisSize.min,
@@ -115,13 +108,6 @@ mixin CategoryController {
         children: <Widget>[
           if ((dto.media ?? <MediaReadDto>[]).isNotEmpty) image((dto.media.imagesUrl() ?? <String>[]).firstOrNull ?? AppImages.logo),
           textField(text: "عنوان", controller: controllerTitle),
-          const SizedBox(height: 20),
-          customWebImageCropper(
-            maxImages: 1,
-            result: (final List<CroppedFile> cropFiles) async {
-              fileByte = await cropFiles.first.readAsBytes();
-            },
-          ),
           button(
             width: 400,
             title: "ثبت",
@@ -132,17 +118,6 @@ mixin CategoryController {
                 onResponse: (final GenericResponse<CategoryReadDto> response) {
                   dismissEasyLoading();
                   controllerTitle.clear();
-                  if (fileByte != null) {
-                    (dto.media ?? <MediaReadDto>[]).forEach((final MediaReadDto i) {
-                      _mediaDataSource.delete(
-                        id: i.id!,
-                        onResponse: (final GenericResponse<dynamic> _) {
-                          uploadImage(byte: fileByte!, form: MapEntry<String, String>("CategoryId", dto.id));
-                        },
-                        onError: (final GenericResponse<dynamic> response) {},
-                      );
-                    });
-                  }
                 },
                 onError: (final GenericResponse<dynamic> response) {},
               );

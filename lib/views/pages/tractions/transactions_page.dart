@@ -17,11 +17,9 @@ class _TransactionsPageState extends State<TransactionsPage> with TransactionsCo
 
   @override
   Widget build(final BuildContext context) => scaffold(
-        padding: const EdgeInsets.symmetric(horizontal: 40),
         constraints: const BoxConstraints(),
-        appBar: AppBar(
-          title: const Text("تراکنش‌ها")
-        ),
+        padding: const EdgeInsets.symmetric(horizontal: 20),
+        appBar: AppBar(title: const Text("تراکنش‌ها")),
         body: Obx(
           () => state.isLoaded()
               ? Column(

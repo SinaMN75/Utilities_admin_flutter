@@ -17,17 +17,20 @@ class _AboutPageState extends State<AboutPage> with AboutController {
 
   @override
   Widget build(final BuildContext context) => scaffold(
-        padding: const EdgeInsets.all(20),
+        constraints: const BoxConstraints(),
+        padding: const EdgeInsets.symmetric(horizontal: 20),
         appBar: AppBar(title: const Text("درباره ما")),
         body: Obx(
-          () => state.isLoaded() ? Column(
-            children: <Widget>[
-              textField(text: "عنوان", controller: controllerTitle),
-              textField(text: "متن", controller: controllerDescription, lines: 20),
-              const Spacer(),
-              button(title: "ثبت", onTap: createUpdate),
-            ],
-          ) : const CircularProgressIndicator(),
+          () => state.isLoaded()
+              ? Column(
+                  children: <Widget>[
+                    textField(text: "عنوان", controller: controllerTitle),
+                    textField(text: "متن", controller: controllerDescription, lines: 20),
+                    const Spacer(),
+                    button(title: "ثبت", onTap: createUpdate),
+                  ],
+                )
+              : const CircularProgressIndicator(),
         ),
       );
 }

@@ -19,8 +19,8 @@ class _UserPageState extends State<UserPage> with UserController {
 
   @override
   Widget build(final BuildContext context) => scaffold(
-        padding: const EdgeInsets.symmetric(horizontal: 40),
         constraints: const BoxConstraints(),
+        padding: const EdgeInsets.symmetric(horizontal: 20),
         appBar: AppBar(title: const Text("کاربران")),
         body: Obx(
           () => state.isLoaded()
@@ -34,8 +34,9 @@ class _UserPageState extends State<UserPage> with UserController {
                           DataColumn(label: const Text("ردیف").headlineSmall()),
                           DataColumn(label: const Text("نام").headlineSmall()),
                           DataColumn(label: const Text("نام خانوادگی").headlineSmall()),
-                          DataColumn(label: const Text("شماره موبایل").headlineSmall()),
                           DataColumn(label: const Text("نام کاربری").headlineSmall()),
+                          DataColumn(label: const Text("آیدی اینستاگرام").headlineSmall()),
+                          DataColumn(label: const Text("شماره موبایل").headlineSmall()),
                           if (Core.user.tags!.contains(TagUser.adminCategoryUpdate.number)) DataColumn(label: const Text("عملیات").headlineSmall()),
                         ],
                         rows: <DataRow>[
@@ -47,6 +48,7 @@ class _UserPageState extends State<UserPage> with UserController {
                                     DataCell(Text(i.firstName ?? "").bodyLarge().paddingAll(8)),
                                     DataCell(Text(i.lastName ?? "").bodyLarge().paddingAll(8)),
                                     DataCell(Text(i.appUserName ?? "").bodyLarge().paddingAll(8)),
+                                    DataCell(Text(i.jsonDetail?.instagram ?? "").bodyLarge().paddingAll(8)),
                                     DataCell(Text(i.phoneNumber ?? "").bodyLarge().paddingAll(8)),
                                     if (Core.user.tags!.contains(TagUser.adminCategoryUpdate.number))
                                       DataCell(
@@ -75,13 +77,13 @@ class _UserPageState extends State<UserPage> with UserController {
       );
 
   Widget _filters() => Wrap(
-    crossAxisAlignment: WrapCrossAlignment.center,
-    children: <Widget>[
-      textField(hintText: "نام", controller: controllerFirstName).container(width: 300, padding: const EdgeInsets.symmetric(horizontal: 4)),
-      textField(hintText: "نام خانوادگی", controller: controllerLastName).container(width: 300, padding: const EdgeInsets.symmetric(horizontal: 4)),
-      textField(hintText: "شماره موبایل", controller: controllerPhoneNumber).container(width: 300, padding: const EdgeInsets.symmetric(horizontal: 4)),
-      textField(hintText: "نام کاربری", controller: controllerUserName).container(width: 300, padding: const EdgeInsets.symmetric(horizontal: 4)),
-      button(title: "فیلتر", onTap: filter, width: 200),
-    ],
-  ).paddingSymmetric(vertical: 4);
+        crossAxisAlignment: WrapCrossAlignment.center,
+        children: <Widget>[
+          textField(hintText: "نام", controller: controllerFirstName).container(width: 300, padding: const EdgeInsets.symmetric(horizontal: 4)),
+          textField(hintText: "نام خانوادگی", controller: controllerLastName).container(width: 300, padding: const EdgeInsets.symmetric(horizontal: 4)),
+          textField(hintText: "شماره موبایل", controller: controllerPhoneNumber).container(width: 300, padding: const EdgeInsets.symmetric(horizontal: 4)),
+          textField(hintText: "نام کاربری", controller: controllerUserName).container(width: 300, padding: const EdgeInsets.symmetric(horizontal: 4)),
+          button(title: "فیلتر", onTap: filter, width: 200),
+        ],
+      ).paddingSymmetric(vertical: 4);
 }

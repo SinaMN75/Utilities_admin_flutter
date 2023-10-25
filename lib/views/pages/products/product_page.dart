@@ -1,6 +1,5 @@
 import 'package:utilities/components/pagination.dart';
 import 'package:utilities/utilities.dart';
-import 'package:utilities_admin_flutter/core/core.dart';
 import 'package:utilities_admin_flutter/views/pages/products/product_controller.dart';
 
 class ProductPage extends StatefulWidget {
@@ -19,8 +18,8 @@ class _ProductPageState extends State<ProductPage> with ProductController {
 
   @override
   Widget build(final BuildContext context) => scaffold(
-        padding: const EdgeInsets.symmetric(horizontal: 40),
         constraints: const BoxConstraints(),
+        padding: const EdgeInsets.symmetric(horizontal: 20),
         appBar: AppBar(
           title: const Text("محصولات"),
           actions: <Widget>[
@@ -38,10 +37,10 @@ class _ProductPageState extends State<ProductPage> with ProductController {
                           DataColumn(label: const Text("ردیف").headlineSmall()),
                           DataColumn(label: const Text("دسته بندی").headlineSmall()),
                           DataColumn(label: const Text("عنوان").headlineSmall()),
+                          DataColumn(label: const Text("مشخصات").headlineSmall()),
                           DataColumn(label: const Text("وضعیت").headlineSmall()),
                           DataColumn(label: const Text("تعداد بازدید").headlineSmall()),
-                          DataColumn(label: const Text("زیر مجموعه").headlineSmall()),
-                          if (Core.user.tags!.contains(TagUser.adminProductUpdate.number)) DataColumn(label: const Text("عملیات‌ها").headlineSmall()),
+                          DataColumn(label: const Text("عملیات‌ها").headlineSmall()),
                         ],
                         rows: <DataRow>[
                           ...filteredList
@@ -55,6 +54,7 @@ class _ProductPageState extends State<ProductPage> with ProductController {
                                       ).bodyLarge().paddingAll(8),
                                     ),
                                     DataCell(Text(i.title ?? "").bodyLarge().paddingAll(8)),
+                                    DataCell(Text((i.children ?? <ProductReadDto>[]).map((final ProductReadDto e) => e.title).toList().toString())),
                                     DataCell(Text(UtilitiesTagUtils.tagProductTitleFromTagList(i.tags!)).bodyLarge().paddingAll(8)),
                                     DataCell(
                                       iconTextHorizontal(
@@ -62,9 +62,7 @@ class _ProductPageState extends State<ProductPage> with ProductController {
                                         trailing: Text((i.visitProducts ?? <ProductInsight>[]).length.toString()).bodyLarge().paddingAll(8),
                                       ),
                                     ),
-                                    DataCell(Text((i.children ?? <ProductReadDto>[]).map((final ProductReadDto e) => e.title).toList().toString())),
-                                    if (Core.user.tags!.contains(TagUser.adminCategoryUpdate.number))
-                                      DataCell(
+                                    DataCell(
                                         Row(
                                           children: <Widget>[
                                             IconButton(

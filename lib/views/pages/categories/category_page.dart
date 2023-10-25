@@ -15,16 +15,15 @@ class CategoryPage extends StatefulWidget {
 class _CategoryPageState extends State<CategoryPage> with CategoryController {
   @override
   void initState() {
-    list(widget.dto?.children);
-    filteredList(widget.dto?.children);
+    if (widget.dto != null) dto = widget.dto;
     init();
     super.initState();
   }
 
   @override
   Widget build(final BuildContext context) => scaffold(
-        padding: const EdgeInsets.symmetric(horizontal: 40),
         constraints: const BoxConstraints(),
+        padding: const EdgeInsets.symmetric(horizontal: 20),
         appBar: AppBar(
           title: const Text("دسته بندی‌ها"),
           actions: <Widget>[
@@ -83,7 +82,7 @@ class _CategoryPageState extends State<CategoryPage> with CategoryController {
                                             ).paddingSymmetric(horizontal: 8),
                                           TextButton(
                                             onPressed: () => mainWidget(CategoryPage(dto: i)),
-                                            child: const Text("نمایش زیر دسته"),
+                                            child: const Text("نمایش زیر دسته‌ها"),
                                           ).paddingSymmetric(horizontal: 8),
                                         ],
                                       ),

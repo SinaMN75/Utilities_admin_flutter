@@ -17,7 +17,8 @@ class _TermsPageState extends State<TermsPage> with TermsController {
 
   @override
   Widget build(final BuildContext context) => scaffold(
-        padding: const EdgeInsets.all(20),
+        constraints: const BoxConstraints(),
+        padding: const EdgeInsets.symmetric(horizontal: 20),
         appBar: AppBar(title: const Text("قوانین و مقررات")),
         body: Column(
           children: <Widget>[

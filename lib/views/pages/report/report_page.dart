@@ -17,8 +17,8 @@ class _ReportPageState extends State<ReportPage> with ReportController {
 
   @override
   Widget build(final BuildContext context) => scaffold(
-        padding: const EdgeInsets.symmetric(horizontal: 40),
         constraints: const BoxConstraints(),
+        padding: const EdgeInsets.symmetric(horizontal: 20),
         appBar: AppBar(title: const Text("ریپورت‌ها")),
         body: Obx(
           () => state.isLoaded()

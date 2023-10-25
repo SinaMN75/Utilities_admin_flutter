@@ -42,7 +42,9 @@ class _AddProductPageState extends State<AddProductPage> with AddProductControll
 
   @override
   Widget build(final BuildContext context) => scaffold(
-          body: Obx(
+      constraints: const BoxConstraints(),
+      padding: const EdgeInsets.symmetric(horizontal: 20),
+      body: Obx(
         () => state.isLoaded()
             ? SingleChildScrollView(
                 child: Form(
@@ -124,7 +126,8 @@ class _AddProductPageState extends State<AddProductPage> with AddProductControll
                         lines: 3,
                         contentPadding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
                       ).paddingSymmetric(vertical: 8),
-                      button(
+                      if (Core.user.tags!.contains(TagUser.adminProductUpdate.number))
+                        button(
                         title: "ثبت",
                         onTap: () => createUpdate(action: () => widget.action?.call()),
                       ).paddingOnly(bottom: 40),

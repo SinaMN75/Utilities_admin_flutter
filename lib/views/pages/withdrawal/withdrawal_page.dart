@@ -18,6 +18,7 @@ class _WithdrawalPageState extends State<WithdrawalPage> with WithdrawalControll
   @override
   Widget build(final BuildContext context) => scaffold(
         constraints: const BoxConstraints(),
+        padding: const EdgeInsets.symmetric(horizontal: 20),
         appBar: AppBar(title: const Text("")),
         body: Obx(
           () => state.isLoaded()

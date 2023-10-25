@@ -18,21 +18,24 @@ class _BannersPageState extends State<BannersPage> with BannersController {
 
   @override
   Widget build(final BuildContext context) => scaffold(
-        padding: const EdgeInsets.all(20),
+        constraints: const BoxConstraints(),
+        padding: const EdgeInsets.symmetric(horizontal: 20),
         appBar: AppBar(title: const Text("بنر‌ها")),
         body: Obx(
-          () => state.isLoaded() ? ListView(
-            children: <Widget>[
-              const Text("بنر ۱"),
-              image(homeBanner1?.media.imagesUrl()?.firstOrNull ?? AppImages.logo, height: 200, fit: BoxFit.cover).paddingSymmetric(vertical: 20).onTap(createUpdateHomeBanner1),
-              const Text("بنر ۲"),
-              image(homeBanner2?.media.imagesUrl()?.firstOrNull ?? AppImages.logo, height: 200, fit: BoxFit.cover).paddingSymmetric(vertical: 20).onTap(createUpdateHomeBanner2),
-              const Text("بنرک ۱"),
-              image(homeBannerSmall1?.media.imagesUrl()?.firstOrNull ?? AppImages.logo, height: 200, fit: BoxFit.cover).paddingSymmetric(vertical: 20).onTap(createUpdateHomeBannerSmall1),
-              const Text("بنرک ۲"),
-              image(homeBannerSmall2?.media.imagesUrl()?.firstOrNull ?? AppImages.logo, height: 200, fit: BoxFit.cover).paddingSymmetric(vertical: 20).onTap(createUpdateHomeBannerSmall2),
-            ],
-          ) : const CircularProgressIndicator(),
+          () => state.isLoaded()
+              ? ListView(
+                  children: <Widget>[
+                    const Text("بنر ۱"),
+                    image(homeBanner1?.media.imagesUrl()?.firstOrNull ?? AppImages.logo, height: 200, fit: BoxFit.cover).paddingSymmetric(vertical: 20).onTap(createUpdateHomeBanner1),
+                    const Text("بنر ۲"),
+                    image(homeBanner2?.media.imagesUrl()?.firstOrNull ?? AppImages.logo, height: 200, fit: BoxFit.cover).paddingSymmetric(vertical: 20).onTap(createUpdateHomeBanner2),
+                    const Text("بنرک ۱"),
+                    image(homeBannerSmall1?.media.imagesUrl()?.firstOrNull ?? AppImages.logo, height: 200, fit: BoxFit.cover).paddingSymmetric(vertical: 20).onTap(createUpdateHomeBannerSmall1),
+                    const Text("بنرک ۲"),
+                    image(homeBannerSmall2?.media.imagesUrl()?.firstOrNull ?? AppImages.logo, height: 200, fit: BoxFit.cover).paddingSymmetric(vertical: 20).onTap(createUpdateHomeBannerSmall2),
+                  ],
+                )
+              : const CircularProgressIndicator(),
         ),
       );
 }
