@@ -70,6 +70,7 @@ mixin CategoryController {
 
   void create({final CategoryReadDto? dto}) {
     final TextEditingController controllerTitle = TextEditingController();
+    final TextEditingController controllerTitleTr1 = TextEditingController();
     bottomSheet(
       child: column(
         mainAxisSize: MainAxisSize.min,
@@ -77,6 +78,7 @@ mixin CategoryController {
         children: <Widget>[
           if (dto != null) Text("زیردسته برای ${dto.title ?? ""}"),
           textField(text: "عنوان", controller: controllerTitle),
+          textField(text: "عنوان انگلیسی", controller: controllerTitleTr1),
           const SizedBox(height: 20),
           button(
             width: 400,
@@ -84,8 +86,18 @@ mixin CategoryController {
             onTap: () {
               showEasyLoading();
               _categoryDataSource.create(
-                dto: CategoryCreateUpdateDto(title: controllerTitle.text, parentId: dto?.id),
+                dto: CategoryCreateUpdateDto(
+                  title: controllerTitle.text,
+                  titleTr1: controllerTitleTr1.text,
+                  parentId: dto?.id,
+                  tags: <int>[TagCategory.category.number],
+                ),
                 onResponse: (final GenericResponse<CategoryReadDto> response) {
+                  if (dto != null) {
+                    filteredList.add(response.result!);
+                  } else {
+                    list.add(response.result!);
+                  }
                   dismissEasyLoading();
                   controllerTitle.clear();
                   back();
@@ -99,8 +111,9 @@ mixin CategoryController {
     );
   }
 
-  void update({required final CategoryReadDto dto}) {
+  void update({required final CategoryReadDto dto, required final int index}) {
     final TextEditingController controllerTitle = TextEditingController(text: dto.title);
+    final TextEditingController controllerTitleTr1 = TextEditingController(text: dto.title);
     bottomSheet(
       child: column(
         mainAxisSize: MainAxisSize.min,
@@ -108,16 +121,20 @@ mixin CategoryController {
         children: <Widget>[
           if ((dto.media ?? <MediaReadDto>[]).isNotEmpty) image((dto.media.imagesUrl() ?? <String>[]).firstOrNull ?? AppImages.logo),
           textField(text: "عنوان", controller: controllerTitle),
+          textField(text: "عنوان انگلیسی", controller: controllerTitleTr1),
           button(
             width: 400,
             title: "ثبت",
             onTap: () {
               showEasyLoading();
               _categoryDataSource.update(
-                dto: CategoryCreateUpdateDto(id: dto.id, title: controllerTitle.text),
+                dto: CategoryCreateUpdateDto(id: dto.id, title: controllerTitle.text, titleTr1: controllerTitleTr1.text),
                 onResponse: (final GenericResponse<CategoryReadDto> response) {
+                  filteredList.removeAt(index);
+                  filteredList.insert(index, response.result!);
                   dismissEasyLoading();
                   controllerTitle.clear();
+                  back();
                 },
                 onError: (final GenericResponse<dynamic> response) {},
               );

@@ -77,7 +77,7 @@ class _CategoryPageState extends State<CategoryPage> with CategoryController {
                                             ).paddingSymmetric(horizontal: 8),
                                           if (Core.user.tags!.contains(TagUser.adminCategoryUpdate.number))
                                             IconButton(
-                                              onPressed: () => update(dto: i),
+                                              onPressed: () => update(dto: i,index:index),
                                               icon: Icon(Icons.edit, color: context.theme.colorScheme.primary),
                                             ).paddingSymmetric(horizontal: 8),
                                           TextButton(
