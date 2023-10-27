@@ -27,7 +27,12 @@ class _CategoryPageState extends State<CategoryPage> with CategoryController {
         appBar: AppBar(
           title: const Text("دسته بندی‌ها"),
           actions: <Widget>[
-            IconButton(onPressed: () => create(dto: widget.dto), icon: const Icon(Icons.add_box_outlined, size: 40)),
+            IconButton(
+                onPressed: () => create(
+                      dto: widget.dto,
+                      action: () => setState(() {}),//
+                    ),
+                icon: const Icon(Icons.add_box_outlined, size: 40)),
             IconButton(onPressed: createCategoryFromExcel, icon: const Icon(Icons.grid_on_outlined, size: 40)),
           ],
         ),
@@ -77,7 +82,7 @@ class _CategoryPageState extends State<CategoryPage> with CategoryController {
                                             ).paddingSymmetric(horizontal: 8),
                                           if (Core.user.tags!.contains(TagUser.adminCategoryUpdate.number))
                                             IconButton(
-                                              onPressed: () => update(dto: i,index:index),
+                                              onPressed: () => update(dto: i, index: index),
                                               icon: Icon(Icons.edit, color: context.theme.colorScheme.primary),
                                             ).paddingSymmetric(horizontal: 8),
                                           TextButton(

@@ -43,6 +43,13 @@ mixin ProductController {
 
   void read() {
     state.loading();
+    List<int> tags=<int>[TagProduct.physical.number,];
+    if(selectedProductTag.value!=TagProduct.all.number){
+      tags.add(selectedProductTag.value);
+    }else{
+      tags=<int>[TagProduct.physical.number,];
+    }
+
     _productDataSource.filter(
       dto: ProductFilterDto(
         pageSize: 20,
@@ -52,7 +59,7 @@ mixin ProductController {
         showCategories: true,
         showChildren: true,
         showVisitProducts: true,
-        tags: <int>[TagProduct.physical.number, selectedProductTag.value],
+        tags: tags,
       ),
       onResponse: (final GenericResponse<ProductReadDto> response) {
         pageCount = response.pageCount!;

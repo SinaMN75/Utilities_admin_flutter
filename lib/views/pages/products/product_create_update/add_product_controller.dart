@@ -122,6 +122,7 @@ mixin AddProductController {
             _productDataSource.create(
               dto: filter,
               onResponse: (final GenericResponse<ProductReadDto> response) async {
+
                 imageCropFiles.forEach((final CroppedFile i) async {
                   if (isWeb) {
                     await GetConnect().post(
