@@ -1,5 +1,3 @@
-import 'dart:typed_data';
-
 import 'package:utilities/utilities.dart';
 import 'package:utilities_admin_flutter/core/core.dart';
 import 'package:utilities_admin_flutter/views/pages/products/product_create_update/add_product_controller.dart';
@@ -25,12 +23,14 @@ class _AddProductPageState extends State<AddProductPage> with AddProductControll
     isFromInstagram = widget.isFromInstagram ?? false;
     getProductById(id: dto?.id);
     images = dto?.media.getImages() ?? widget.images;
+    imageCropFiles = imageFiles;
     if ((images ?? <String>[]).isNotEmpty) {
-      addToImageFile(images ?? <String>[], () {
-        description = widget.description ?? '';
-        init();
-        setState(() {});
-      });
+      // addToImageFile(images ?? <String>[], () {
+      //   description = widget.description ?? '';
+      //   imageCropFiles = imageFiles;
+      //   init();
+      //   setState(() {});
+      // });
     } else {
       init();
     }
@@ -87,8 +87,8 @@ class _AddProductPageState extends State<AddProductPage> with AddProductControll
                         scrollDirection: Axis.horizontal,
                         child: Row(
                           children: <Widget>[
-                            ...imageFiles
-                                .mapIndexed((final int index, final Uint8List item) => _items(path: item, originalPath: imageFiles[index], index: index).marginSymmetric(horizontal: 4))
+                            ...imageCropFiles
+                                .mapIndexed((final int index, final CroppedFile item) => _items(path: item, originalPath: imageFiles[index], index: index).marginSymmetric(horizontal: 4))
                                 .toList(),
                             Container(
                               child: Icon(Icons.add, size: 60, color: context.theme.dividerColor)
@@ -100,11 +100,12 @@ class _AddProductPageState extends State<AddProductPage> with AddProductControll
                                   )
                                   .onTap(
                                     () => cropImageCrop(
-                                      result: (final CroppedFile cropped) async{
-
-                                        imageFiles.add(await cropped.readAsBytes());
-                                        // imageCropFiles.add(File(cropped.path));
+                                      result: (final CroppedFile cropped) {
+                                        imageFiles.add(cropped);
                                         setState(() {});
+                                        debugPrint("DDDD");
+                                        // cropperCropFiles.add(cropped);
+                                        // result(cropperFiles);
                                       },
                                     ),
                                   ),
@@ -134,12 +135,13 @@ class _AddProductPageState extends State<AddProductPage> with AddProductControll
             : const CircularProgressIndicator().alignAtCenter(),
       )).safeArea();
 
-  Widget _items({required final Uint8List path, required final Uint8List originalPath, required final int index}) => Column(
+  Widget _items({required final CroppedFile path, required final CroppedFile originalPath, required final int index}) => Column(
         children: <Widget>[
           Stack(
             alignment: Alignment.topRight,
             children: <Widget>[
-              imageMemory(originalPath, width: 128, height: 128, borderRadius: 16),
+              // Image.network(originalPath.path, width: 128, height: 128, borderRadius: 16),
+              Image.network(originalPath.path, width: 128, height: 128),
               const Icon(
                 Icons.close_outlined,
                 size: 18,
@@ -153,23 +155,23 @@ class _AddProductPageState extends State<AddProductPage> with AddProductControll
             push(ImagePreviewPage(images!, currentIndex: index));
           }),
           const SizedBox(height: 8),
-          // SizedBox(
-          //   child: button(
-          //     title: 'کراپ',
-          //     width: 100,
-          //     onTap: () async {
-          //       final CroppedFile? croppedFile = await ImageCropper().cropImage(
-          //         sourcePath: originalPath.path,
-          //         aspectRatio: const CropAspectRatio(ratioX: 1, ratioY: 1),
-          //         uiSettings: <PlatformUiSettings>[
-          //           WebUiSettings(context: context, enforceBoundary: true, enableExif: true, enableZoom: true, showZoomer: true),
-          //         ],
-          //       );
-          //       imageCropFiles[index] =await croppedFile!.readAsBytes();
-          //       setState(() {});
-          //     },
-          //   ),
-          // ),
+          SizedBox(
+            child: button(
+              title: 'کراپ',
+              width: 100,
+              onTap: () async {
+                final CroppedFile? croppedFile = await ImageCropper().cropImage(
+                  sourcePath: path.path,
+                  aspectRatio: const CropAspectRatio(ratioX: 1, ratioY: 1),
+                  uiSettings: <PlatformUiSettings>[
+                    WebUiSettings(context: context, enforceBoundary: true, enableExif: true, enableZoom: true, showZoomer: true),
+                  ],
+                );
+                imageCropFiles[index] = croppedFile!;
+                setState(() {});
+              },
+            ),
+          ),
         ],
       );
 

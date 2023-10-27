@@ -14,7 +14,8 @@ mixin AddProductController {
   bool? isFromInstagram;
 
   List<CroppedFile> files = <CroppedFile>[].obs;
-  List<Uint8List> imageFiles = <Uint8List>[];
+  List<CroppedFile> imageFiles = <CroppedFile>[];
+  List<CroppedFile> imageCropFiles = <CroppedFile>[];
 
   final ProductDataSource _productDataSource = ProductDataSource(baseUrl: AppConstants.baseUrl);
   final RxList<KeyValueViewModel> keyValueList = <KeyValueViewModel>[].obs;
@@ -60,7 +61,7 @@ mixin AddProductController {
     if (count == image.length) {
       action();
     } else {
-      imageFiles.add(await byteFromImageUrl(image[count]));
+      // imageFiles.add(await fileFromImageUrl(image[count]));
       count++;
       addToImageFile(image, action);
     }
@@ -121,12 +122,24 @@ mixin AddProductController {
             _productDataSource.create(
               dto: filter,
               onResponse: (final GenericResponse<ProductReadDto> response) async {
-                imageFiles.forEach((final Uint8List i) async {
+                imageCropFiles.forEach((final CroppedFile i) async {
                   if (isWeb) {
                     await GetConnect().post(
                       "https://api.sinamn75.com/api/Media",
                       FormData(<String, dynamic>{
-                        'Files': MultipartFile(i, filename: ':).png'),
+                        'Files': MultipartFile(await i.readAsBytes(), filename: ':).png'),
+                        "ProductId": response.result!.id,
+                      }),
+                      headers: <String, String>{"Authorization": getString(UtilitiesConstants.token) ?? ""},
+                      contentType: "multipart/form-data",
+                    );
+                  } else {
+                    await GetConnect().post(
+                      //
+                      "https://api.sinamn75.com/api/Media",
+                      FormData(<String, dynamic>{
+                        // 'Files': MultipartFile(i.path, filename: ':).png'),
+                        'Files': MultipartFile(File(i.path), filename: ':).png'),
                         "ProductId": response.result!.id,
                       }),
                       headers: <String, String>{"Authorization": getString(UtilitiesConstants.token) ?? ""},
@@ -136,6 +149,7 @@ mixin AddProductController {
                 });
 
                 imageFiles.clear();
+                imageCropFiles.clear();
                 keyValueList.clear();
                 subProducts.clear();
                 controllerTitle.clear();
@@ -173,16 +187,28 @@ mixin AddProductController {
                   mediaDataSource.delete(
                     id: element.id ?? '',
                     onResponse: (final GenericResponse<dynamic> resporse) {},
-                    onError: (final GenericResponse<dynamic> errorResponse) {},//
+                    onError: (final GenericResponse<dynamic> errorResponse) {},
                   );
                 });
 
-                imageFiles.forEach((final Uint8List i) async {
+                imageCropFiles.forEach((final CroppedFile i) async {
                   if (isWeb) {
                     await GetConnect().post(
                       "https://api.sinamn75.com/api/Media",
                       FormData(<String, dynamic>{
-                        'Files': MultipartFile(i, filename: ':).png'),
+                        'Files': MultipartFile(await i.readAsBytes(), filename: ':).png'),
+                        "ProductId": response.result!.id,
+                      }),
+                      headers: <String, String>{"Authorization": getString(UtilitiesConstants.token) ?? ""},
+                      contentType: "multipart/form-data",
+                    );
+                  } else {
+                    await GetConnect().post(
+                      //
+                      "https://api.sinamn75.com/api/Media",
+                      FormData(<String, dynamic>{
+                        // 'Files': MultipartFile(i.path, filename: ':).png'),
+                        'Files': MultipartFile(File(i.path), filename: ':).png'),
                         "ProductId": response.result!.id,
                       }),
                       headers: <String, String>{"Authorization": getString(UtilitiesConstants.token) ?? ""},
