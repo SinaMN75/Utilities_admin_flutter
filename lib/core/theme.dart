@@ -72,7 +72,7 @@ abstract class AppThemes {
 abstract class AppImages {
   static const String _base = "lib/assets/images";
   static const String logo = "$_base/logo.png";
-  static const String loginImage = "$_base/login_image.jpg";
+  static const String loginImage = "$_base/login_image.png";
   static const String profilePlaceholder = "$_base/profile_placeholder.png";
 }
 
