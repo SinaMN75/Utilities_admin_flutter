@@ -2,6 +2,7 @@ import 'package:utilities/utilities.dart';
 import 'package:utilities_admin_flutter/core/core.dart';
 import 'package:utilities_admin_flutter/views/pages/categories/category_controller.dart';
 import 'package:utilities_admin_flutter/views/pages/main/main_controller.dart';
+import 'package:utilities_admin_flutter/views/widget/image_preview_page.dart';
 
 class CategoryPage extends StatefulWidget {
   const CategoryPage({super.key, this.dto});
@@ -30,7 +31,7 @@ class _CategoryPageState extends State<CategoryPage> with CategoryController {
             IconButton(
                 onPressed: () => create(
                       dto: widget.dto,
-                      action: () => setState(() {}),//
+                      action: () => setState(() {}), //
                     ),
                 icon: const Icon(Icons.add_box_outlined, size: 40)),
             IconButton(onPressed: createCategoryFromExcel, icon: const Icon(Icons.grid_on_outlined, size: 40)),
@@ -47,12 +48,7 @@ class _CategoryPageState extends State<CategoryPage> with CategoryController {
                           controller: controllerTitle,
                           onChanged: (final String value) => filter(),
                         ).expanded(),
-                        const SizedBox(width: 20),
-                        textField(
-                          text: "عنوان انگلیسی",
-                          controller: controllerTitleTr1,
-                          onChanged: (final String value) => filter(),
-                        ).expanded(),
+
                       ],
                     ),
                     const SizedBox(height: 20),
@@ -70,7 +66,14 @@ class _CategoryPageState extends State<CategoryPage> with CategoryController {
                                 (final int index, final CategoryReadDto i) => DataRow(
                                   cells: <DataCell>[
                                     DataCell(Text(index.toString()).bodyLarge().paddingAll(8)),
-                                    DataCell(Text(i.title ?? "").bodyLarge().paddingAll(8)),
+                                    DataCell(Row(
+                                      children: <Widget>[
+                                        image(i.media.getImage(),width: 32,height: 32).onTap(() {
+                                          push(ImagePreviewPage(i.media!.map((final MediaReadDto e) => e.url).toList()));
+                                        }),
+                                        Text(i.title ?? "").bodyLarge().paddingAll(8),
+                                      ],
+                                    )),
                                     DataCell(Text(i.titleTr1 ?? "").bodyLarge().paddingAll(8)),
                                     DataCell(
                                       Row(
@@ -82,7 +85,7 @@ class _CategoryPageState extends State<CategoryPage> with CategoryController {
                                             ).paddingSymmetric(horizontal: 8),
                                           if (Core.user.tags!.contains(TagUser.adminCategoryUpdate.number))
                                             IconButton(
-                                              onPressed: () => update(dto: i, index: index),
+                                              onPressed: () => update(dto: i, index: index, action: () {}),
                                               icon: Icon(Icons.edit, color: context.theme.colorScheme.primary),
                                             ).paddingSymmetric(horizontal: 8),
                                           TextButton(

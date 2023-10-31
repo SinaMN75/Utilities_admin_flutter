@@ -8,8 +8,10 @@ import 'package:utilities_admin_flutter/core/core.dart';
 
 mixin AddProductController {
   final Rx<PageState> state = PageState.initial.obs;
+  List<String> listOfDeleteImage=<String>[];
+  final RxInt selectedProductTag = TagProduct.all.number.obs;
   ProductReadDto? dto;
-  List<String>? images;
+  List<MediaReadDto>? images;
   String? description;
   bool? isFromInstagram;
 
@@ -180,13 +182,13 @@ mixin AddProductController {
                 children: subProducts,
                 price: subProducts.first.price,
                 keyValues: keyValueList,
-                tags: <int>[TagProduct.physical.number, TagProduct.inQueue.number],
+                tags: <int>[TagProduct.physical.number, selectedProductTag.value],
               ),
               onResponse: (final GenericResponse<ProductReadDto> response) {
-                (dto?.media ?? <MediaReadDto>[]).forEach((final MediaReadDto element) {
+                listOfDeleteImage.forEach((final String element) {
                   final MediaDataSource mediaDataSource = MediaDataSource(baseUrl: AppConstants.baseUrl);
                   mediaDataSource.delete(
-                    id: element.id ?? '',
+                    id: element ,
                     onResponse: (final GenericResponse<dynamic> resporse) {},
                     onError: (final GenericResponse<dynamic> errorResponse) {},
                   );

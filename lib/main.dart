@@ -3,7 +3,6 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:utilities/utilities.dart';
 import 'package:utilities_admin_flutter/core/core.dart';
 import 'package:utilities_admin_flutter/generated/l10n.dart';
-import 'package:utilities_admin_flutter/views/pages/main/main_page.dart';
 import 'package:utilities_admin_flutter/views/pages/splash/splash_page.dart';
 
 Future<void> main() async {

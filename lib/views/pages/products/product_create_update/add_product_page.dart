@@ -20,9 +20,14 @@ class _AddProductPageState extends State<AddProductPage> with AddProductControll
   @override
   void initState() {
     dto = widget.dto;
+    if (dto != null) {
+      dto!.tags!.forEach((final int _element) {
+        selectedProductTag(TagProduct.values.where((final TagProduct element) => element.number == _element).toList().first.number);
+      });
+    }
     isFromInstagram = widget.isFromInstagram ?? false;
     getProductById(id: dto?.id);
-    images = dto?.media.getImages() ?? widget.images;
+    images = dto?.media;
     imageCropFiles = imageFiles;
     if ((images ?? <String>[]).isNotEmpty) {
       // addToImageFile(images ?? <String>[], () {
@@ -31,9 +36,8 @@ class _AddProductPageState extends State<AddProductPage> with AddProductControll
       //   init();
       //   setState(() {});
       // });
-    } else {
-      init();
-    }
+    } else {}
+    init();
 
     super.initState();
   }
@@ -80,6 +84,23 @@ class _AddProductPageState extends State<AddProductPage> with AddProductControll
                             ],
                             onChanged: selectSubCategory,
                           )).paddingSymmetric(vertical: 8),
+                      if (dto != null)
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            const Text('وضعیت').bodyLarge().marginSymmetric(horizontal: 16),
+                            DropdownButtonFormField<int>(
+                              value: selectedProductTag.value,
+                              items: <DropdownMenuItem<int>>[
+                                DropdownMenuItem<int>(value: TagProduct.all.number, child: const Text("انتخاب")),
+                                DropdownMenuItem<int>(value: TagProduct.released.number, child: const Text("منتشر شده")),
+                                DropdownMenuItem<int>(value: TagProduct.notAccepted.number, child: const Text("رد شده")),
+                                DropdownMenuItem<int>(value: TagProduct.inQueue.number, child: const Text("در انتظار بررسی")),
+                              ],
+                              onChanged: selectedProductTag,
+                            ).container(width: 200, margin: const EdgeInsets.all(8)),
+                          ],
+                        ),
                       textField(text: "عنوان", controller: controllerTitle, validator: validateNotEmpty()).marginSymmetric(vertical: 8),
                       const SizedBox(height: 8),
                       const Text("افزودن تصویر"),
@@ -87,9 +108,30 @@ class _AddProductPageState extends State<AddProductPage> with AddProductControll
                         scrollDirection: Axis.horizontal,
                         child: Row(
                           children: <Widget>[
-                            ...imageCropFiles
-                                .mapIndexed((final int index, final CroppedFile item) => _items(path: item, originalPath: imageFiles[index], index: index).marginSymmetric(horizontal: 4))
+                            ...(images ?? <String>[])
+                                .mapIndexed((final int index, final MediaReadDto e) => Column(
+                                      children: <Widget>[
+                                        Stack(
+                                          children: <Widget>[
+                                            image(e.url, width: 128, height: 128, borderRadius: 8),
+                                            const Icon(
+                                              Icons.close_outlined,
+                                              size: 18,
+                                              color: Colors.white,
+                                            ).container(width: 22, height: 22, backgroundColor: Colors.red, radius: 50).marginAll(4).onTap(() {
+                                              listOfDeleteImage.add(e.id!);
+                                              images!.removeAt(index);
+                                              setState(() {});
+                                            }),
+                                          ],
+                                        ).marginSymmetric(horizontal: 8),
+                                        const SizedBox(
+                                          height: 30,
+                                        )
+                                      ],
+                                    ))
                                 .toList(),
+                            ...imageCropFiles.mapIndexed((final int index, final CroppedFile item) => _items(path: item, originalPath: imageFiles[index], index: index).marginSymmetric(horizontal: 4)).toList(),
                             Container(
                               child: Icon(Icons.add, size: 60, color: context.theme.dividerColor)
                                   .container(
@@ -125,9 +167,9 @@ class _AddProductPageState extends State<AddProductPage> with AddProductControll
                       ).paddingSymmetric(vertical: 8),
                       if (Core.user.tags!.contains(TagUser.adminProductUpdate.number))
                         button(
-                        title: "ثبت",
-                        onTap: () => createUpdate(action: () => widget.action?.call()),
-                      ).paddingOnly(bottom: 40),
+                          title: "ثبت",
+                          onTap: () => createUpdate(action: () => widget.action?.call()),
+                        ).paddingOnly(bottom: 40),
                     ],
                   ).paddingOnly(top: 8, right: 16, left: 16, bottom: 50),
                 ),
@@ -152,7 +194,7 @@ class _AddProductPageState extends State<AddProductPage> with AddProductControll
               }),
             ],
           ).marginSymmetric(horizontal: 4).onTap(() {
-            push(ImagePreviewPage(images!, currentIndex: index));
+            push(ImagePreviewPage(images!.map((final MediaReadDto e) => e.url).toList(), currentIndex: index));
           }),
           const SizedBox(height: 8),
           SizedBox(

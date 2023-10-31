@@ -2,9 +2,10 @@ import 'dart:io';
 
 import 'package:utilities/utilities.dart';
 import 'package:utilities_admin_flutter/core/core.dart';
-import 'package:utilities_admin_flutter/views/widget/image_preview_page.dart';
 
 mixin CategoryController {
+  final CategoryDataSource _categoryDataSource = CategoryDataSource(baseUrl: AppConstants.baseUrl);
+  final MediaDataSource _mediaDataSource = MediaDataSource(baseUrl: AppConstants.baseUrl);
   Rx<PageState> state = PageState.initial.obs;
 
   final RxList<CategoryReadDto> list = <CategoryReadDto>[].obs;
@@ -13,8 +14,6 @@ mixin CategoryController {
 
   final TextEditingController controllerTitle = TextEditingController();
   final TextEditingController controllerTitleTr1 = TextEditingController();
-
-  final CategoryDataSource _categoryDataSource = CategoryDataSource(baseUrl: AppConstants.baseUrl);
 
   void init() {
     if (dto == null) {
@@ -30,9 +29,9 @@ mixin CategoryController {
         list
             .where(
               (final CategoryReadDto i) =>
-                  (i.title ?? "").toLowerCase().contains(controllerTitle.text.toLowerCase()) &&
+                  (i.title ?? "").toLowerCase().contains(controllerTitle.text.toLowerCase()) ||
                   (i.titleTr1 ?? "").toLowerCase().contains(
-                        controllerTitleTr1.text.toLowerCase(),
+                        controllerTitle.text.toLowerCase(),
                       ),
             )
             .toList(),
@@ -64,6 +63,8 @@ mixin CategoryController {
                 snackbarGreen(title: "", subtitle: "حذف دسته بندی ${dto.title} انجام شد");
                 list.removeWhere((final CategoryReadDto i) => i.id == dto.id);
                 filteredList.removeWhere((final CategoryReadDto i) => i.id == dto.id);
+                back();
+                dismissEasyLoading();
               },
               onError: (final GenericResponse<dynamic> response) {},
             );
@@ -71,8 +72,9 @@ mixin CategoryController {
         ),
       );
 
-  RxList<CroppedFile> imageFiles = <CroppedFile>[].obs;
-  RxList<CroppedFile> imageCropFiles = <CroppedFile>[].obs;
+  RxList<String> imageUrls = <String>[].obs;
+  Rx<CroppedFile> baseCropFiles = CroppedFile('').obs;
+  Rx<CroppedFile> cropFiles = CroppedFile('').obs;
 
   void create({required final VoidCallback action, final CategoryReadDto? dto}) {
     final TextEditingController controllerTitle = TextEditingController();
@@ -92,21 +94,12 @@ mixin CategoryController {
             child: Obx(() => state.isLoaded()
                 ? Row(
                     children: <Widget>[
-                      ...imageCropFiles.mapIndexed((final int index, final CroppedFile item) => _items(path: item, originalPath: imageFiles[index],
-                          index: index, action: action).marginSymmetric(horizontal: 4)).toList(),
-                      Container(
-                        child: Icon(Icons.add, size: 60, color: context.theme.dividerColor)
-                            .container(
-                              radius: 10,
-                              borderColor: context.theme.dividerColor,
-                              width: 100,
-                              height: 100,
-                            )
-                            .onTap(
+                      if (cropFiles.value.path != '')
+                        _items(path: cropFiles.value, originalPath: baseCropFiles.value, action: action).marginSymmetric(horizontal: 4).onTap(
                               () => cropImageCrop(
                                 result: (final CroppedFile cropped) {
-                                  imageFiles.add(cropped);
-                                  imageCropFiles.add(cropped);
+                                  cropFiles(cropped);
+                                  baseCropFiles(cropped);
 
                                   action();
                                   debugPrint("DDDD");
@@ -114,12 +107,35 @@ mixin CategoryController {
                                   // result(cropperFiles);
                                 },
                               ),
-                            ),
-                      ),
+                            )
+                      // ...imageCropFiles.mapIndexed((final int index, final CroppedFile item) =>).toList(),
+                      else
+                        Container(
+                          child: Icon(Icons.add, size: 60, color: context.theme.dividerColor)
+                              .container(
+                                radius: 10,
+                                borderColor: context.theme.dividerColor,
+                                width: 100,
+                                height: 100,
+                              )
+                              .onTap(
+                                () => cropImageCrop(
+                                  result: (final CroppedFile cropped) {
+                                    cropFiles(cropped);
+                                    baseCropFiles(cropped);
+
+                                    action();
+                                    debugPrint("DDDD");
+                                    // cropperCropFiles.add(cropped);
+                                    // result(cropperFiles);
+                                  },
+                                ),
+                              ),
+                        ),
                     ],
                   )
                 : const SizedBox()),
-          ),
+          ).marginOnly(bottom: 8),
           button(
             width: 400,
             title: "ثبت",
@@ -133,34 +149,32 @@ mixin CategoryController {
                   tags: <int>[TagCategory.category.number],
                 ),
                 onResponse: (final GenericResponse<CategoryReadDto> response) {
-                  imageCropFiles.forEach((final CroppedFile i) async {
-                    if (isWeb) {
-                      await GetConnect().post(
-                        "https://api.sinamn75.com/api/Media",
-                        FormData(<String, dynamic>{
-                          'Files': MultipartFile(await i.readAsBytes(), filename: ':).png'),
-                          "categoryId": response.result!.id,
-                        }),
-                        headers: <String, String>{"Authorization": getString(UtilitiesConstants.token) ?? ""},
-                        contentType: "multipart/form-data",
-                      );
-                    } else {
-                      await GetConnect().post(
-                        //
-                        "https://api.sinamn75.com/api/Media",
-                        FormData(<String, dynamic>{
-                          // 'Files': MultipartFile(i.path, filename: ':).png'),
-                          'Files': MultipartFile(File(i.path), filename: ':).png'),
-                          "categoryId": response.result!.id,
-                        }),
-                        headers: <String, String>{"Authorization": getString(UtilitiesConstants.token) ?? ""},
-                        contentType: "multipart/form-data",
-                      );
-                    }
-                  });
+                  if (isWeb) {
+                    GetConnect().post(
+                      "https://api.sinamn75.com/api/Media",
+                      FormData(<String, dynamic>{
+                        'Files': MultipartFile(File(cropFiles.value.path).readAsBytes(), filename: ':).png'),
+                        "CategoryId": response.result!.id,
+                      }),
+                      headers: <String, String>{"Authorization": getString(UtilitiesConstants.token) ?? ""},
+                      contentType: "multipart/form-data",
+                    );
+                  } else {
+                    GetConnect().post(
+                      //
+                      "https://api.sinamn75.com/api/Media",
+                      FormData(<String, dynamic>{
+                        // 'Files': MultipartFile(i.path, filename: ':).png'),
+                        'Files': MultipartFile(File(cropFiles.value.path), filename: ':).png'),
+                        "CategoryId": response.result!.id,
+                      }),
+                      headers: <String, String>{"Authorization": getString(UtilitiesConstants.token) ?? ""},
+                      contentType: "multipart/form-data",
+                    );
+                  }
 
-                  imageFiles.clear();
-                  imageCropFiles.clear();
+                  cropFiles(CroppedFile(''));
+                  baseCropFiles(CroppedFile(''));
 
                   if (dto != null) {
                     filteredList.add(response.result!);
@@ -180,9 +194,10 @@ mixin CategoryController {
     );
   }
 
-  void update({required final CategoryReadDto dto, required final int index}) {
+  void update({required final CategoryReadDto dto, required final int index, required final VoidCallback action}) {
     final TextEditingController controllerTitle = TextEditingController(text: dto.title);
-    final TextEditingController controllerTitleTr1 = TextEditingController(text: dto.title);
+    final TextEditingController controllerTitleTr1 = TextEditingController(text: dto.titleTr1);
+    final List<String> listOfDeleteImage = <String>[];
     bottomSheet(
       child: column(
         mainAxisSize: MainAxisSize.min,
@@ -191,6 +206,40 @@ mixin CategoryController {
           if ((dto.media ?? <MediaReadDto>[]).isNotEmpty) image((dto.media.imagesUrl() ?? <String>[]).firstOrNull ?? AppImages.logo),
           textField(text: "عنوان", controller: controllerTitle),
           textField(text: "عنوان انگلیسی", controller: controllerTitleTr1),
+          const Text("افزودن تصویر"),
+          SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Obx(() => state.isLoaded()
+                ? Row(
+                    children: <Widget>[
+                      if (cropFiles.value.path != '')
+                        _items(path: cropFiles.value, originalPath: baseCropFiles.value, action: action).marginSymmetric(horizontal: 4).onTap(
+                              () => cropImageCrop(
+                                result: (final CroppedFile cropped) {
+                                  cropFiles(cropped);
+                                  baseCropFiles(cropped);
+
+                                  action();
+                                  debugPrint("DDDD");
+                                  // cropperCropFiles.add(cropped);
+                                  // result(cropperFiles);
+                                },
+                              ),
+                            )
+                      else
+                        // ...imageCropFiles.mapIndexed((final int index, final CroppedFile item) => _items(path: item, originalPath: imageFiles[index], index: index, action: action).marginSymmetric(horizontal: 4)).toList(),
+                        Container(
+                          child: Icon(Icons.add, size: 60, color: context.theme.dividerColor).container(
+                            radius: 10,
+                            borderColor: context.theme.dividerColor,
+                            width: 100,
+                            height: 100,
+                          ),
+                        ),
+                    ],
+                  )
+                : const SizedBox()),
+          ).marginOnly(bottom: 18),
           button(
             width: 400,
             title: "ثبت",
@@ -199,6 +248,41 @@ mixin CategoryController {
               _categoryDataSource.update(
                 dto: CategoryCreateUpdateDto(id: dto.id, title: controllerTitle.text, titleTr1: controllerTitleTr1.text),
                 onResponse: (final GenericResponse<CategoryReadDto> response) {
+                  listOfDeleteImage.forEach((final String element) {
+                    _mediaDataSource.delete(
+                      id: element,
+                      onResponse: (final GenericResponse<dynamic> p0) {},
+                      onError: (final GenericResponse<dynamic> errorResponse) {},
+                    );
+                  });
+
+                  if (isWeb) {
+                    GetConnect().post(
+                      "https://api.sinamn75.com/api/Media",
+                      FormData(<String, dynamic>{
+                        'Files': MultipartFile(cropFiles.value.readAsBytes(), filename: ':).png'),
+                        "categoryId": response.result!.id,
+                      }),
+                      headers: <String, String>{"Authorization": getString(UtilitiesConstants.token) ?? ""},
+                      contentType: "multipart/form-data",
+                    );
+                  } else {
+                    GetConnect().post(
+                      //
+                      "https://api.sinamn75.com/api/Media",
+                      FormData(<String, dynamic>{
+                        // 'Files': MultipartFile(i.path, filename: ':).png'),
+                        'Files': MultipartFile(File(cropFiles.value.path), filename: ':).png'),
+                        "categoryId": response.result!.id,
+                      }),
+                      headers: <String, String>{"Authorization": getString(UtilitiesConstants.token) ?? ""},
+                      contentType: "multipart/form-data",
+                    );
+                  }
+
+                  cropFiles(CroppedFile(''));
+                  baseCropFiles(CroppedFile(''));
+
                   filteredList.removeAt(index);
                   filteredList.insert(index, response.result!);
                   dismissEasyLoading();
@@ -214,43 +298,48 @@ mixin CategoryController {
     );
   }
 
-  Widget _items({required final CroppedFile path, required final CroppedFile originalPath, required final int index, required final VoidCallback action}) => Column(
+  Widget _items({required final VoidCallback action, final CroppedFile? path, final CroppedFile? originalPath, final String? url}) => Column(
         children: <Widget>[
           Stack(
             alignment: Alignment.topRight,
             children: <Widget>[
               // Image.network(originalPath.path, width: 128, height: 128, borderRadius: 16),
-              Image.network(path.path, width: 128, height: 128),
+              Image.network(url ?? path!.path, width: 128, height: 128),
               const Icon(
                 Icons.close_outlined,
                 size: 18,
                 color: Colors.white,
               ).container(width: 22, height: 22, backgroundColor: Colors.red, radius: 50).marginAll(4).onTap(() {
-                imageFiles.removeAt(index);
+                cropFiles(CroppedFile(''));
                 action();
               }),
             ],
           ).marginSymmetric(horizontal: 4).onTap(() {
-            push(ImagePreviewPage(imageFiles.map((final CroppedFile e) => e.path).toList(), currentIndex: index));
+            // push(ImagePreviewPage(imageFiles.map((final CroppedFile e) => e.path).toList(), currentIndex: index));
           }),
           const SizedBox(height: 8),
-          SizedBox(
-            child: button(
-              title: 'کراپ',
-              width: 100,
-              onTap: () async {
-                final CroppedFile? croppedFile = await ImageCropper().cropImage(
-                  sourcePath: originalPath.path,
-                  aspectRatio: const CropAspectRatio(ratioX: 1, ratioY: 1),
-                  uiSettings: <PlatformUiSettings>[
-                    WebUiSettings(context: context, enforceBoundary: true, enableExif: true, enableZoom: true, showZoomer: true),
-                  ],
-                );
-                imageCropFiles[index] = croppedFile!;
-                action();
-              },
+          if (originalPath != null)
+            SizedBox(
+              child: button(
+                title: 'کراپ',
+                width: 100,
+                onTap: () async {
+                  final CroppedFile? croppedFile = await ImageCropper().cropImage(
+                    sourcePath: originalPath.path,
+                    aspectRatio: const CropAspectRatio(ratioX: 1, ratioY: 1),
+                    uiSettings: <PlatformUiSettings>[
+                      WebUiSettings(context: context, enforceBoundary: true, enableExif: true, enableZoom: true, showZoomer: true),
+                    ],
+                  );
+                  cropFiles(croppedFile);
+                  action();
+                },
+              ),
+            )
+          else
+            const SizedBox(
+              height: 40,
             ),
-          ),
         ],
       );
 

@@ -58,6 +58,7 @@ mixin ProductController {
         categories: <String>[selectedCategory.value.id, selectedSubCategory.value.id],
         showCategories: true,
         showChildren: true,
+        showMedia: true,
         showVisitProducts: true,
         tags: tags,
       ),

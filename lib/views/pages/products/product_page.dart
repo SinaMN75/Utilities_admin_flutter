@@ -1,6 +1,7 @@
 import 'package:utilities/components/pagination.dart';
 import 'package:utilities/utilities.dart';
 import 'package:utilities_admin_flutter/views/pages/products/product_controller.dart';
+import 'package:utilities_admin_flutter/views/widget/image_preview_page.dart';
 
 class ProductPage extends StatefulWidget {
   const ProductPage({super.key});
@@ -49,9 +50,17 @@ class _ProductPageState extends State<ProductPage> with ProductController {
                                   cells: <DataCell>[
                                     DataCell(Text(index.toString()).bodyLarge().paddingAll(8)),
                                     DataCell(
-                                      Text(
-                                        "${i.categories!.firstWhereOrNull((final CategoryReadDto i) => i.parentId == null)?.title ?? ""} / ${i.categories!.firstWhereOrNull((final CategoryReadDto i) => i.parentId != null)?.title ?? ""}",
-                                      ).bodyLarge().paddingAll(8),
+                                      Row(
+                                        children: <Widget>[
+                                          image(i.media.getImage(),width: 32,height: 32).onTap(() {
+                                            push(ImagePreviewPage(i.media!.map((final MediaReadDto e) => e.url).toList()));
+                                          }),
+                                          Text(
+                                            "${i.categories!.firstWhereOrNull((final CategoryReadDto i) => i.parentId == null)?.title ?? ""} / ${i.categories!.firstWhereOrNull((final CategoryReadDto i) => i.parentId != null)?.title ?? ""}",
+                                          ).bodyLarge().paddingAll(8),
+
+                                        ],
+                                      ),
                                     ),
                                     DataCell(Text(i.title ?? "").bodyLarge().paddingAll(8)),
                                     DataCell(Text((i.children ?? <ProductReadDto>[]).map((final ProductReadDto e) => e.title).toList().toString())),
@@ -100,47 +109,78 @@ class _ProductPageState extends State<ProductPage> with ProductController {
 
   Widget _filters() => Wrap(
         crossAxisAlignment: WrapCrossAlignment.center,
+        alignment: WrapAlignment.center,
         children: <Widget>[
-          textField(hintText: "عنوان", controller: controllerTitle).container(width: 300),
-          DropdownButtonFormField<int>(
-            value: selectedProductTag.value,
-            items: <DropdownMenuItem<int>>[
-              DropdownMenuItem<int>(value: TagProduct.all.number, child: const Text("همه")),
-              DropdownMenuItem<int>(value: TagProduct.released.number, child: const Text("منتشر شده")),
-              DropdownMenuItem<int>(value: TagProduct.notAccepted.number, child: const Text("رد شده")),
-              DropdownMenuItem<int>(value: TagProduct.inQueue.number, child: const Text("در انتظار بررسی")),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              const Text('عنوان').bodyLarge().marginSymmetric(horizontal: 16),
+              const SizedBox(height: 8),
+              textField(hintText: "عنوان", controller: controllerTitle).container(width: 300),
             ],
-            onChanged: selectedProductTag,
-          ).container(width: 200, margin: const EdgeInsets.all(8)),
-          DropdownButtonFormField<CategoryReadDto>(
-            value: selectedCategory.value,
-            items: <DropdownMenuItem<CategoryReadDto>>[
-              ...categories
-                  .map(
-                    (final CategoryReadDto e) => DropdownMenuItem<CategoryReadDto>(
-                      value: e,
-                      child: Text(e.title ?? ""),
-                    ),
-                  )
-                  .toList(),
+          ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              const Text('وضعیت').bodyLarge().marginSymmetric(horizontal: 16),
+              DropdownButtonFormField<int>(
+                value: selectedProductTag.value,
+                items: <DropdownMenuItem<int>>[
+                  DropdownMenuItem<int>(value: TagProduct.all.number, child: const Text("همه")),
+                  DropdownMenuItem<int>(value: TagProduct.released.number, child: const Text("منتشر شده")),
+                  DropdownMenuItem<int>(value: TagProduct.notAccepted.number, child: const Text("رد شده")),
+                  DropdownMenuItem<int>(value: TagProduct.inQueue.number, child: const Text("در انتظار بررسی")),
+                ],
+                onChanged: selectedProductTag,
+              ).container(width: 200, margin: const EdgeInsets.all(8)),
             ],
-            onChanged: selectCategory,
-          ).container(width: 250, margin: const EdgeInsets.all(8)),
-          DropdownButtonFormField<CategoryReadDto>(
-            value: selectedSubCategory.value,
-            items: <DropdownMenuItem<CategoryReadDto>>[
-              ...subCategories
-                  .map(
-                    (final CategoryReadDto e) => DropdownMenuItem<CategoryReadDto>(
-                      value: e,
-                      child: Text(e.title ?? ""),
-                    ),
-                  )
-                  .toList(),
+          ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              const Text('مجموعه').bodyLarge().marginSymmetric(horizontal: 16),
+              DropdownButtonFormField<CategoryReadDto>(
+                value: selectedCategory.value,
+                items: <DropdownMenuItem<CategoryReadDto>>[
+                  ...categories
+                      .map(
+                        (final CategoryReadDto e) => DropdownMenuItem<CategoryReadDto>(
+                          value: e,
+                          child: Text(e.title ?? ""),
+                        ),
+                      )
+                      .toList(),
+                ],
+                onChanged: selectCategory,
+              ).container(width: 250, margin: const EdgeInsets.all(8)),
             ],
-            onChanged: (final CategoryReadDto? value) {},
-          ).container(width: 250, margin: const EdgeInsets.all(8)),
-          button(title: "فیلتر", onTap: read, width: 200),
+          ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              const Text('زیر مجموعه').bodyLarge().marginSymmetric(horizontal: 16),
+              DropdownButtonFormField<CategoryReadDto>(
+                value: selectedSubCategory.value,
+                items: <DropdownMenuItem<CategoryReadDto>>[
+                  ...subCategories
+                      .map(
+                        (final CategoryReadDto e) => DropdownMenuItem<CategoryReadDto>(
+                          value: e,
+                          child: Text(e.title ?? ""),
+                        ),
+                      )
+                      .toList(),
+                ],
+                onChanged: (final CategoryReadDto? value) {},
+              ).container(width: 250, margin: const EdgeInsets.all(8)),
+            ],
+          ),
+          Column(
+            children: <Widget>[
+              const Text(' '),
+              button(title: "فیلتر", onTap: read, width: 200),
+            ],
+          ),
         ],
       );
 }
