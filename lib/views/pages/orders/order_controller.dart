@@ -8,9 +8,9 @@ mixin OrderController {
   final RxList<OrderReadDto> filteredList = <OrderReadDto>[].obs;
 
   final TextEditingController controllerTitle = TextEditingController();
-  final RxInt selectedOrderTag = TagOrder.paid.number.obs;
+  final RxInt selectedOrderTag = TagOrder.all.number.obs;
 
-  int pageNumber = 1;//
+  int pageNumber = 1; //
   int pageCount = 0;
 
   final OrderDataSource _dataSource = OrderDataSource(baseUrl: AppConstants.baseUrl);
@@ -28,7 +28,7 @@ mixin OrderController {
       dto: OrderFilterDto(
         pageSize: 20,
         pageNumber: pageNumber,
-        tags: selectedOrderTag.value == 0 ? null : <int>[selectedOrderTag.value],
+        tags: selectedOrderTag.value == TagOrder.all.number ? <int>[] : <int>[selectedOrderTag.value],
       ),
       onResponse: (final GenericResponse<OrderReadDto> response) {
         pageCount = response.pageCount!;
@@ -37,6 +37,19 @@ mixin OrderController {
         state.loaded();
       },
       onError: (final GenericResponse<dynamic> response) {},
+    );
+  }
+
+  void update({required final OrderCreateUpdateDto dto}) {
+    //
+    _dataSource.update(
+      dto: dto,
+      onResponse: (final GenericResponse<OrderReadDto> response) {//
+      },
+      onError: (final GenericResponse<dynamic> errorResponse) {
+      },
+      failure: (final String error) {
+      },
     );
   }
 }
