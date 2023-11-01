@@ -40,7 +40,8 @@ class _CommentsPageState extends State<CommentsPage> with CommentsController {
                         ],
                         rows: <DataRow>[
                           ...list.mapIndexed(
-                            (final int index, final CommentReadDto i) {//
+                            (final int index, final CommentReadDto i) {
+                              //
                               final Rx<TagComment> selectedCommentTag = TagComment.inQueue.obs;
                               if (i.tags!.contains(TagComment.inQueue.number)) selectedCommentTag(TagComment.inQueue);
                               if (i.tags!.contains(TagComment.rejected.number)) selectedCommentTag(TagComment.rejected);
@@ -50,8 +51,11 @@ class _CommentsPageState extends State<CommentsPage> with CommentsController {
                                   DataCell(Text(index.toString()).bodyLarge().paddingAll(8)),
                                   DataCell(Text(i.user?.firstName ?? "").bodyLarge().paddingAll(8)),
                                   DataCell(Text(i.user?.firstName ?? "").bodyLarge().paddingAll(8)),
-                                  DataCell(Text(i.comment ?? "").bodyLarge().paddingAll(8)),
-                                  DataCell(Text(UtilitiesTagUtils.tagCommentsTitleFromTagList(i.tags!)).bodyLarge().paddingAll(8)),
+                                  DataCell(const Text("نمایش نظر")
+                                      .bodyLarge(color: context.theme.primaryColor)
+                                      .paddingAll(8)
+                                      .onTap(() => alertDialog(title: "", subtitle: i.comment ?? "", action1: ("باشه", back)))),
+                                  DataCell(Text(UtilitiesTagUtils.tagCommentsTitleFromTagList(i.tags!)).bodyLarge().fit().paddingAll(8)),
                                   // if (Core.user.tags!.contains(TagUser.adminCommentUpdate.number))
                                   DataCell(
                                     Row(
@@ -80,7 +84,7 @@ class _CommentsPageState extends State<CommentsPage> with CommentsController {
                                             selectedCommentTag(value);
                                             update(dto: CommentCreateUpdateDto(id: i.id, tags: <int>[value!.number]));
                                           },
-                                        ).container(width: 15),
+                                        ).container(width: 150),
                                       ],
                                     ),
                                   ),
