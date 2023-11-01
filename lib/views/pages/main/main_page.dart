@@ -75,12 +75,6 @@ class _MainPageState extends State<MainPage> with MainController {
                 route: MainPageType.transaction.title,
                 icon: Icons.credit_card_outlined,
               ),
-            if (Core.user.tags!.contains(TagUser.adminTransactionRead.number))
-              AdminMenuItem(
-                title: "درخواست‌های برداشت",
-                route: MainPageType.withdrawal.title,
-                icon: Icons.attach_money_outlined,
-              ),
             if (Core.user.tags!.contains(TagUser.adminOrderRead.number))
               AdminMenuItem(
                 title: "سفارشات",

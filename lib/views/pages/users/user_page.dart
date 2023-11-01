@@ -45,7 +45,12 @@ class _UserPageState extends State<UserPage> with UserController {
                                 (final int index, final UserReadDto i) => DataRow(
                                   cells: <DataCell>[
                                     DataCell(Text(index.toString()).bodyLarge().paddingAll(8)),
-                                    DataCell(Text(i.firstName ?? "").bodyLarge().paddingAll(8)),
+                                    DataCell(Row(
+                                      children: <Widget>[
+                                        image(i.media.getImage(),width: 32,height: 32),
+                                        Text(i.firstName ?? "").bodyLarge().paddingAll(8),
+                                      ],
+                                    )),
                                     DataCell(Text(i.lastName ?? "").bodyLarge().paddingAll(8)),
                                     DataCell(Text(i.appUserName ?? "").bodyLarge().paddingAll(8)),
                                     DataCell(Text(i.jsonDetail?.instagram ?? "").bodyLarge().paddingAll(8)),

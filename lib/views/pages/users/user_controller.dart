@@ -33,6 +33,7 @@ mixin UserController {
         lastName: controllerLastName.text.nullIfEmpty(),
         phoneNumber: controllerPhoneNumber.text.nullIfEmpty(),
         appUserName: controllerUserName.text.nullIfEmpty(),
+        showMedia: true,
         pageSize: 20,
         pageNumber: pageNumber,
       ),
