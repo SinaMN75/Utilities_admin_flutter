@@ -4,6 +4,9 @@ import 'package:utilities_admin_flutter/core/core.dart';
 mixin TransactionsController {
   Rx<PageState> state = PageState.initial.obs;
 
+
+  final RxInt selectedTransactionTag = TagProduct.all.number.obs;
+
   final RxList<TransactionReadDto> list = <TransactionReadDto>[].obs;
   final RxList<TransactionReadDto> filteredList = <TransactionReadDto>[].obs;
 

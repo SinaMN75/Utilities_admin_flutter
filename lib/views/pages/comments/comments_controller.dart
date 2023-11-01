@@ -24,7 +24,7 @@ mixin CommentsController {
       dto: CommentFilterDto(
         pageSize: 20,
         pageNumber: pageNumber,
-        tags: selectedCommentTag.value == TagComment.all.number ? <int>[selectedCommentTag.value] : <int>[],
+        tags: selectedCommentTag.value != TagComment.all.number ? <int>[selectedCommentTag.value] : <int>[],
       ),
       onResponse: (final GenericResponse<CommentReadDto> response) {
         // pageCount = response.pageCount!;

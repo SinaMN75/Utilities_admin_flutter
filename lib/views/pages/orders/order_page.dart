@@ -29,9 +29,11 @@ class _OrderPageState extends State<OrderPage> with OrderController {
                     children: <Widget>[
                       _filters(),
                       DataTable(
+                        //
                         columns: const <DataColumn>[
                           DataColumn(label: Text("فروشنده")),
                           DataColumn(label: Text("خریدار")),
+                          DataColumn(label: Text("قیمت کل")),
                           DataColumn(label: Text("قیمت کل")),
                         ],
                         rows: list
@@ -40,7 +42,7 @@ class _OrderPageState extends State<OrderPage> with OrderController {
                                 cells: <DataCell>[
                                   DataCell(Text(i.productOwner?.fullName ?? "").bodyMedium()),
                                   DataCell(Text(i.user?.fullName ?? "").bodyMedium()),
-                                  DataCell(Text(i.totalPrice.toTomanMoneyPersian()).bodyMedium()),
+                                  DataCell(dropDownWidget(i)),
                                 ],
                               ),
                             )
@@ -80,4 +82,22 @@ class _OrderPageState extends State<OrderPage> with OrderController {
           button(title: "فیلتر", onTap: read, width: 200),
         ],
       );
+
+  // ignore: prefer_expression_function_bodies
+  Widget dropDownWidget(final OrderReadDto i) {
+
+
+    return DropdownButtonFormField<int>(
+      value: selectedOrderTag.value,
+      items: <DropdownMenuItem<int>>[
+        const DropdownMenuItem<int>(value: 0, child: Text("همه")),
+        DropdownMenuItem<int>(value: TagOrder.paid.number, child: const Text("پرداخت شده")),
+        DropdownMenuItem<int>(value: TagOrder.inProcess.number, child: const Text("درحال بررسی")),
+        DropdownMenuItem<int>(value: TagOrder.shipping.number, child: const Text("در حال ارسال")),
+        DropdownMenuItem<int>(value: TagOrder.complete.number, child: const Text("تحویل شده")),
+        DropdownMenuItem<int>(value: TagOrder.complete.number, child: const Text("اختلاف")),
+      ],
+      onChanged: selectedOrderTag,
+    ).container(width: 200, margin: const EdgeInsets.all(10));
+  }
 }

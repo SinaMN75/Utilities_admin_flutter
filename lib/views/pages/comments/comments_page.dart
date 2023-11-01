@@ -40,8 +40,8 @@ class _CommentsPageState extends State<CommentsPage> with CommentsController {
                         ],
                         rows: <DataRow>[
                           ...list.mapIndexed(
-                            (final int index, final CommentReadDto i) {
-                              final Rx<TagComment> selectedCommentTag = TagComment.all.obs;
+                            (final int index, final CommentReadDto i) {//
+                              final Rx<TagComment> selectedCommentTag = TagComment.inQueue.obs;
                               if (i.tags!.contains(TagComment.inQueue.number)) selectedCommentTag(TagComment.inQueue);
                               if (i.tags!.contains(TagComment.rejected.number)) selectedCommentTag(TagComment.rejected);
                               if (i.tags!.contains(TagComment.released.number)) selectedCommentTag(TagComment.released);
@@ -79,7 +79,7 @@ class _CommentsPageState extends State<CommentsPage> with CommentsController {
                                           onChanged: (final TagComment? value) {
                                             update(dto: CommentCreateUpdateDto(id: i.id, tags: <int>[value!.number]));
                                           },
-                                        ).container(width: 150),
+                                        ).container(width: 15),
                                       ],
                                     ),
                                   ),
