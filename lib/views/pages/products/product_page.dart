@@ -36,7 +36,7 @@ class _ProductPageState extends State<ProductPage> with ProductController {
                       DataTable(
                         columns: <DataColumn>[
                           DataColumn(label: const Text("ردیف").headlineSmall()),
-                          DataColumn(label: const Text("دسته بندی").headlineSmall()),
+                          DataColumn(label: const Text("دسته بندی و زیر دسته").headlineSmall()),
                           DataColumn(label: const Text("عنوان").headlineSmall()),
                           DataColumn(label: const Text("مشخصات").headlineSmall()),
                           DataColumn(label: const Text("وضعیت").headlineSmall()),

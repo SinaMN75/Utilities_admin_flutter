@@ -37,6 +37,7 @@ class _UserPageState extends State<UserPage> with UserController {
                           DataColumn(label: const Text("نام کاربری").headlineSmall()),
                           DataColumn(label: const Text("آیدی اینستاگرام").headlineSmall()),
                           DataColumn(label: const Text("شماره موبایل").headlineSmall()),
+                          DataColumn(label: const Text("وضعیت").headlineSmall()),
                           if (Core.user.tags!.contains(TagUser.adminCategoryUpdate.number)) DataColumn(label: const Text("عملیات").headlineSmall()),
                         ],
                         rows: <DataRow>[
@@ -47,7 +48,7 @@ class _UserPageState extends State<UserPage> with UserController {
                                     DataCell(Text(index.toString()).bodyLarge().paddingAll(8)),
                                     DataCell(Row(
                                       children: <Widget>[
-                                        image(i.media.getImage(),width: 32,height: 32),
+                                        image(i.media.getImage(), width: 32, height: 32),
                                         Text(i.firstName ?? "").bodyLarge().paddingAll(8),
                                       ],
                                     )),
@@ -55,6 +56,7 @@ class _UserPageState extends State<UserPage> with UserController {
                                     DataCell(Text(i.appUserName ?? "").bodyLarge().paddingAll(8)),
                                     DataCell(Text(i.jsonDetail?.instagram ?? "").bodyLarge().paddingAll(8)),
                                     DataCell(Text(i.phoneNumber ?? "").bodyLarge().paddingAll(8)),
+                                    DataCell(Text((i.suspend ?? false) ? "غیر فعال" : "فعال")),
                                     if (Core.user.tags!.contains(TagUser.adminCategoryUpdate.number))
                                       DataCell(
                                         IconButton(onPressed: () => edit(i), icon: const Icon(Icons.edit)),
@@ -87,6 +89,15 @@ class _UserPageState extends State<UserPage> with UserController {
           textField(hintText: "نام", controller: controllerFirstName).container(width: 300, padding: const EdgeInsets.symmetric(horizontal: 4)),
           textField(hintText: "نام خانوادگی", controller: controllerLastName).container(width: 300, padding: const EdgeInsets.symmetric(horizontal: 4)),
           textField(hintText: "شماره موبایل", controller: controllerPhoneNumber).container(width: 300, padding: const EdgeInsets.symmetric(horizontal: 4)),
+          textField(hintText: "نام کاربری", controller: controllerUserName).container(width: 300, padding: const EdgeInsets.symmetric(horizontal: 4)),
+          DropdownButtonFormField<bool>(
+            value: suspend.value,
+            items: const <DropdownMenuItem<bool>>[
+              DropdownMenuItem<bool>(value: false, child: Text("فعال")),
+              DropdownMenuItem<bool>(value: true, child: Text("غیر فعال")),
+            ],
+            onChanged: suspend,
+          ).container(width: 150),
           textField(hintText: "نام کاربری", controller: controllerUserName).container(width: 300, padding: const EdgeInsets.symmetric(horizontal: 4)),
           button(title: "فیلتر", onTap: filter, width: 200),
         ],
