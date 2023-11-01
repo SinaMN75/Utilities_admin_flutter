@@ -54,12 +54,40 @@ class _TransactionsPageState extends State<TransactionsPage> with TransactionsCo
                         rows: <DataRow>[
                           ...filteredList
                               .mapIndexed(
-                                (final int index, final ProductReadDto i) => DataRow(
+                                (final int index, final TransactionReadDto i) => DataRow(
                                   cells: <DataCell>[
                                     DataCell(Text(index.toString()).bodyLarge().paddingAll(8)),
-                                    DataCell(Text(i.title ?? "").bodyLarge().paddingAll(8)),
+                                    DataCell(Text(i.descriptions ?? "").bodyLarge().paddingAll(8).onTap(() {//
+                                      // push(TransactionDetailPage(transactionReadDto: TransactionReadDto()));
+                                      // bottomSheet(
+                                      //     child: SizedBox(
+                                      //   width: screenWidth,
+                                      //   child: const Column(
+                                      //     children: <Widget>[
+                                      //       Icon(Icons.access_time),
+                                      //       Icon(Icons.access_time),
+                                      //     ],
+                                      //   ),
+                                      // ));
+                                    })),
+                                    // DataCell(Text(i.descriptions ?? "").bodyLarge().paddingAll(8)),
                                     DataCell(
-                                      Text(UtilitiesTagUtils.tagProductTitleFromTagList(i.tags!)).bodyLarge().paddingAll(8),
+                                        Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: <Widget>[
+                                            const Text('وضعیت').bodyLarge().marginSymmetric(horizontal: 16),
+                                            DropdownButtonFormField<int>(
+                                              value: selectedTransactionTag.value,
+                                              items: <DropdownMenuItem<int>>[
+                                                DropdownMenuItem<int>(value: TagProduct.all.number, child: const Text("انتخاب")),
+                                                DropdownMenuItem<int>(value: TagProduct.released.number, child: const Text("منتشر شده")),
+                                                DropdownMenuItem<int>(value: TagProduct.notAccepted.number, child: const Text("رد شده")),
+                                                DropdownMenuItem<int>(value: TagProduct.inQueue.number, child: const Text("در انتظار بررسی")),
+                                              ],
+                                              onChanged: selectedTransactionTag,
+                                            ).container(width: 200, margin: const EdgeInsets.all(8)),
+                                          ],
+                                        ),
                                     ),
                                   ],
                                 ),
