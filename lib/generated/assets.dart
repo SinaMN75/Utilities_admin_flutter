@@ -75,6 +75,7 @@ class Assets {
   static const String splashSplashPage = 'lib/views/pages/splash/splash_page.dart';
   static const String termsTermsController = 'lib/views/pages/terms/terms_controller.dart';
   static const String termsTermsPage = 'lib/views/pages/terms/terms_page.dart';
+  static const String tractionsTransactionDetail = 'lib/views/pages/tractions/transaction_detail_page.dart';
   static const String tractionsTransactionsController = 'lib/views/pages/tractions/transactions_controller.dart';
   static const String tractionsTransactionsPage = 'lib/views/pages/tractions/transactions_page.dart';
   static const String userCreateUpdateUserCreateUpdateController = 'lib/views/pages/users/user_create_update/user_create_update_controller.dart';
@@ -83,7 +84,5 @@ class Assets {
   static const String usersUserPage = 'lib/views/pages/users/user_page.dart';
   static const String widgetImagePreviewPage = 'lib/views/widget/image_preview_page.dart';
   static const String widgetTable = 'lib/views/widget/table.dart';
-  static const String withdrawalWithdrawalController = 'lib/views/pages/withdrawal/withdrawal_controller.dart';
-  static const String withdrawalWithdrawalPage = 'lib/views/pages/withdrawal/withdrawal_page.dart';
 
 }

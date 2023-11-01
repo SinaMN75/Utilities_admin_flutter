@@ -13,7 +13,6 @@ import 'package:utilities_admin_flutter/views/pages/report/report_page.dart';
 import 'package:utilities_admin_flutter/views/pages/terms/terms_page.dart';
 import 'package:utilities_admin_flutter/views/pages/tractions/transactions_page.dart';
 import 'package:utilities_admin_flutter/views/pages/users/user_page.dart';
-import 'package:utilities_admin_flutter/views/pages/withdrawal/withdrawal_page.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
@@ -106,7 +105,7 @@ class _MainPageState extends State<MainPage> with MainController {
             if (item.route == MainPageType.productDetail.title) mainWidget(const BannersPage().container());
             if (item.route == MainPageType.user.title) mainWidget(const UserPage().container());
             if (item.route == MainPageType.order.title) mainWidget(const OrderPage().container());
-            if (item.route == MainPageType.withdrawal.title) mainWidget(const WithdrawalPage().container());
+            // if (item.route == MainPageType.withdrawal.title) mainWidget(const WithdrawalPage().container());
             if (item.route == "logout") logout();
             Get.forceAppUpdate();
           },
