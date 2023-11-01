@@ -12,6 +12,7 @@ mixin UserController {
   final TextEditingController controllerLastName = TextEditingController();
   final TextEditingController controllerPhoneNumber = TextEditingController();
   final TextEditingController controllerUserName = TextEditingController();
+  final RxBool suspend = false.obs;
 
   int pageNumber = 1;
   int pageCount = 0;
@@ -29,6 +30,7 @@ mixin UserController {
     state.loading();
     _dataSource.filter(
       dto: UserFilterDto(
+        showSuspend: suspend.value,
         firstName: controllerFirstName.text.nullIfEmpty(),
         lastName: controllerLastName.text.nullIfEmpty(),
         phoneNumber: controllerPhoneNumber.text.nullIfEmpty(),

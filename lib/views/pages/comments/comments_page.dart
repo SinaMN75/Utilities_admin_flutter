@@ -77,6 +77,7 @@ class _CommentsPageState extends State<CommentsPage> with CommentsController {
                                             ),
                                           ],
                                           onChanged: (final TagComment? value) {
+                                            selectedCommentTag(value);
                                             update(dto: CommentCreateUpdateDto(id: i.id, tags: <int>[value!.number]));
                                           },
                                         ).container(width: 15),

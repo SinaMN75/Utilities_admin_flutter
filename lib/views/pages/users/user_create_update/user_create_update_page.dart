@@ -101,6 +101,14 @@ class _UserCreateUpdatePageState extends State<UserCreateUpdatePage> with UserCr
               },
             ),
             const Divider(),
+            Obx(
+              () => iconTextHorizontal(
+                  leading: Switch(
+                    value: suspend.value,
+                    onChanged: suspend,
+                  ),
+                  trailing: const Text("غیر فعال کردن کاربر")),
+            ),
             const Text("دسترسی ادمین").headlineSmall().paddingSymmetric(vertical: 8),
             textField(text: "نام کاربری", controller: controllerAdminUserName),
             textField(text: "رمز عبور", controller: controllerPassword),

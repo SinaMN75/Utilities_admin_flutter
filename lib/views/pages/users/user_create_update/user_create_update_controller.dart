@@ -9,6 +9,8 @@ mixin UserCreateUpdateController {
   final UserDataSource _userDataSource = UserDataSource(baseUrl: AppConstants.baseUrl);
   final MediaDataSource _mediaDataSource = MediaDataSource(baseUrl: AppConstants.baseUrl);
 
+  RxBool suspend = false.obs;
+
   DateTime birthDate = DateTime.now();
   final Rx<GenderType> genderType = GenderType.male.obs;
   final TextEditingController controllerFirstName = TextEditingController();
@@ -63,6 +65,7 @@ mixin UserCreateUpdateController {
       genderType(GenderType.female);
 
     selectedAdminAccess(dto.tags);
+    suspend(dto.suspend);
   }
 
   void uploadProfileImage() async {
@@ -114,6 +117,7 @@ mixin UserCreateUpdateController {
         appPhoneNumber: controllerPhoneNumber.text,
         state: controllerState.text,
         instagram: controllerInstagram.text,
+        suspend: suspend.value,
         email: controllerAdminUserName.text,
         password: controllerPassword.text.isNotEmpty ? controllerPassword.text : null,
         tags: <int>[genderType.value.number, ...selectedAdminAccess],

@@ -26,7 +26,7 @@ class _CategoryPageState extends State<CategoryPage> with CategoryController {
         constraints: const BoxConstraints(),
         padding: const EdgeInsets.symmetric(horizontal: 20),
         appBar: AppBar(
-          title: const Text("دسته بندی‌ها"),
+          title: dto == null ? const Text("دسته بندی‌ها") : Text("زیر دسته های ${dto?.title}"),
           actions: <Widget>[
             IconButton(
                 onPressed: () => create(
@@ -34,7 +34,7 @@ class _CategoryPageState extends State<CategoryPage> with CategoryController {
                       action: () => setState(() {}), //
                     ),
                 icon: const Icon(Icons.add_box_outlined, size: 40)),
-            IconButton(onPressed: createCategoryFromExcel, icon: const Icon(Icons.grid_on_outlined, size: 40)),
+            IconButton(onPressed: createCategoryFromExcel, icon: const Icon(Icons.upload, size: 40)),
           ],
         ),
         body: Obx(
@@ -48,7 +48,6 @@ class _CategoryPageState extends State<CategoryPage> with CategoryController {
                           controller: controllerTitle,
                           onChanged: (final String value) => filter(),
                         ).expanded(),
-
                       ],
                     ),
                     const SizedBox(height: 20),
@@ -68,7 +67,7 @@ class _CategoryPageState extends State<CategoryPage> with CategoryController {
                                     DataCell(Text(index.toString()).bodyLarge().paddingAll(8)),
                                     DataCell(Row(
                                       children: <Widget>[
-                                        image(i.media.getImage(),width: 32,height: 32).onTap(() {
+                                        image(i.media.getImage(), width: 32, height: 32).onTap(() {
                                           push(ImagePreviewPage(i.media!.map((final MediaReadDto e) => e.url).toList()));
                                         }),
                                         Text(i.title ?? "").bodyLarge().paddingAll(8),
@@ -88,10 +87,11 @@ class _CategoryPageState extends State<CategoryPage> with CategoryController {
                                               onPressed: () => update(dto: i, index: index, action: () {}),
                                               icon: Icon(Icons.edit, color: context.theme.colorScheme.primary),
                                             ).paddingSymmetric(horizontal: 8),
-                                          TextButton(
-                                            onPressed: () => mainWidget(CategoryPage(dto: i)),
-                                            child: const Text("نمایش زیر دسته‌ها"),
-                                          ).paddingSymmetric(horizontal: 8),
+                                          if (dto == null)
+                                            TextButton(
+                                              onPressed: () => mainWidget(CategoryPage(dto: i)),
+                                              child: const Text("نمایش زیر دسته‌ها"),
+                                            ).paddingSymmetric(horizontal: 8),
                                         ],
                                       ),
                                     ),
