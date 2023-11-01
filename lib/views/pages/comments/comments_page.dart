@@ -54,34 +54,39 @@ class _CommentsPageState extends State<CommentsPage> with CommentsController {
                                   DataCell(Text(UtilitiesTagUtils.tagCommentsTitleFromTagList(i.tags!)).bodyLarge().paddingAll(8)),
                                   // if (Core.user.tags!.contains(TagUser.adminCommentUpdate.number))
                                   DataCell(
-                                    Row(
-                                      children: <Widget>[
-                                        IconButton(
-                                          onPressed: () => delete(dto: i),
-                                          icon: Icon(Icons.delete, color: context.theme.colorScheme.error),
-                                        ).paddingSymmetric(horizontal: 8),
-                                        DropdownButtonFormField<TagComment>(
-                                          value: selectedCommentTag.value,
-                                          items: <DropdownMenuItem<TagComment>>[
-                                            DropdownMenuItem<TagComment>(
-                                              value: TagComment.released,
-                                              child: Text(TagComment.released.title),
-                                            ),
-                                            DropdownMenuItem<TagComment>(
-                                              value: TagComment.rejected,
-                                              child: Text(TagComment.rejected.title),
-                                            ),
-                                            DropdownMenuItem<TagComment>(
-                                              value: TagComment.inQueue,
-                                              child: Text(TagComment.inQueue.title),
-                                            ),
-                                          ],
-                                          onChanged: (final TagComment? value) {
-                                            selectedCommentTag(value);
-                                            update(dto: CommentCreateUpdateDto(id: i.id, tags: <int>[value!.number]));
-                                          },
-                                        ).container(width: 15),
-                                      ],
+                                    SizedBox(
+                                      child: Row(
+                                        children: <Widget>[
+                                          IconButton(
+                                            onPressed: () => delete(dto: i),
+                                            icon: Icon(Icons.delete, color: context.theme.colorScheme.error),
+                                          ).paddingSymmetric(horizontal: 8),
+                                          SizedBox(
+                                            width: 200,
+                                            child: DropdownButtonFormField<TagComment>(
+                                              value: selectedCommentTag.value,
+                                              items: <DropdownMenuItem<TagComment>>[
+                                                DropdownMenuItem<TagComment>(
+                                                  value: TagComment.released,
+                                                  child: Text(TagComment.released.title),
+                                                ),
+                                                DropdownMenuItem<TagComment>(
+                                                  value: TagComment.rejected,
+                                                  child: Text(TagComment.rejected.title),
+                                                ),
+                                                DropdownMenuItem<TagComment>(
+                                                  value: TagComment.inQueue,
+                                                  child: Text(TagComment.inQueue.title),
+                                                ),
+                                              ],
+                                              onChanged: (final TagComment? value) {
+                                                selectedCommentTag(value);
+                                                update(dto: CommentCreateUpdateDto(id: i.id, tags: <int>[value!.number]));
+                                              },
+                                            ).container(width: 15),
+                                          ),
+                                        ],
+                                      ),
                                     ),
                                   ),
                                 ],
