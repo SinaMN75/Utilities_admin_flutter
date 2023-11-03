@@ -12,6 +12,12 @@ class TransactionDetailPage extends StatefulWidget {
 }
 
 class _TransactionDetailPageState extends State<TransactionDetailPage> {
+
+  @override
+  void initState() {
+
+    super.initState();
+  }
   @override
   Widget build(final BuildContext context) => scaffold(body: Container());
 }

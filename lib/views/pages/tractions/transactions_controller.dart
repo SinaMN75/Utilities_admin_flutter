@@ -35,4 +35,8 @@ mixin TransactionsController {
       onError: (final GenericResponse<dynamic> response) {},
     );
   }
+
+  void changeTag({required final int value}) {
+
+  }
 }
