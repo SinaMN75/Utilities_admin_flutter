@@ -47,6 +47,7 @@ class Assets {
   static const String iconsPdfFile = 'lib/assets/icons/pdf_file.svg';
   static const String iconsSearch = 'lib/assets/icons/Search.svg';
   static const String iconsSoundFile = 'lib/assets/icons/sound_file.svg';
+  static const String iconsTickCircle = 'lib/assets/icons/tick_circle.svg';
   static const String iconsUnknown = 'lib/assets/icons/unknown.svg';
   static const String iconsXdFile = 'lib/assets/icons/xd_file.svg';
   static const String imagesLoginImage = 'lib/assets/images/login_image.jpg';
