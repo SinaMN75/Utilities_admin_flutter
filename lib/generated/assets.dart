@@ -64,6 +64,7 @@ class Assets {
   static const String mainMainController = 'lib/views/pages/main/main_controller.dart';
   static const String mainMainPage = 'lib/views/pages/main/main_page.dart';
   static const String ordersOrderController = 'lib/views/pages/orders/order_controller.dart';
+  static const String ordersOrderDetailPage = 'lib/views/pages/orders/order_detail_page.dart';
   static const String ordersOrderPage = 'lib/views/pages/orders/order_page.dart';
   static const String productCreateUpdateAddProductController = 'lib/views/pages/products/product_create_update/add_product_controller.dart';
   static const String productCreateUpdateAddProductPage = 'lib/views/pages/products/product_create_update/add_product_page.dart';
@@ -75,7 +76,7 @@ class Assets {
   static const String splashSplashPage = 'lib/views/pages/splash/splash_page.dart';
   static const String termsTermsController = 'lib/views/pages/terms/terms_controller.dart';
   static const String termsTermsPage = 'lib/views/pages/terms/terms_page.dart';
-  static const String tractionsTransactionDetail = 'lib/views/pages/tractions/transaction_detail_page.dart';
+  static const String tractionsTransactionDetailPage = 'lib/views/pages/tractions/transaction_detail_page.dart';
   static const String tractionsTransactionsController = 'lib/views/pages/tractions/transactions_controller.dart';
   static const String tractionsTransactionsPage = 'lib/views/pages/tractions/transactions_page.dart';
   static const String userCreateUpdateUserCreateUpdateController = 'lib/views/pages/users/user_create_update/user_create_update_controller.dart';

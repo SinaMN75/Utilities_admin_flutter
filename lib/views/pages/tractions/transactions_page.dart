@@ -1,5 +1,6 @@
 import 'package:utilities/utilities.dart';
 import 'package:utilities_admin_flutter/core/core.dart';
+import 'package:utilities_admin_flutter/views/pages/main/main_controller.dart';
 import 'package:utilities_admin_flutter/views/pages/tractions/transaction_detail_page.dart';
 import 'package:utilities_admin_flutter/views/pages/tractions/transactions_controller.dart';
 class TransactionsPage extends StatefulWidget {
@@ -60,7 +61,7 @@ class _TransactionsPageState extends State<TransactionsPage> with TransactionsCo
                                 cells: <DataCell>[
                                   DataCell(Text(index.toString()).bodyLarge().paddingAll(8)),
                                   DataCell(Text(i.descriptions ?? "").bodyLarge().paddingAll(8).onTap(() {
-                                    push(TransactionDetailPage(transactionReadDto: i));
+                                    mainWidget(TransactionDetailPage(transactionReadDto: i).container());
                                   })),
                                   DataCell(Text(i.user?.fullName??'*').bodyLarge().paddingAll(8)),
                                   DataCell(Text(getPrice(i.order?.totalPrice??0)).bodyLarge().paddingAll(8)),

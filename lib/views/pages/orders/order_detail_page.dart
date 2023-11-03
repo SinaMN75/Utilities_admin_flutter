@@ -3,24 +3,23 @@ import 'package:utilities/components/components.dart';
 import 'package:utilities/data/data.dart';
 import 'package:utilities/utilities.dart';
 import 'package:utilities_admin_flutter/core/core.dart';
+import 'package:utilities_admin_flutter/views/pages/orders/order_controller.dart';
 
-class TransactionDetailPage extends StatefulWidget {
-  const TransactionDetailPage({required this.transactionReadDto, super.key});
+class OrderDetailPage extends StatefulWidget {
+  const OrderDetailPage({required this.orderReadDto, super.key});
 
-  final TransactionReadDto transactionReadDto;
+  final OrderReadDto orderReadDto;
 
   @override
-  State<TransactionDetailPage> createState() => _TransactionDetailPageState();
+  State<OrderDetailPage> createState() => _OrderDetailPageState();
 }
 
-class _TransactionDetailPageState extends State<TransactionDetailPage> {
-  late TransactionReadDto transactionReadDto;
-  late OrderReadDto orderReadDto;
+class _OrderDetailPageState extends State<OrderDetailPage> with OrderController{
 
   @override
   void initState() {
-    transactionReadDto=widget.transactionReadDto;
-    orderReadDto=transactionReadDto.order!;
+    orderReadDto=widget.orderReadDto;
+    readById(orderId: orderReadDto.id!);
     super.initState();
   }
   @override
@@ -29,7 +28,7 @@ class _TransactionDetailPageState extends State<TransactionDetailPage> {
       Row(
         children: <Widget>[
           image(
-            transactionReadDto.user?.media.getImage()??'',
+              orderReadDto.user?.media.getImage()??'',
             placeholder: AppImages.profilePlaceholder,
             borderRadius: 40, //
             width: 64,
@@ -37,7 +36,7 @@ class _TransactionDetailPageState extends State<TransactionDetailPage> {
               ),
           // ).onTap(() => push(ProfilePage(userId: order.orderDetails?.first.product?.user?.id ?? ''))),
           const SizedBox(width: 8),
-           Text(transactionReadDto.user?.fullName??'').bodyMedium(fontSize: 18),
+           Text(orderReadDto.user?.fullName??'').bodyMedium(fontSize: 18),
         ],
       ),
       const SizedBox(height: 8),
@@ -46,8 +45,8 @@ class _TransactionDetailPageState extends State<TransactionDetailPage> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
-            const Text('شماره سفارش:12455 ').bodyLarge(color: context.theme.primaryColorDark.withOpacity(0.5)),
-             Text(transactionReadDto.createdAt?.toJalaliDateString()??'').bodyLarge(color: context.theme.primaryColorDark.withOpacity(0.5)),
+             Text(orderReadDto.orderNumber?.toString()??'00').bodyLarge(color: context.theme.primaryColorDark.withOpacity(0.5)),
+             Text(orderReadDto.createdAt?.toIso8601String().toJalaliDateString()??'').bodyLarge(color: context.theme.primaryColorDark.withOpacity(0.5)),
           ],
         ),
       ),
@@ -59,6 +58,11 @@ class _TransactionDetailPageState extends State<TransactionDetailPage> {
         itemCount: orderReadDto.orderDetails!.length,
         itemBuilder: (final BuildContext context, final int index) => _itemOrderDetail(orderDetail: orderReadDto.orderDetails![index], index: index),
       ),
+
+      const Divider(height: 1),
+      const SizedBox(height: 8),//
+      _address(order: orderReadDto, address: orderReadDto.address??AddressReadDto()),
+      const SizedBox(height: 8),
       const Divider(height: 1),
       const SizedBox(height: 8),
       _productInfo(order: orderReadDto),
@@ -117,6 +121,73 @@ class _TransactionDetailPageState extends State<TransactionDetailPage> {
       //   trailing: Text("${getPrice(totalPrice.toString())} T"),
       // ),
     );
+
+  Widget _address({required final OrderReadDto order, required final AddressReadDto address}) => Column(
+    children:<Widget>  [
+      const SizedBox(height: 8),
+      Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children:<Widget> [
+          Icon(Icons.location_pin, size: 16, color: context.theme.primaryColorDark),
+          const SizedBox(width: 8),
+          Container(
+            child: Text(
+              address.address ?? '',
+              maxLines: 5,
+              overflow: TextOverflow.ellipsis,
+            ).bodyMedium(),
+          ).expanded(),
+        ],
+      ).marginOnly(bottom: 8),
+
+      Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          Row(
+            children: <Widget>[const Icon(Icons.location_pin, size: 16, color: Colors.transparent), Text("کد پستی: ${address.postalCode}")],
+          ),
+          Text("پلاک:: ${address.pelak}"),
+          Text("واحد: ${address.unit}"),
+        ],
+      ).marginSymmetric(horizontal: 8),
+      const SizedBox(height: 16),
+      Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Row(
+            children:  <Widget>[
+              Icon(Icons.person, size: 16, color: context.theme.primaryColorDark),
+              const SizedBox(width: 8),
+              const Text('آدرس گیرنده: '),
+              const SizedBox(width: 8),
+              Text(address.receiverFullName ?? ''),
+            ],
+          ).marginOnly(bottom: 8),
+          Row(
+            children: <Widget>[
+              Icon(Icons.call, size: 16, color: context.theme.primaryColorDark),
+              const SizedBox(width: 8),
+              const Text('شماره تماس: '),
+              const SizedBox(width: 8),
+              Text(address.receiverPhoneNumber ?? ''),
+            ],
+          )
+        ],
+      ),
+      // Row(
+      //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      //   children: [
+      //     Text("${s.postalCode}:${order.address?.postalCode ?? ''}"),
+      //     Text("${s.unit}:${order.address?.unit ?? ''}"),
+      //     Text("${s.plack}:${order.address?.pelak ?? ''}"),
+      //   ],
+      // ),
+      // const SizedBox(height: 8),
+      // Row(
+      //   children: [Text("${s.transferee}:${Core.userReadDto?.fullName ?? ''}")],
+      // ),
+    ],
+  );
 
 
 

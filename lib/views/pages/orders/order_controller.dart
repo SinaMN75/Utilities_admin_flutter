@@ -6,6 +6,7 @@ mixin OrderController {
 
   final RxList<OrderReadDto> list = <OrderReadDto>[].obs;
   final RxList<OrderReadDto> filteredList = <OrderReadDto>[].obs;
+  OrderReadDto orderReadDto = OrderReadDto();
 
   final TextEditingController controllerTitle = TextEditingController();
   final RxInt selectedOrderTag = TagOrder.all.number.obs;
@@ -40,16 +41,27 @@ mixin OrderController {
     );
   }
 
+  void readById({required final String orderId}) {
+    state.loading();
+    _dataSource.readById(
+      id: orderId,
+      onResponse: (final GenericResponse<OrderReadDto> response) {
+        orderReadDto = response.result!;
+        state.loaded();
+      },
+      onError: (final GenericResponse<dynamic> response) {},
+    );
+  }
+
   void update({required final OrderCreateUpdateDto dto}) {
     //
     _dataSource.update(
       dto: dto,
-      onResponse: (final GenericResponse<OrderReadDto> response) {//
+      onResponse: (final GenericResponse<OrderReadDto> response) {
+        //
       },
-      onError: (final GenericResponse<dynamic> errorResponse) {
-      },
-      failure: (final String error) {
-      },
+      onError: (final GenericResponse<dynamic> errorResponse) {},
+      failure: (final String error) {},
     );
   }
 }

@@ -1,6 +1,8 @@
 import 'package:utilities/components/pagination.dart';
 import 'package:utilities/utilities.dart';
+import 'package:utilities_admin_flutter/views/pages/main/main_controller.dart';
 import 'package:utilities_admin_flutter/views/pages/orders/order_controller.dart';
+import 'package:utilities_admin_flutter/views/pages/orders/order_detail_page.dart';
 
 class OrderPage extends StatefulWidget {
   const OrderPage({super.key});
@@ -34,7 +36,7 @@ class _OrderPageState extends State<OrderPage> with OrderController {
                           DataColumn(label: Text("فروشنده")),
                           DataColumn(label: Text("خریدار")),
                           DataColumn(label: Text("قیمت کل")),
-                          DataColumn(label: Text("قیمت کل")),
+                          DataColumn(label: Text("وضعیت")),
                         ],
                         rows: list.map(
                           (final OrderReadDto i) {
@@ -49,7 +51,10 @@ class _OrderPageState extends State<OrderPage> with OrderController {
                             return DataRow(
                               cells: <DataCell>[
                                 DataCell(Text(i.productOwner?.fullName ?? "").bodyMedium()),
-                                DataCell(Text(i.user?.fullName ?? "").bodyMedium()),
+                                DataCell(Text(i.user?.fullName ?? "").bodyMedium().onTap(() {
+
+                                  mainWidget(OrderDetailPage(orderReadDto: i).container());
+                                })),
                                 DataCell(Text(i.totalPrice?.toString() ?? "").bodyMedium()),
                                 DataCell(
                                   SizedBox(
