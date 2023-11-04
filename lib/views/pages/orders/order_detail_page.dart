@@ -156,9 +156,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> with OrderController 
               Text("واحد: ${address.unit}").titleMedium().bold(),
             ],
           ).marginSymmetric(horizontal: 8),
-          const SizedBox(height: 8),
-          const Divider(),
-          const SizedBox(height: 8),
+          const SizedBox(height: 16),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
