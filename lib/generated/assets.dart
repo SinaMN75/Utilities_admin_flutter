@@ -64,6 +64,7 @@ class Assets {
   static const String loginLoginPage = 'lib/views/pages/login/login_page.dart';
   static const String mainMainController = 'lib/views/pages/main/main_controller.dart';
   static const String mainMainPage = 'lib/views/pages/main/main_page.dart';
+  static const String mainMainPage2 = 'lib/views/pages/main/main_page2.dart';
   static const String ordersOrderController = 'lib/views/pages/orders/order_controller.dart';
   static const String ordersOrderDetailPage = 'lib/views/pages/orders/order_detail_page.dart';
   static const String ordersOrderPage = 'lib/views/pages/orders/order_page.dart';

@@ -33,6 +33,7 @@ class _OrderPageState extends State<OrderPage> with OrderController {
                       DataTable(
                         //
                         columns: const <DataColumn>[
+                          DataColumn(label: Text("شماره سفارش")),
                           DataColumn(label: Text("فروشنده")),
                           DataColumn(label: Text("خریدار")),
                           DataColumn(label: Text("قیمت کل")),
@@ -50,12 +51,13 @@ class _OrderPageState extends State<OrderPage> with OrderController {
                             if (i.tags!.contains(TagOrder.complete.number)) orderTag(TagOrder.complete);
                             return DataRow(
                               cells: <DataCell>[
+                                DataCell(Text((i.orderNumber?? 0).toString()).bodyMedium()),
                                 DataCell(Text(i.productOwner?.fullName ?? "").bodyMedium()),
                                 DataCell(Text(i.user?.fullName ?? "").bodyMedium().onTap(() {
 
                                   mainWidget(OrderDetailPage(orderReadDto: i).container());
                                 })),
-                                DataCell(Text(i.totalPrice?.toString() ?? "").bodyMedium()),
+                                DataCell(Text(i.totalPrice?.toString().getPrice() ?? "").bodyLarge()),
                                 DataCell(
                                   SizedBox(
                                     child: Row(

@@ -14,12 +14,18 @@ import 'package:utilities_admin_flutter/views/pages/terms/terms_page.dart';
 import 'package:utilities_admin_flutter/views/pages/tractions/transactions_page.dart';
 import 'package:utilities_admin_flutter/views/pages/users/user_page.dart';
 
+
+
+
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
 
   @override
   State<MainPage> createState() => _MainPageState();
 }
+
+
+
 
 class _MainPageState extends State<MainPage> with MainController {
   @override
@@ -114,4 +120,15 @@ class _MainPageState extends State<MainPage> with MainController {
         ),
         body: Obx(() => mainWidget()),
       );
+}
+class BasePage extends MainPage {
+  const BasePage({super.key});
+
+  @override
+  State<BasePage> createState() => _BasePageState();
+}
+
+class _BasePageState extends State<BasePage> {
+  @override
+  Widget build(final BuildContext context) => const Placeholder();
 }
