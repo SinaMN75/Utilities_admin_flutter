@@ -79,4 +79,5 @@ abstract class AppImages {
 abstract class AppIcons {
   static const String _base = "lib/assets/icons";
   static const String card = "$_base/card.svg";
+  static const String tickCircle = "$_base/tick_circle.svg";
 }
