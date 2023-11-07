@@ -3,7 +3,8 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:utilities/utilities.dart';
 import 'package:utilities_admin_flutter/core/core.dart';
 import 'package:utilities_admin_flutter/generated/l10n.dart';
-import 'package:utilities_admin_flutter/views/pages/splash/splash_page.dart';
+import 'package:utilities_admin_flutter/views/pages/login/login_page.dart';
+
 
 Future<void> main() async {
   initUtilities();
@@ -50,7 +51,7 @@ class _AppState extends State<App> {
         textDirection: TextDirection.rtl,
         theme: AppThemes.light,
         themeMode: ThemeMode.light,
-        home: const SplashPage(),
+        home: const LoginPage(),
         builder: EasyLoading.init(),
       );
 }

@@ -1,6 +1,5 @@
 import 'package:utilities/utilities.dart';
 import 'package:utilities_admin_flutter/core/core.dart';
-import 'package:utilities_admin_flutter/views/pages/login/login_page.dart';
 import 'package:utilities_admin_flutter/views/pages/main/main_page.dart';
 
 mixin SplashController {
@@ -12,32 +11,28 @@ mixin SplashController {
 
   void init() {
     delay(100, () {
-      if (getString(UtilitiesConstants.token) == null) {
-        offAll(const LoginPage());
-      } else {
-        _categoryDataSource.filter(
-          dto: CategoryFilterDto(),
-          onResponse: (final GenericResponse<CategoryReadDto> response) {
-            Core.categories = response.resultList!;
-          },
-          onError: (final GenericResponse<dynamic> response) {},
-        );
-        _contentDataSource.read(
-          onResponse: (final GenericResponse<ContentReadDto> response) {
-            Core.contents = response.resultList!;
-          },
-          onError: (final GenericResponse<dynamic> response) {},
-        );
+      _categoryDataSource.filter(
+        dto: CategoryFilterDto(),
+        onResponse: (final GenericResponse<CategoryReadDto> response) {
+          Core.categories = response.resultList!;
+        },
+        onError: (final GenericResponse<dynamic> response) {},
+      );
+      _contentDataSource.read(
+        onResponse: (final GenericResponse<ContentReadDto> response) {
+          Core.contents = response.resultList!;
+        },
+        onError: (final GenericResponse<dynamic> response) {},
+      );
 
-        _userDataSource.readById(
-          id: getString(AppConstants.userId)!,
-          onResponse: (final GenericResponse<UserReadDto> response) {
-            Core.user = response.result!;
-            offAll(const MainPage());
-          },
-          onError: (final GenericResponse<dynamic> response) {},
-        );
-      }
+      _userDataSource.readById(
+        id: getString(AppConstants.userId)!,
+        onResponse: (final GenericResponse<UserReadDto> response) {
+          Core.user = response.result!;
+          offAll(const MainPage());
+        },
+        onError: (final GenericResponse<dynamic> response) {},
+      );
     });
   }
 }

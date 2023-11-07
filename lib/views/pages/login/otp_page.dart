@@ -2,16 +2,19 @@ import 'package:utilities/utilities.dart';
 import 'package:utilities_admin_flutter/core/core.dart';
 import 'package:utilities_admin_flutter/views/pages/login/login_controller.dart';
 
-class LoginPage extends StatefulWidget {
-  const LoginPage({super.key});
+class OtpPage extends StatefulWidget {
+  const OtpPage({required this.mobile,super.key});
+
+ final String mobile;
 
   @override
-  _LoginPageState createState() => _LoginPageState();
+  _OtpPageState createState() => _OtpPageState();
 }
 
-class _LoginPageState extends State<LoginPage> with LoginController {
+class _OtpPageState extends State<OtpPage> with LoginController {
   @override
   void initState() {
+    controllerPhone.text=widget.mobile;
     super.initState();
   }
 
@@ -32,9 +35,9 @@ class _LoginPageState extends State<LoginPage> with LoginController {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: <Widget>[
-                      textField(hintText: "شماره همراه", controller: controllerPhone, keyboardType: TextInputType.number, maxLength: 11).paddingSymmetric(vertical: 8),
+                      textField(hintText: "کد تایید", controller: controllerOtp, keyboardType: TextInputType.number, maxLength: 11).paddingSymmetric(vertical: 8),
                       // textField(hintText: "رمز عبور", controller: controllerPassword).paddingSymmetric(vertical: 8),
-                      button(title: "دریافت کد تایید", onTap: login).paddingSymmetric(vertical: 8),
+                      button(title: "ورود", onTap: verification).paddingSymmetric(vertical: 8),
                       // const Text('ورود با کد یکبار مصرف').bodyMedium().onTap(() {
                     ],
                   ).paddingSymmetric(horizontal: context.width / 10),
