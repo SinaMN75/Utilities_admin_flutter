@@ -4,6 +4,7 @@ import 'package:utilities_admin_flutter/core/core.dart';
 import 'package:utilities_admin_flutter/views/pages/main/main_controller.dart';
 import 'package:utilities_admin_flutter/views/pages/orders/order_controller.dart';
 import 'package:utilities_admin_flutter/views/pages/orders/order_detail_page.dart';
+import 'package:utilities_admin_flutter/views/pages/users/user_create_update/user_create_update_page.dart';
 
 class OrderPage extends StatefulWidget {
   const OrderPage({super.key});
@@ -59,9 +60,11 @@ class _OrderPageState extends State<OrderPage> with OrderController {
                             return DataRow(
                               cells: <DataCell>[
                                 DataCell(Text((i.orderNumber ?? 0).toString()).bodyMedium()),
-                                DataCell(Text(i.productOwner?.fullName ?? "").bodyMedium()),
+                                DataCell(Text(i.productOwner?.fullName ?? "").bodyMedium().onTap(() {
+                                  mainWidget(UserCreateUpdatePage(dto: i.productOwner).container());
+                                })),
                                 DataCell(Text(i.user?.fullName ?? "").bodyMedium().onTap(() {
-                                  mainWidget(OrderDetailPage(orderReadDto: i).container());
+                                  mainWidget(UserCreateUpdatePage(dto: i.user).container());
                                 })),
                                 DataCell(Text(i.totalPrice?.toString().getPrice() ?? "").bodyLarge()),
                                 if (Core.user.tags!.contains(TagUser.adminOrderRead.number))

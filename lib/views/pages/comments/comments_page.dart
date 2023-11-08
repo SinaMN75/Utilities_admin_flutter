@@ -35,7 +35,6 @@ class _CommentsPageState extends State<CommentsPage> with CommentsController {
                           DataColumn(label: const Text("کاربر").headlineSmall()),
                           DataColumn(label: const Text("محصول").headlineSmall()),
                           DataColumn(label: const Text("نظر").headlineSmall()),
-                          DataColumn(label: const Text("وضعیت").headlineSmall()),
                           // if (Core.user.tags!.contains(TagUser.adminCommentUpdate.number))
                           if (Core.user.tags!.contains(TagUser.adminCategoryRead.number)) DataColumn(label: const Text("عملیات‌ها").headlineSmall()),
                         ],
@@ -50,9 +49,8 @@ class _CommentsPageState extends State<CommentsPage> with CommentsController {
                                 cells: <DataCell>[
                                   DataCell(Text(index.toString()).bodyLarge().paddingAll(8)),
                                   DataCell(Text(i.user?.firstName ?? "").bodyLarge().paddingAll(8)),
-                                  DataCell(Text(i.user?.firstName ?? "").bodyLarge().paddingAll(8)),
+                                  DataCell(Text(i.product?.title ?? "").bodyLarge().paddingAll(8)),
                                   DataCell(Text(i.comment ?? "").bodyLarge().paddingAll(8)),
-                                  DataCell(Text(UtilitiesTagUtils.tagCommentsTitleFromTagList(i.tags!)).bodyLarge().paddingAll(8)),
                                   // if (Core.user.tags!.contains(TagUser.adminCommentUpdate.number))
                                   if (Core.user.tags!.contains(TagUser.adminCategoryRead.number)) DataCell(
                                     SizedBox(

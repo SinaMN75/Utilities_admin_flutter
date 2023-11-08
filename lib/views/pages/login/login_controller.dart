@@ -10,7 +10,7 @@ mixin LoginController {
 
   final TextEditingController controllerPhone = TextEditingController();
   final TextEditingController controllerOtp = TextEditingController();
-  final TextEditingController controllerUserName = TextEditingController(text: "alighafoury@gmail.com");
+  final TextEditingController controllerUserName = TextEditingController(text: "admin");
   final TextEditingController controllerPassword = TextEditingController(text: "1234");
 
 
