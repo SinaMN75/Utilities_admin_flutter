@@ -56,8 +56,8 @@ class _CommentsPageState extends State<CommentsPage> with CommentsController {
                                       .paddingAll(8)
                                       .onTap(() => alertDialog(title: "", subtitle: i.comment ?? "", action1: ("باشه", back)))),
                                   DataCell(Text(UtilitiesTagUtils.tagCommentsTitleFromTagList(i.tags!)).bodyLarge().fit().paddingAll(8)),
-                                  // if (Core.user.tags!.contains(TagUser.adminCommentUpdate.number))
-                                  if (Core.user.tags!.contains(TagUser.adminCategoryRead.number)) DataCell(
+                                  if (Core.user.tags!.contains(TagUser.adminCommentUpdate.number))
+                                   DataCell(
                                     SizedBox(
                                       child: Row(
                                         children: <Widget>[
