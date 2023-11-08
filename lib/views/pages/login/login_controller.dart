@@ -1,6 +1,5 @@
 import 'package:utilities/utilities.dart';
 import 'package:utilities_admin_flutter/core/core.dart';
-import 'package:utilities_admin_flutter/views/pages/login/otp_page.dart';
 import 'package:utilities_admin_flutter/views/pages/splash/splash_page.dart';
 
 mixin LoginController {
@@ -10,26 +9,40 @@ mixin LoginController {
 
   final TextEditingController controllerPhone = TextEditingController();
   final TextEditingController controllerOtp = TextEditingController();
-  final TextEditingController controllerUserName = TextEditingController(text: "admin");
+  final TextEditingController controllerUserName = TextEditingController(text: "alighafoury@gmail.com");
   final TextEditingController controllerPassword = TextEditingController(text: "1234");
 
 
 
   void init() {}
 
+  // void login() {
+  //
+  //   showEasyLoading();
+  //   _userDataSource.getVerificationCodeForLogin(
+  //     dto: GetMobileVerificationCodeForLoginDto(mobile: controllerPhone.text),
+  //     onResponse: (final GenericResponse<UserReadDto> response) {
+  //      push(OtpPage(mobile:controllerPhone.text));
+  //       dismissEasyLoading();
+  //     },
+  //     onError: (final GenericResponse<dynamic> response) {},
+  //   );
+  // }
   void login() {
 
     showEasyLoading();
-    _userDataSource.getVerificationCodeForLogin(
-      dto: GetMobileVerificationCodeForLoginDto(mobile: controllerPhone.text),
+    _userDataSource.loginWithPassword(
+      dto: LoginWithPasswordDto(email: controllerUserName.text,password: controllerPassword.text),
       onResponse: (final GenericResponse<UserReadDto> response) {
-       push(OtpPage(mobile:controllerPhone.text));
+        setData(UtilitiesConstants.userId, response.result?.id);
+        setData(UtilitiesConstants.token, "Bearer ${response.result?.token}");
+        Core.user = response.result!;
+        offAll(const SplashPage());
         dismissEasyLoading();
       },
       onError: (final GenericResponse<dynamic> response) {},
     );
   }
-
 
   void verification() {
     if (controllerOtp.text.length > 3) {
