@@ -36,14 +36,14 @@ class _ProductPageState extends State<ProductPage> with ProductController {
                       _filters(),
                       DataTable(
                         columns: <DataColumn>[
-                          DataColumn(label: const Text("ردیف").headlineSmall()),
-                          DataColumn(label: const Text("عکس").headlineSmall()),
-                          DataColumn(label: const Text("دسته بندی و زیر دسته").headlineSmall()),
-                          DataColumn(label: const Text("عنوان").headlineSmall()),
-                          DataColumn(label: const Text("مشخصات").headlineSmall()),
-                          DataColumn(label: const Text("وضعیت").headlineSmall()),
-                          DataColumn(label: const Text("تعداد بازدید").headlineSmall()),
-                          DataColumn(label: const Text("عملیات‌ها").headlineSmall()),
+                          DataColumn(label: const Text("ردیف").titleLarge()),
+                          DataColumn(label: const Text("عکس").titleLarge()),
+                          DataColumn(label: const Text("دسته بندی و زیر دسته").titleLarge()),
+                          DataColumn(label: const Text("عنوان").titleLarge()),
+                          DataColumn(label: const Text("مشخصات").titleLarge()),
+                          DataColumn(label: const Text("وضعیت").titleLarge()),
+                          DataColumn(label: const Text("تعداد بازدید").titleLarge()),
+                          DataColumn(label: const Text("عملیات‌ها").titleLarge()),
                         ],
                         rows: <DataRow>[
                           ...filteredList
@@ -168,8 +168,8 @@ class _ProductPageState extends State<ProductPage> with ProductController {
                       )
                       .toList(),
                 ],
-                onChanged: (final CategoryReadDto? value) {},
-              ).container(width: 250, margin: const EdgeInsets.all(8)),
+                onChanged: selectedSubCategory,
+              ).container(width: 280, margin: const EdgeInsets.all(8)),
             ],
           ),
           Column(

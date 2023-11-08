@@ -12,9 +12,10 @@ mixin ProductController {
   final TextEditingController controllerTitle = TextEditingController();
   final RxInt selectedProductTag = TagProduct.all.number.obs;
   late Rx<CategoryReadDto> selectedCategory;
-  late Rx<CategoryReadDto> selectedSubCategory;
+  Rx<CategoryReadDto> selectedSubCategory = CategoryReadDto(id: '').obs;
   RxList<CategoryReadDto> categories = Core.categories.where((final CategoryReadDto e) => !e.children.isNullOrEmpty()).toList().obs;
   RxList<CategoryReadDto> subCategories = (Core.categories.first.children ?? <CategoryReadDto>[]).obs;
+  CategoryReadDto all=CategoryReadDto(id: '',title:'همه');
 
   int pageNumber = 1;
   int pageCount = 0;
@@ -22,8 +23,9 @@ mixin ProductController {
   final ProductDataSource _productDataSource = ProductDataSource(baseUrl: AppConstants.baseUrl);
 
   void init() {
+    categories.insert(0, all);
     selectedCategory = categories.first.obs;
-    selectedSubCategory = (categories.first.children ?? <CategoryReadDto>[]).first.obs;
+    // selectedSubCategory = (categories.first.children ?? <CategoryReadDto>[]).first.obs;
     if (list.isEmpty) {
       read();
     } else {
@@ -33,33 +35,38 @@ mixin ProductController {
 
   void selectCategory(final CategoryReadDto? dto) {
     selectedCategory(dto);
-    subCategories(categories.singleWhere((final CategoryReadDto e) => e.id == selectedCategory.value.id).children);
-    selectedSubCategory(subCategories.where((final CategoryReadDto e) => e.parentId == selectedCategory.value.id).first);
+    if ((dto?.children ?? <CategoryReadDto>[]).isNotEmpty) {//
+      subCategories(categories.singleWhere((final CategoryReadDto e) => e.id == selectedCategory.value.id).children);
+      subCategories.insert(0, all);
+      selectedSubCategory(subCategories.where((final CategoryReadDto e) => e.parentId == selectedCategory.value.id).first);
+    } else {
+      subCategories(<CategoryReadDto>[all]);
+      selectedSubCategory(subCategories.first);
+    }
   }
 
-  void selectSubCategory(final CategoryReadDto? dto) {
-    selectedSubCategory(dto);
-  }
 
   void read() {
     state.loading();
-    List<int> tags=<int>[TagProduct.physical.number,];
-    if(selectedProductTag.value!=TagProduct.all.number){
+    List<int> tags = <int>[
+      TagProduct.physical.number,
+    ];
+    if (selectedProductTag.value != TagProduct.all.number) {
       tags.add(selectedProductTag.value);
-    }else{
-      tags=<int>[TagProduct.physical.number,];
+    } else {
+      tags = <int>[
+        TagProduct.physical.number,
+      ];
     }
 
-   final List<String> categoryIds=<String>[];
+    final List<String> categoryIds = <String>[];
     categoryIds.clear();
 
-    if(selectedSubCategory.value.id!=''){
+    if (selectedSubCategory.value.id != '') {
       categoryIds.add(selectedSubCategory.value.id);
-    }else if(selectedCategory.value.id!=''){
+    } else if (selectedCategory.value.id != '') {
       categoryIds.add(selectedCategory.value.id);
     }
-
-
 
     _productDataSource.filter(
       dto: ProductFilterDto(
