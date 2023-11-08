@@ -28,7 +28,7 @@ class _CategoryPageState extends State<CategoryPage> with CategoryController {
         appBar: AppBar(
           title: dto == null ? const Text("دسته بندی‌ها") : Text("زیر دسته های ${dto?.title}"),
           actions: <Widget>[
-            IconButton(
+            if (Core.user.tags!.contains(TagUser.adminCategoryRead.number))  IconButton(
                 onPressed: () => create(
                       dto: widget.dto,
                       action: () => setState(() {}), //

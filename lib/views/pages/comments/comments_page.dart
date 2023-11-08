@@ -1,5 +1,6 @@
 import 'package:utilities/components/pagination.dart';
 import 'package:utilities/utilities.dart';
+import 'package:utilities_admin_flutter/core/core.dart';
 import 'package:utilities_admin_flutter/views/pages/comments/comments_controller.dart';
 
 class CommentsPage extends StatefulWidget {
@@ -34,9 +35,8 @@ class _CommentsPageState extends State<CommentsPage> with CommentsController {
                           DataColumn(label: const Text("کاربر").headlineSmall()),
                           DataColumn(label: const Text("محصول").headlineSmall()),
                           DataColumn(label: const Text("نظر").headlineSmall()),
-                          DataColumn(label: const Text("وضعیت").headlineSmall()),
                           // if (Core.user.tags!.contains(TagUser.adminCommentUpdate.number))
-                          DataColumn(label: const Text("عملیات‌ها").headlineSmall()),
+                          if (Core.user.tags!.contains(TagUser.adminCategoryRead.number)) DataColumn(label: const Text("عملیات‌ها").headlineSmall()),
                         ],
                         rows: <DataRow>[
                           ...list.mapIndexed(
@@ -57,7 +57,7 @@ class _CommentsPageState extends State<CommentsPage> with CommentsController {
                                       .onTap(() => alertDialog(title: "", subtitle: i.comment ?? "", action1: ("باشه", back)))),
                                   DataCell(Text(UtilitiesTagUtils.tagCommentsTitleFromTagList(i.tags!)).bodyLarge().fit().paddingAll(8)),
                                   // if (Core.user.tags!.contains(TagUser.adminCommentUpdate.number))
-                                  DataCell(
+                                  if (Core.user.tags!.contains(TagUser.adminCategoryRead.number)) DataCell(
                                     SizedBox(
                                       child: Row(
                                         children: <Widget>[

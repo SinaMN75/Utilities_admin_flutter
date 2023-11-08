@@ -41,6 +41,27 @@ mixin OrderController {
     );
   }
 
+  void delete({required final OrderReadDto dto}) => alertDialog(
+    title: "خذف",
+    subtitle: "آیا از حذف سفارش اطمینان دارید",
+    action1: (
+    "بله",
+        () {
+      showEasyLoading();
+      _dataSource.delete(
+        id: dto.id!,
+        onResponse: (final GenericResponse<dynamic> response) {
+          snackbarGreen(title: "", subtitle: "حذف محصول ${dto.orderNumber} انجام شد");
+          list.removeWhere((final OrderReadDto i) => i.id == dto.id);
+          filteredList.removeWhere((final OrderReadDto i) => i.id == dto.id);
+        },
+        onError: (final GenericResponse<dynamic> response) {},
+      );
+    }
+    ),
+  );
+
+
   void readById({required final String orderId}) {
     state.loading();
     _dataSource.readById(

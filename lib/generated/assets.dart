@@ -62,6 +62,7 @@ class Assets {
   static const String libResponsive = 'lib/responsive.dart';
   static const String loginLoginController = 'lib/views/pages/login/login_controller.dart';
   static const String loginLoginPage = 'lib/views/pages/login/login_page.dart';
+  static const String loginOtpPage = 'lib/views/pages/login/otp_page.dart';
   static const String mainMainController = 'lib/views/pages/main/main_controller.dart';
   static const String mainMainPage = 'lib/views/pages/main/main_page.dart';
   static const String mainMainPage2 = 'lib/views/pages/main/main_page2.dart';
