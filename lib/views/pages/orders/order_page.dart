@@ -24,7 +24,7 @@ class _OrderPageState extends State<OrderPage> with OrderController {
 
   @override
   void initState() {
-    if (Core.user.tags!.contains(TagUser.adminOrderRead.number)){
+    if (Core.user.tags!.contains(TagUser.adminOrderRead.number)) {
       columns.add(const DataColumn(label: Text("وضعیت")));
     }
     init();
@@ -48,13 +48,11 @@ class _OrderPageState extends State<OrderPage> with OrderController {
                         columns: columns,
                         rows: list.map(
                           (final OrderReadDto i) {
-                            final Rx<TagOrder> orderTag = TagOrder.inQueue.obs;
+                            final Rx<TagOrder> orderTag = TagOrder.inProcess.obs;
                             // orderTag(TagOrder.values.where((final TagOrder element) => i.tags!.contains(element.number)).toList().firstOrDefault(defaultValue:TagOrder.inQueue.obs ));
-                            if (i.tags!.contains(TagOrder.inQueue.number)) orderTag(TagOrder.inQueue);
                             if (i.tags!.contains(TagOrder.paid.number)) orderTag(TagOrder.paid);
                             if (i.tags!.contains(TagOrder.inProcess.number)) orderTag(TagOrder.inProcess);
                             if (i.tags!.contains(TagOrder.shipping.number)) orderTag(TagOrder.shipping);
-                            if (i.tags!.contains(TagOrder.sent.number)) orderTag(TagOrder.sent);
                             if (i.tags!.contains(TagOrder.complete.number)) orderTag(TagOrder.complete);
                             if (i.tags!.contains(TagOrder.conflict.number)) orderTag(TagOrder.conflict);
                             return DataRow(
@@ -78,24 +76,16 @@ class _OrderPageState extends State<OrderPage> with OrderController {
                                               value: orderTag.value,
                                               items: <DropdownMenuItem<TagOrder>>[
                                                 DropdownMenuItem<TagOrder>(
-                                                  value: TagOrder.inQueue,
-                                                  child: Text(TagOrder.inQueue.title),
+                                                  value: TagOrder.inProcess,
+                                                  child: Text(TagOrder.inProcess.title),
                                                 ),
                                                 DropdownMenuItem<TagOrder>(
                                                   value: TagOrder.paid,
                                                   child: Text(TagOrder.paid.title),
                                                 ),
                                                 DropdownMenuItem<TagOrder>(
-                                                  value: TagOrder.inProcess,
-                                                  child: Text(TagOrder.inProcess.title),
-                                                ),
-                                                DropdownMenuItem<TagOrder>(
                                                   value: TagOrder.shipping,
                                                   child: Text(TagOrder.shipping.title),
-                                                ),
-                                                DropdownMenuItem<TagOrder>(
-                                                  value: TagOrder.sent,
-                                                  child: Text(TagOrder.sent.title),
                                                 ),
                                                 DropdownMenuItem<TagOrder>(
                                                   value: TagOrder.complete,
@@ -119,12 +109,13 @@ class _OrderPageState extends State<OrderPage> with OrderController {
                                 DataCell(
                                   Row(
                                     children: <Widget>[
-                                      if (Core.user.tags!.contains(TagUser.adminOrderRead.number))  IconButton(
-                                        onPressed: () => delete(dto: i),
-                                        icon: Icon(Icons.delete, color: context.theme.colorScheme.error),
-                                      ).paddingSymmetric(horizontal: 8),
-                                     IconButton(
-                                        onPressed: () =>  mainWidget(OrderDetailPage(orderReadDto: i).container()),
+                                      if (Core.user.tags!.contains(TagUser.adminOrderRead.number))
+                                        IconButton(
+                                          onPressed: () => delete(dto: i),
+                                          icon: Icon(Icons.delete, color: context.theme.colorScheme.error),
+                                        ).paddingSymmetric(horizontal: 8),
+                                      IconButton(
+                                        onPressed: () => mainWidget(OrderDetailPage(orderReadDto: i).container()),
                                         icon: Icon(Icons.edit, color: context.theme.colorScheme.primary),
                                       ).paddingSymmetric(horizontal: 8),
                                     ],
@@ -154,6 +145,10 @@ class _OrderPageState extends State<OrderPage> with OrderController {
   Widget _filters() => Wrap(
         crossAxisAlignment: WrapCrossAlignment.center,
         children: <Widget>[
+          SizedBox(
+            width: 150,
+            child: textField(keyboardType: TextInputType.number, hintText: "شماره پرداخت", controller: payNumberController),
+          ),
           DropdownButtonFormField<int>(
             value: selectedOrderTag.value,
             items: <DropdownMenuItem<int>>[
@@ -161,7 +156,6 @@ class _OrderPageState extends State<OrderPage> with OrderController {
               DropdownMenuItem<int>(value: TagOrder.paid.number, child: const Text("پرداخت شده")),
               DropdownMenuItem<int>(value: TagOrder.inProcess.number, child: const Text("درحال بررسی")),
               DropdownMenuItem<int>(value: TagOrder.shipping.number, child: const Text("در حال ارسال")),
-              DropdownMenuItem<int>(value: TagOrder.sent.number, child: const Text("ارسال شده")),
               DropdownMenuItem<int>(value: TagOrder.complete.number, child: const Text("تکمیل شده")),
               DropdownMenuItem<int>(value: TagOrder.conflict.number, child: const Text("اختلاف")),
             ],
