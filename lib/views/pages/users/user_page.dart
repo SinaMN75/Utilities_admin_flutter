@@ -2,6 +2,7 @@ import 'package:utilities/components/pagination.dart';
 import 'package:utilities/utilities.dart';
 import 'package:utilities_admin_flutter/core/core.dart';
 import 'package:utilities_admin_flutter/views/pages/users/user_controller.dart';
+import 'package:utilities_admin_flutter/views/widget/image_preview_page.dart';
 
 class UserPage extends StatefulWidget {
   const UserPage({super.key});
@@ -32,6 +33,7 @@ class _UserPageState extends State<UserPage> with UserController {
                       DataTable(
                         columns: <DataColumn>[
                           DataColumn(label: const Text("ردیف").headlineSmall()),
+                          DataColumn(label: const Text("عکس").headlineSmall()),
                           DataColumn(label: const Text("نام").headlineSmall()),
                           DataColumn(label: const Text("نام خانوادگی").headlineSmall()),
                           DataColumn(label: const Text("نام کاربری").headlineSmall()),
@@ -46,12 +48,10 @@ class _UserPageState extends State<UserPage> with UserController {
                                 (final int index, final UserReadDto i) => DataRow(
                                   cells: <DataCell>[
                                     DataCell(Text(index.toString()).bodyLarge().paddingAll(8)),
-                                    DataCell(Row(
-                                      children: <Widget>[
-                                        image(i.media.getImage(), width: 32, height: 32),
-                                        Text(i.firstName ?? "").bodyLarge().paddingAll(8),
-                                      ],
-                                    )),
+                                    DataCell(image(i.media.getImage(), width: 32, height: 32).onTap(() {
+                                      push(ImagePreviewPage(<String>[i.media.getImage()]));
+                                    })),
+                                    DataCell(Text(i.firstName ?? "").bodyLarge().paddingAll(8)),
                                     DataCell(Text(i.lastName ?? "").bodyLarge().paddingAll(8)),
                                     DataCell(Text(i.appUserName ?? "").bodyLarge().paddingAll(8)),
                                     DataCell(Text(i.jsonDetail?.instagram ?? "").bodyLarge().paddingAll(8)),

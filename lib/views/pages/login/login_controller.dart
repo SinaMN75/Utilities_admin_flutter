@@ -10,10 +10,15 @@ mixin LoginController {
 
   final TextEditingController controllerPhone = TextEditingController();
   final TextEditingController controllerOtp = TextEditingController();
+  final TextEditingController controllerUserName = TextEditingController(text: "alighafoury@gmail.com");
+  final TextEditingController controllerPassword = TextEditingController(text: "1234");
+
+
 
   void init() {}
 
   void login() {
+
     showEasyLoading();
     _userDataSource.getVerificationCodeForLogin(
       dto: GetMobileVerificationCodeForLoginDto(mobile: controllerPhone.text),
@@ -24,6 +29,7 @@ mixin LoginController {
       onError: (final GenericResponse<dynamic> response) {},
     );
   }
+
 
   void verification() {
     if (controllerOtp.text.length > 3) {

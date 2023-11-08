@@ -28,6 +28,7 @@ class _LoginPageState extends State<LoginPage> with LoginController {
               children: <Widget>[
                 image(AppImages.logo, width: 100, height: 100),
                 const SizedBox(height: 24),
+
                 Form(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -39,6 +40,9 @@ class _LoginPageState extends State<LoginPage> with LoginController {
                     ],
                   ).paddingSymmetric(horizontal: context.width / 10),
                 ),
+
+
+
               ],
             ).expanded(),
           ],

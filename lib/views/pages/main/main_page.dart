@@ -39,31 +39,31 @@ class _MainPageState extends State<MainPage> with MainController {
               route: MainPageType.dashboard.title,
               icon: Icons.dashboard,
             ),
-            if (Core.user.tags!.contains(TagUser.adminCategoryRead.number))
+
               AdminMenuItem(
                 title: 'دسته بندی',
                 route: MainPageType.category.title,
                 icon: Icons.category,
               ),
-            if (Core.user.tags!.contains(TagUser.adminProductRead.number))
+
               AdminMenuItem(
                 title: "محصولات",
                 route: MainPageType.product.title,
                 icon: Icons.card_travel_outlined,
               ),
-            if (Core.user.tags!.contains(TagUser.adminCategoryRead.number))
+
               AdminMenuItem(
                 title: "نظرات",
                 route: MainPageType.comment.title,
                 icon: Icons.comment_outlined,
               ),
-            if (Core.user.tags!.contains(TagUser.adminUserRead.number))
+
               AdminMenuItem(
                 title: "کاربران",
                 route: MainPageType.user.title,
                 icon: Icons.person_outline,
               ),
-            if (Core.user.tags!.contains(TagUser.adminReportRead.number))
+
               AdminMenuItem(
                 title: "ریپورت‌ها",
                 route: MainPageType.report.title,
@@ -75,13 +75,13 @@ class _MainPageState extends State<MainPage> with MainController {
                 route: MainPageType.transaction.title,
                 icon: Icons.credit_card_outlined,
               ),
-            if (Core.user.tags!.contains(TagUser.adminOrderRead.number))
+
               AdminMenuItem(
                 title: "سفارشات",
                 route: MainPageType.order.title,
                 icon: Icons.shopping_cart_outlined,
               ),
-            if (Core.user.tags!.contains(TagUser.adminContentRead.number))
+           
               AdminMenuItem(
                 title: 'محتوا',
                 icon: Icons.file_copy,

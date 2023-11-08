@@ -50,12 +50,23 @@ mixin ProductController {
       tags=<int>[TagProduct.physical.number,];
     }
 
+   final List<String> categoryIds=<String>[];
+    categoryIds.clear();
+
+    if(selectedSubCategory.value.id!=''){
+      categoryIds.add(selectedSubCategory.value.id);
+    }else if(selectedCategory.value.id!=''){
+      categoryIds.add(selectedCategory.value.id);
+    }
+
+
+
     _productDataSource.filter(
       dto: ProductFilterDto(
         pageSize: 20,
         pageNumber: pageNumber,
         query: controllerTitle.text,
-        categories: <String>[selectedCategory.value.id, selectedSubCategory.value.id],
+        categories: categoryIds,
         showCategories: true,
         showChildren: true,
         showMedia: true,

@@ -24,7 +24,13 @@ class _OrderDetailPageState extends State<OrderDetailPage> with OrderController 
 
   @override
   Widget build(final BuildContext context) => scaffold(
-          body: Column(
+      bottomNavigationBar: button(
+        title: "ذخیره",
+        onTap: () {
+          if (Core.user.tags!.contains(TagUser.adminOrderRead.number)) {}
+        },
+      ),
+      body: Column(
         children: <Widget>[
           Row(
             children: <Widget>[

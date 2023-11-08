@@ -1,5 +1,6 @@
 import 'package:utilities/components/pagination.dart';
 import 'package:utilities/utilities.dart';
+import 'package:utilities_admin_flutter/core/core.dart';
 import 'package:utilities_admin_flutter/views/pages/products/product_controller.dart';
 import 'package:utilities_admin_flutter/views/widget/image_preview_page.dart';
 
@@ -24,7 +25,7 @@ class _ProductPageState extends State<ProductPage> with ProductController {
         appBar: AppBar(
           title: const Text("محصولات"),
           actions: <Widget>[
-            IconButton(onPressed: create, icon: const Icon(Icons.add_box_outlined, size: 40)),
+            if (Core.user.tags!.contains(TagUser.adminProductRead.number))   IconButton(onPressed: create, icon: const Icon(Icons.add_box_outlined, size: 40)),
           ],
         ),
         body: Obx(
@@ -36,6 +37,7 @@ class _ProductPageState extends State<ProductPage> with ProductController {
                       DataTable(
                         columns: <DataColumn>[
                           DataColumn(label: const Text("ردیف").headlineSmall()),
+                          DataColumn(label: const Text("عکس").headlineSmall()),
                           DataColumn(label: const Text("دسته بندی و زیر دسته").headlineSmall()),
                           DataColumn(label: const Text("عنوان").headlineSmall()),
                           DataColumn(label: const Text("مشخصات").headlineSmall()),
@@ -49,18 +51,13 @@ class _ProductPageState extends State<ProductPage> with ProductController {
                                 (final int index, final ProductReadDto i) => DataRow(
                                   cells: <DataCell>[
                                     DataCell(Text(index.toString()).bodyLarge().paddingAll(8)),
+                                    DataCell(image(i.media.getImage(), width: 32, height: 32).onTap(() {
+                                      push(ImagePreviewPage(i.media!.map((final MediaReadDto e) => e.url).toList()));
+                                    })),
                                     DataCell(
-                                      Row(
-                                        children: <Widget>[
-                                          image(i.media.getImage(),width: 32,height: 32).onTap(() {
-                                            push(ImagePreviewPage(i.media!.map((final MediaReadDto e) => e.url).toList()));
-                                          }),
-                                          Text(
-                                            "${i.categories!.firstWhereOrNull((final CategoryReadDto i) => i.parentId == null)?.title ?? ""} / ${i.categories!.firstWhereOrNull((final CategoryReadDto i) => i.parentId != null)?.title ?? ""}",
-                                          ).bodyLarge().paddingAll(8),
-
-                                        ],
-                                      ),
+                                        Text(
+                                          "${i.categories!.firstWhereOrNull((final CategoryReadDto i) => i.parentId == null)?.title ?? ""} / ${i.categories!.firstWhereOrNull((final CategoryReadDto i) => i.parentId != null)?.title ?? ""}",
+                                        ).bodyLarge().paddingAll(8)
                                     ),
                                     DataCell(Text(i.title ?? "").bodyLarge().paddingAll(8)),
                                     DataCell(Text((i.children ?? <ProductReadDto>[]).map((final ProductReadDto e) => e.title).toList().toString())),
@@ -72,19 +69,19 @@ class _ProductPageState extends State<ProductPage> with ProductController {
                                       ),
                                     ),
                                     DataCell(
-                                        Row(
-                                          children: <Widget>[
-                                            IconButton(
-                                              onPressed: () => delete(dto: i),
-                                              icon: Icon(Icons.delete, color: context.theme.colorScheme.error),
-                                            ).paddingSymmetric(horizontal: 8),
-                                            IconButton(
-                                              onPressed: () => update(dto: i),
-                                              icon: Icon(Icons.edit, color: context.theme.colorScheme.primary),
-                                            ).paddingSymmetric(horizontal: 8),
-                                          ],
-                                        ),
+                                      Row(
+                                        children: <Widget>[
+                                          if (Core.user.tags!.contains(TagUser.adminProductUpdate.number))  IconButton(
+                                            onPressed: () => delete(dto: i),
+                                            icon: Icon(Icons.delete, color: context.theme.colorScheme.error),
+                                          ).paddingSymmetric(horizontal: 8),
+                                          IconButton(
+                                            onPressed: () => update(dto: i),
+                                            icon: Icon(Icons.edit, color: context.theme.colorScheme.primary),
+                                          ).paddingSymmetric(horizontal: 8),
+                                        ],
                                       ),
+                                    ),
                                   ],
                                 ),
                               )
