@@ -6,27 +6,24 @@ mixin TransactionsController {
 
 
   final RxInt selectedTransactionTag = TagProduct.all.number.obs;
-
   final RxList<TransactionReadDto> list = <TransactionReadDto>[].obs;
   final RxList<TransactionReadDto> filteredList = <TransactionReadDto>[].obs;
 
   final TextEditingController controllerTitle = TextEditingController();
-  final TextEditingController controllerTitleTr1 = TextEditingController();
-
   final TransactionDataSource _transactionDataSource = TransactionDataSource(baseUrl: AppConstants.baseUrl);
 
   void init() {
     if (list.isEmpty)
-      read();
+      filter();
     else
       state.loaded();
   }
 
-  void filter() {}
-
-  void read() {
+  void filter() {
     _transactionDataSource.filter(
-      dto: TransactionFilterDto(),
+      dto: TransactionFilterDto(
+
+      ),
       onResponse: (final GenericResponse<TransactionReadDto> response) {
         list(response.resultList);
         filteredList(list);
@@ -36,7 +33,5 @@ mixin TransactionsController {
     );
   }
 
-  void changeTag({required final int value}) {
 
-  }
 }

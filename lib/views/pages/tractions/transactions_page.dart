@@ -36,14 +36,7 @@ class _TransactionsPageState extends State<TransactionsPage> with TransactionsCo
                             filter();
                           },
                         ).expanded(),
-                        const SizedBox(width: 20),
-                        textField(
-                          text: "عنوان انگلیسی",
-                          controller: controllerTitleTr1,
-                          onChanged: (final String value) {
-                            filter();
-                          },
-                        ).expanded(),
+
                       ],
                     ),
                     const SizedBox(height: 20),
