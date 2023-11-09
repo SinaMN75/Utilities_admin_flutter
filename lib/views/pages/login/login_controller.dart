@@ -7,15 +7,32 @@ mixin LoginController {
 
   final UserDataSource _userDataSource = UserDataSource(baseUrl: AppConstants.baseUrl);
 
-  final TextEditingController controllerUserName = TextEditingController(text: "admin");
+  final TextEditingController controllerPhone = TextEditingController();
+  final TextEditingController controllerOtp = TextEditingController();
+  final TextEditingController controllerUserName = TextEditingController(text: "alighafoury@gmail.com");
   final TextEditingController controllerPassword = TextEditingController(text: "1234");
+
+
 
   void init() {}
 
+  // void login() {
+  //
+  //   showEasyLoading();
+  //   _userDataSource.getVerificationCodeForLogin(
+  //     dto: GetMobileVerificationCodeForLoginDto(mobile: controllerPhone.text),
+  //     onResponse: (final GenericResponse<UserReadDto> response) {
+  //      push(OtpPage(mobile:controllerPhone.text));
+  //       dismissEasyLoading();
+  //     },
+  //     onError: (final GenericResponse<dynamic> response) {},
+  //   );
+  // }
   void login() {
+
     showEasyLoading();
     _userDataSource.loginWithPassword(
-      dto: LoginWithPasswordDto(email: controllerUserName.text, password: controllerPassword.text),
+      dto: LoginWithPasswordDto(email: controllerUserName.text,password: controllerPassword.text),
       onResponse: (final GenericResponse<UserReadDto> response) {
         setData(UtilitiesConstants.userId, response.result?.id);
         setData(UtilitiesConstants.token, "Bearer ${response.result?.token}");
@@ -25,5 +42,27 @@ mixin LoginController {
       },
       onError: (final GenericResponse<dynamic> response) {},
     );
+  }
+
+  void verification() {
+    if (controllerOtp.text.length > 3) {
+      showEasyLoading();
+      _userDataSource.verifyCodeForLogin(
+        dto: VerifyMobileForLoginDto(
+          mobile: controllerPhone.text,
+          verificationCode: controllerOtp.text,
+        ),
+        onResponse: (final GenericResponse<UserReadDto> response) {
+          setData(UtilitiesConstants.userId, response.result?.id);
+          setData(UtilitiesConstants.token, "Bearer ${response.result?.token}");
+          Core.user = response.result!;
+          offAll(const SplashPage());
+          dismissEasyLoading();
+        },
+        onError: (final GenericResponse<dynamic> response) {},
+      );
+    } else {
+      snackbarRed(title: "خطا", subtitle: "کد تایید نامعتبر است");
+    }
   }
 }

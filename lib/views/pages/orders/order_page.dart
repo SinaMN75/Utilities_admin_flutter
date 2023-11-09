@@ -24,7 +24,7 @@ class _OrderPageState extends State<OrderPage> with OrderController {
 
   @override
   void initState() {
-    if (Core.user.tags!.contains(TagUser.adminOrderRead.number)){
+    if (Core.user.tags!.contains(TagUser.adminOrderRead.number)) {
       columns.add(const DataColumn(label: Text("وضعیت")));
     }
     init();
@@ -48,7 +48,7 @@ class _OrderPageState extends State<OrderPage> with OrderController {
                         columns: columns,
                         rows: list.map(
                           (final OrderReadDto i) {
-                            final Rx<TagOrder> orderTag = TagOrder.paid.obs;
+                            final Rx<TagOrder> orderTag = TagOrder.inProcess.obs;
                             // orderTag(TagOrder.values.where((final TagOrder element) => i.tags!.contains(element.number)).toList().firstOrDefault(defaultValue:TagOrder.inQueue.obs ));
                             if (i.tags!.contains(TagOrder.paid.number)) orderTag(TagOrder.paid);
                             if (i.tags!.contains(TagOrder.inProcess.number)) orderTag(TagOrder.inProcess);
@@ -76,12 +76,12 @@ class _OrderPageState extends State<OrderPage> with OrderController {
                                               value: orderTag.value,
                                               items: <DropdownMenuItem<TagOrder>>[
                                                 DropdownMenuItem<TagOrder>(
-                                                  value: TagOrder.paid,
-                                                  child: Text(TagOrder.paid.title),
-                                                ),
-                                                DropdownMenuItem<TagOrder>(
                                                   value: TagOrder.inProcess,
                                                   child: Text(TagOrder.inProcess.title),
+                                                ),
+                                                DropdownMenuItem<TagOrder>(
+                                                  value: TagOrder.paid,
+                                                  child: Text(TagOrder.paid.title),
                                                 ),
                                                 DropdownMenuItem<TagOrder>(
                                                   value: TagOrder.shipping,
@@ -109,12 +109,13 @@ class _OrderPageState extends State<OrderPage> with OrderController {
                                 DataCell(
                                   Row(
                                     children: <Widget>[
-                                      if (Core.user.tags!.contains(TagUser.adminOrderRead.number))  IconButton(
-                                        onPressed: () => delete(dto: i),
-                                        icon: Icon(Icons.delete, color: context.theme.colorScheme.error),
-                                      ).paddingSymmetric(horizontal: 8),
-                                     IconButton(
-                                        onPressed: () =>  mainWidget(OrderDetailPage(orderReadDto: i).container()),
+                                      if (Core.user.tags!.contains(TagUser.adminOrderRead.number))
+                                        IconButton(
+                                          onPressed: () => delete(dto: i),
+                                          icon: Icon(Icons.delete, color: context.theme.colorScheme.error),
+                                        ).paddingSymmetric(horizontal: 8),
+                                      IconButton(
+                                        onPressed: () => mainWidget(OrderDetailPage(orderReadDto: i).container()),
                                         icon: Icon(Icons.edit, color: context.theme.colorScheme.primary),
                                       ).paddingSymmetric(horizontal: 8),
                                     ],
@@ -144,6 +145,10 @@ class _OrderPageState extends State<OrderPage> with OrderController {
   Widget _filters() => Wrap(
         crossAxisAlignment: WrapCrossAlignment.center,
         children: <Widget>[
+          SizedBox(
+            width: 150,
+            child: textField(keyboardType: TextInputType.number, hintText: "شماره پرداخت", controller: payNumberController),
+          ),
           DropdownButtonFormField<int>(
             value: selectedOrderTag.value,
             items: <DropdownMenuItem<int>>[
