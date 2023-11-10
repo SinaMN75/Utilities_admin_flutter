@@ -6,6 +6,8 @@ import 'package:utilities_admin_flutter/views/widget/image_preview_page.dart';
 class AddProductPage extends StatefulWidget {
   const AddProductPage({super.key, this.dto, this.action, this.isFromInstagram, this.images, this.description});
 
+  @override
+  Key? get key => const Key("ساخت محصول");
   final ProductReadDto? dto;
   final List<String>? images;
   final String? description;
@@ -16,7 +18,10 @@ class AddProductPage extends StatefulWidget {
   State<AddProductPage> createState() => _AddProductPageState();
 }
 
-class _AddProductPageState extends State<AddProductPage> with AddProductController {
+class _AddProductPageState extends State<AddProductPage> with AddProductController, AutomaticKeepAliveClientMixin {
+  @override
+  bool get wantKeepAlive => true;
+
   @override
   void initState() {
     dto = widget.dto;

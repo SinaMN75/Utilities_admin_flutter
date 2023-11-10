@@ -7,10 +7,16 @@ class BannersPage extends StatefulWidget {
   const BannersPage({super.key});
 
   @override
+  Key? get key => const Key("بنرها");
+
+  @override
   State<BannersPage> createState() => _BannersPageState();
 }
 
-class _BannersPageState extends State<BannersPage> with BannerController {
+class _BannersPageState extends State<BannersPage> with BannerController, AutomaticKeepAliveClientMixin {
+  @override
+  bool get wantKeepAlive => true;
+
   @override
   void initState() {
     init();

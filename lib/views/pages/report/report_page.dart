@@ -5,10 +5,16 @@ class ReportPage extends StatefulWidget {
   const ReportPage({super.key});
 
   @override
+  Key? get key => const Key("ریپورت ها");
+
+  @override
   State<ReportPage> createState() => _ReportPageState();
 }
 
-class _ReportPageState extends State<ReportPage> with ReportController {
+class _ReportPageState extends State<ReportPage> with ReportController, AutomaticKeepAliveClientMixin {
+  @override
+  bool get wantKeepAlive => true;
+
   @override
   void initState() {
     init();

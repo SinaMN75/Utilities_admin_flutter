@@ -1,6 +1,3 @@
-import 'package:flutter/material.dart';
-import 'package:utilities/components/components.dart';
-import 'package:utilities/data/data.dart';
 import 'package:utilities/utilities.dart';
 import 'package:utilities_admin_flutter/core/core.dart';
 import 'package:utilities_admin_flutter/views/pages/orders/order_controller.dart';
@@ -8,13 +5,18 @@ import 'package:utilities_admin_flutter/views/pages/orders/order_controller.dart
 class OrderDetailPage extends StatefulWidget {
   const OrderDetailPage({required this.orderReadDto, super.key});
 
+  @override
+  Key? get key => const Key("اطلاعات سفارش ها");
   final OrderReadDto orderReadDto;
 
   @override
   State<OrderDetailPage> createState() => _OrderDetailPageState();
 }
 
-class _OrderDetailPageState extends State<OrderDetailPage> with OrderController {
+class _OrderDetailPageState extends State<OrderDetailPage> with OrderController, AutomaticKeepAliveClientMixin {
+  @override
+  bool get wantKeepAlive => true;
+
   @override
   void initState() {
     orderReadDto = widget.orderReadDto;

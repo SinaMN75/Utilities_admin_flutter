@@ -12,10 +12,16 @@ class DashboardPage extends StatefulWidget {
   const DashboardPage({super.key});
 
   @override
+  Key? get key => const Key("داشبورد");
+
+  @override
   State<DashboardPage> createState() => _DashboardPageState();
 }
 
-class _DashboardPageState extends State<DashboardPage> with DashboardController {
+class _DashboardPageState extends State<DashboardPage> with DashboardController, AutomaticKeepAliveClientMixin {
+  @override
+  bool get wantKeepAlive => true;
+
   @override
   void initState() {
     init();

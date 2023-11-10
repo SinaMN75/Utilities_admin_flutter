@@ -7,10 +7,16 @@ class CommentsPage extends StatefulWidget {
   const CommentsPage({super.key});
 
   @override
+  Key? get key => const Key("کامنت ها");
+
+  @override
   State<CommentsPage> createState() => _CommentsPageState();
 }
 
-class _CommentsPageState extends State<CommentsPage> with CommentsController {
+class _CommentsPageState extends State<CommentsPage> with CommentsController, AutomaticKeepAliveClientMixin {
+  @override
+  bool get wantKeepAlive => true;
+
   @override
   void initState() {
     init();
@@ -19,19 +25,19 @@ class _CommentsPageState extends State<CommentsPage> with CommentsController {
 
   @override
   Widget build(final BuildContext context) => scaffold(
-    constraints: const BoxConstraints(),
-    padding: const EdgeInsets.symmetric(horizontal: 20),
-    appBar: AppBar(title: const Text("نظرات")),
-    body: Obx(
+        constraints: const BoxConstraints(),
+        padding: const EdgeInsets.symmetric(horizontal: 20),
+        appBar: AppBar(title: const Text("نظرات")),
+        body: Obx(
           () => state.isLoaded()
-          ? SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            _filters(),
-            DataTable(
-              columns: <DataColumn>[
-                DataColumn(label: const Text("ردیف").headlineSmall()),
+              ? SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      _filters(),
+                      DataTable(
+                        columns: <DataColumn>[
+                          DataColumn(label: const Text("ردیف").headlineSmall()),
                 DataColumn(label: const Text("کاربر").headlineSmall()),
                 DataColumn(label: const Text("محصول").headlineSmall()),
                 DataColumn(label: const Text("نظر").headlineSmall()),

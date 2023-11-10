@@ -6,13 +6,18 @@ import 'package:utilities_admin_flutter/views/pages/users/user_create_update/use
 class UserCreateUpdatePage extends StatefulWidget {
   const UserCreateUpdatePage({required this.dto, super.key});
 
+  @override
+  Key? get key => const Key("توضیحات کاربر");
   final UserReadDto? dto;
 
   @override
   State<UserCreateUpdatePage> createState() => _UserCreateUpdatePageState();
 }
 
-class _UserCreateUpdatePageState extends State<UserCreateUpdatePage> with UserCreateUpdateController {
+class _UserCreateUpdatePageState extends State<UserCreateUpdatePage> with UserCreateUpdateController, AutomaticKeepAliveClientMixin {
+  @override
+  bool get wantKeepAlive => true;
+
   @override
   void initState() {
     if (widget.dto != null) dto = widget.dto!;

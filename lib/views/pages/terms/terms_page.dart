@@ -5,10 +5,16 @@ class TermsPage extends StatefulWidget {
   const TermsPage({super.key});
 
   @override
+  Key? get key => const Key("قوانین و مقررات");
+
+  @override
   State<TermsPage> createState() => _TermsPageState();
 }
 
-class _TermsPageState extends State<TermsPage> with TermsController {
+class _TermsPageState extends State<TermsPage> with TermsController, AutomaticKeepAliveClientMixin {
+  @override
+  bool get wantKeepAlive => true;
+
   @override
   void initState() {
     init();

@@ -8,10 +8,16 @@ class UserPage extends StatefulWidget {
   const UserPage({super.key});
 
   @override
+  Key? get key => const Key("کاربران");
+
+  @override
   State<UserPage> createState() => _UserPageState();
 }
 
-class _UserPageState extends State<UserPage> with UserController {
+class _UserPageState extends State<UserPage> with UserController, AutomaticKeepAliveClientMixin {
+  @override
+  bool get wantKeepAlive => true;
+
   @override
   void initState() {
     init();

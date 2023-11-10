@@ -8,10 +8,16 @@ class TransactionsPage extends StatefulWidget {
   const TransactionsPage({super.key});
 
   @override
+  Key? get key => const Key("تراکنش ها");
+
+  @override
   State<TransactionsPage> createState() => _TransactionsPageState();
 }
 
-class _TransactionsPageState extends State<TransactionsPage> with TransactionsController {
+class _TransactionsPageState extends State<TransactionsPage> with TransactionsController, AutomaticKeepAliveClientMixin {
+  @override
+  bool get wantKeepAlive => true;
+
   @override
   void initState() {
     init();

@@ -8,10 +8,16 @@ class ProductPage extends StatefulWidget {
   const ProductPage({super.key});
 
   @override
+  Key? get key => const Key("محصولات");
+
+  @override
   State<ProductPage> createState() => _ProductPageState();
 }
 
-class _ProductPageState extends State<ProductPage> with ProductController {
+class _ProductPageState extends State<ProductPage> with ProductController, AutomaticKeepAliveClientMixin {
+  @override
+  bool get wantKeepAlive => true;
+
   @override
   void initState() {
     init();

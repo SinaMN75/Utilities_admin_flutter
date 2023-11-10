@@ -5,10 +5,16 @@ class AboutPage extends StatefulWidget {
   const AboutPage({super.key});
 
   @override
+  Key? get key => const Key("درباره ما");
+
+  @override
   State<AboutPage> createState() => _AboutPageState();
 }
 
-class _AboutPageState extends State<AboutPage> with AboutController {
+class _AboutPageState extends State<AboutPage> with AboutController, AutomaticKeepAliveClientMixin {
+  @override
+  bool get wantKeepAlive => true;
+
   @override
   void initState() {
     init();

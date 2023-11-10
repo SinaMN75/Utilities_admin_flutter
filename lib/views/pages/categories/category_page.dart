@@ -7,13 +7,18 @@ import 'package:utilities_admin_flutter/views/widget/image_preview_page.dart';
 class CategoryPage extends StatefulWidget {
   const CategoryPage({super.key, this.dto});
 
+  @override
+  Key? get key => const Key("دسته بندی ها");
   final CategoryReadDto? dto;
 
   @override
   State<CategoryPage> createState() => _CategoryPageState();
 }
 
-class _CategoryPageState extends State<CategoryPage> with CategoryController {
+class _CategoryPageState extends State<CategoryPage> with CategoryController, AutomaticKeepAliveClientMixin {
+  @override
+  bool get wantKeepAlive => true;
+
   @override
   void initState() {
     if (widget.dto != null) dto = widget.dto;

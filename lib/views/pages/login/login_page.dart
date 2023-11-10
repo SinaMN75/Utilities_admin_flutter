@@ -6,6 +6,9 @@ class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
 
   @override
+  Key? get key => const Key("لاگین");
+
+  @override
   _LoginPageState createState() => _LoginPageState();
 }
 

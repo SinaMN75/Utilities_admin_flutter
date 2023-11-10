@@ -10,10 +10,16 @@ class OrderPage extends StatefulWidget {
   const OrderPage({super.key});
 
   @override
+  Key? get key => const Key("سفارشات");
+
+  @override
   State<OrderPage> createState() => _OrderPageState();
 }
 
-class _OrderPageState extends State<OrderPage> with OrderController {
+class _OrderPageState extends State<OrderPage> with OrderController, AutomaticKeepAliveClientMixin {
+  @override
+  bool get wantKeepAlive => true;
+
   List<DataColumn> columns = <DataColumn>[
     const DataColumn(label: Text("شماره سفارش")),
     const DataColumn(label: Text("فروشنده")),
