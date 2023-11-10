@@ -98,7 +98,6 @@ class _UserPageState extends State<UserPage> with UserController {
             ],
             onChanged: suspend,
           ).container(width: 150),
-          textField(hintText: "نام کاربری", controller: controllerUserName).container(width: 300, padding: const EdgeInsets.symmetric(horizontal: 4)),
           button(title: "فیلتر", onTap: filter, width: 200),
         ],
       ).paddingSymmetric(vertical: 4);

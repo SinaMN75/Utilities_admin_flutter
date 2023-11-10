@@ -2,7 +2,7 @@ import 'package:flutter_admin_scaffold/admin_scaffold.dart';
 import 'package:utilities/utilities.dart';
 import 'package:utilities_admin_flutter/core/core.dart';
 import 'package:utilities_admin_flutter/views/pages/about/about_page.dart';
-import 'package:utilities_admin_flutter/views/pages/banners/banners_page.dart';
+import 'package:utilities_admin_flutter/views/pages/banners/banner_page.dart';
 import 'package:utilities_admin_flutter/views/pages/categories/category_page.dart';
 import 'package:utilities_admin_flutter/views/pages/comments/comments_page.dart';
 import 'package:utilities_admin_flutter/views/pages/dashboard/dashboard_page.dart';
