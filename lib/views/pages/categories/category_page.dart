@@ -94,7 +94,7 @@ class _CategoryPageState extends State<CategoryPage> with CategoryController, Au
                                             ).paddingSymmetric(horizontal: 8),
                                           if (dto == null)
                                             TextButton(
-                                              onPressed: () => mainWidget(CategoryPage(dto: i)),
+                                              onPressed: () => tabWidget.insert(0, CategoryPage(dto: i)),
                                               child: const Text("نمایش زیر دسته‌ها"),
                                             ).paddingSymmetric(horizontal: 8),
                                         ],

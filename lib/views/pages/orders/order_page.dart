@@ -23,7 +23,9 @@ class _OrderPageState extends State<OrderPage> with OrderController, AutomaticKe
   List<DataColumn> columns = <DataColumn>[
     const DataColumn(label: Text("شماره سفارش")),
     const DataColumn(label: Text("فروشنده")),
+    const DataColumn(label: Text("همراه فروشنده")),
     const DataColumn(label: Text("خریدار")),
+    const DataColumn(label: Text("همراه خریدار")),
     const DataColumn(label: Text("قیمت کل")),
     const DataColumn(label: Text("عملیات ها")),
   ];
@@ -50,12 +52,10 @@ class _OrderPageState extends State<OrderPage> with OrderController, AutomaticKe
                     children: <Widget>[
                       _filters(),
                       DataTable(
-                        //
                         columns: columns,
                         rows: list.map(
                           (final OrderReadDto i) {
                             final Rx<TagOrder> orderTag = TagOrder.inProcess.obs;
-                            // orderTag(TagOrder.values.where((final TagOrder element) => i.tags!.contains(element.number)).toList().firstOrDefault(defaultValue:TagOrder.inQueue.obs ));
                             if (i.tags!.contains(TagOrder.paid.number)) orderTag(TagOrder.paid);
                             if (i.tags!.contains(TagOrder.inProcess.number)) orderTag(TagOrder.inProcess);
                             if (i.tags!.contains(TagOrder.shipping.number)) orderTag(TagOrder.shipping);
@@ -64,12 +64,14 @@ class _OrderPageState extends State<OrderPage> with OrderController, AutomaticKe
                             return DataRow(
                               cells: <DataCell>[
                                 DataCell(Text((i.orderNumber ?? 0).toString()).bodyMedium()),
-                                DataCell(Text(i.productOwner?.fullName ?? "").bodyMedium().onTap(() {
-                                  mainWidget(UserCreateUpdatePage(dto: i.productOwner).container());
-                                })),
-                                DataCell(Text(i.user?.fullName ?? "").bodyMedium().onTap(() {
-                                  mainWidget(UserCreateUpdatePage(dto: i.user).container());
-                                })),
+                                DataCell(
+                                  Text(i.productOwner?.fullName ?? "").bodyMedium().onTap(() => tabWidget.insert(0, UserCreateUpdatePage(dto: i.productOwner).container())),
+                                ),
+                                DataCell(
+                                  Text(i.productOwner?.phoneNumber ?? "").bodyMedium().onTap(() => tabWidget.insert(0, UserCreateUpdatePage(dto: i.productOwner).container())),
+                                ),
+                                DataCell(Text(i.user?.fullName ?? "").bodyMedium().onTap(() => tabWidget.insert(0, UserCreateUpdatePage(dto: i.user).container()))),
+                                DataCell(Text(i.user?.phoneNumber ?? "").bodyMedium().onTap(() => tabWidget.insert(0, UserCreateUpdatePage(dto: i.user).container()))),
                                 DataCell(Text(i.totalPrice?.toString().getPrice() ?? "").bodyLarge()),
                                 if (Core.user.tags!.contains(TagUser.adminOrderRead.number))
                                   DataCell(
@@ -81,26 +83,11 @@ class _OrderPageState extends State<OrderPage> with OrderController, AutomaticKe
                                             child: DropdownButtonFormField<TagOrder>(
                                               value: orderTag.value,
                                               items: <DropdownMenuItem<TagOrder>>[
-                                                DropdownMenuItem<TagOrder>(
-                                                  value: TagOrder.inProcess,
-                                                  child: Text(TagOrder.inProcess.title),
-                                                ),
-                                                DropdownMenuItem<TagOrder>(
-                                                  value: TagOrder.paid,
-                                                  child: Text(TagOrder.paid.title),
-                                                ),
-                                                DropdownMenuItem<TagOrder>(
-                                                  value: TagOrder.shipping,
-                                                  child: Text(TagOrder.shipping.title),
-                                                ),
-                                                DropdownMenuItem<TagOrder>(
-                                                  value: TagOrder.complete,
-                                                  child: Text(TagOrder.complete.title),
-                                                ),
-                                                DropdownMenuItem<TagOrder>(
-                                                  value: TagOrder.conflict,
-                                                  child: Text(TagOrder.conflict.title),
-                                                ),
+                                                DropdownMenuItem<TagOrder>(value: TagOrder.inProcess, child: Text(TagOrder.inProcess.title)),
+                                                DropdownMenuItem<TagOrder>(value: TagOrder.paid, child: Text(TagOrder.paid.title)),
+                                                DropdownMenuItem<TagOrder>(value: TagOrder.shipping, child: Text(TagOrder.shipping.title)),
+                                                DropdownMenuItem<TagOrder>(value: TagOrder.complete, child: Text(TagOrder.complete.title)),
+                                                DropdownMenuItem<TagOrder>(value: TagOrder.conflict, child: Text(TagOrder.conflict.title))
                                               ],
                                               onChanged: (final TagOrder? value) {
                                                 orderTag(value);
@@ -121,7 +108,7 @@ class _OrderPageState extends State<OrderPage> with OrderController, AutomaticKe
                                           icon: Icon(Icons.delete, color: context.theme.colorScheme.error),
                                         ).paddingSymmetric(horizontal: 8),
                                       IconButton(
-                                        onPressed: () => mainWidget(OrderDetailPage(orderReadDto: i).container()),
+                                        onPressed: () => tabWidget.insert(0, OrderDetailPage(orderReadDto: i).container()),
                                         icon: Icon(Icons.edit, color: context.theme.colorScheme.primary),
                                       ).paddingSymmetric(horizontal: 8),
                                     ],

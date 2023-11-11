@@ -47,5 +47,5 @@ mixin UserController {
     );
   }
 
-  void edit(final UserReadDto dto) => mainWidget(UserCreateUpdatePage(dto: dto));
+  void edit(final UserReadDto dto) => tabWidget.insert(0, UserCreateUpdatePage(dto: dto));
 }

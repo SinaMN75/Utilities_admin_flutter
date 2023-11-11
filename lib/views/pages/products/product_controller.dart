@@ -111,10 +111,10 @@ mixin ProductController {
       );
 
   void create({final CategoryReadDto? dto}) {
-    mainWidget(const AddProductPage().container());
+    tabWidget.insert(0, const AddProductPage().container());
   }
 
   void update({required final ProductReadDto dto}) {
-    mainWidget(AddProductPage(dto: dto).container());
+    tabWidget.insert(0, AddProductPage(dto: dto).container());
   }
 }
