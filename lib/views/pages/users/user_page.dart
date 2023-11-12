@@ -25,7 +25,9 @@ class _UserPageState extends State<UserPage> with UserController, AutomaticKeepA
   }
 
   @override
-  Widget build(final BuildContext context) => scaffold(
+  Widget build(final BuildContext context) {
+    super.build(context);
+    return scaffold(
         constraints: const BoxConstraints(),
         padding: const EdgeInsets.symmetric(horizontal: 20),
         appBar: AppBar(title: const Text("کاربران")),
@@ -65,7 +67,12 @@ class _UserPageState extends State<UserPage> with UserController, AutomaticKeepA
                                     DataCell(Text((i.suspend ?? false) ? "غیر فعال" : "فعال")),
                                     if (Core.user.tags!.contains(TagUser.adminCategoryUpdate.number))
                                       DataCell(
-                                        IconButton(onPressed: () => edit(i), icon: const Icon(Icons.edit)),
+                                        Row(
+                                          children: <Widget>[
+                                            IconButton(onPressed: () => edit(i), icon: const Icon(Icons.edit)),
+                                            IconButton(onPressed: () => transaction(i), icon: const Icon(Icons.transcribe)),
+                                          ],
+                                        ),
                                       ),
                                   ],
                                 ),
@@ -88,6 +95,7 @@ class _UserPageState extends State<UserPage> with UserController, AutomaticKeepA
               : const CircularProgressIndicator().alignAtCenter(),
         ),
       );
+  }
 
   Widget _filters() => Wrap(
         crossAxisAlignment: WrapCrossAlignment.center,

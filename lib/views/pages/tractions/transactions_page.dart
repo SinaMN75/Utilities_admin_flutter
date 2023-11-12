@@ -4,8 +4,10 @@ import 'package:utilities_admin_flutter/views/pages/main/main_controller.dart';
 import 'package:utilities_admin_flutter/views/pages/orders/order_detail_page.dart';
 import 'package:utilities_admin_flutter/views/pages/tractions/transactions_controller.dart';
 import 'package:utilities_admin_flutter/views/pages/users/user_create_update/user_create_update_page.dart';
+
 class TransactionsPage extends StatefulWidget {
-  const TransactionsPage({super.key});
+  const TransactionsPage({ this.userId,super.key});
+  final String? userId;
 
   @override
   Key? get key => const Key("تراکنش ها");
@@ -20,15 +22,28 @@ class _TransactionsPageState extends State<TransactionsPage> with TransactionsCo
 
   @override
   void initState() {
+    userId=widget.userId;
     init();
     super.initState();
   }
 
   @override
-  Widget build(final BuildContext context) => scaffold(
+  Widget build(final BuildContext context) {
+    super.build(context);
+    return scaffold(
         constraints: const BoxConstraints(),
         padding: const EdgeInsets.symmetric(horizontal: 20),
-        appBar: AppBar(title: const Text("تراکنش‌ها")),
+        appBar: AppBar(
+          title: const Text("تراکنش‌ها"),
+          actions: <Widget>[
+            if (Core.user.tags!.contains(TagUser.adminProductRead.number))
+              IconButton(
+                  onPressed: () => create(
+                        action: filter,
+                      ),
+                  icon: const Icon(Icons.add_box_outlined, size: 40)),
+          ],
+        ),
         body: Obx(
           () => state.isLoaded()
               ? Column(
@@ -42,7 +57,6 @@ class _TransactionsPageState extends State<TransactionsPage> with TransactionsCo
                             filter();
                           },
                         ).expanded(),
-
                       ],
                     ),
                     const SizedBox(height: 20),
@@ -56,20 +70,22 @@ class _TransactionsPageState extends State<TransactionsPage> with TransactionsCo
                           // DataColumn(label: const Text("وضعیت").headlineSmall()),
                         ],
                         rows: <DataRow>[
-                          ...filteredList.mapIndexed(
-                            (final int index, final TransactionReadDto i) => DataRow(
-                                cells: <DataCell>[
-                                  DataCell(Text(index.toString()).bodyLarge().paddingAll(8)),
-                                  DataCell(Text(i.descriptions ?? "").bodyLarge().paddingAll(8).onTap(() {
-                                    tabWidget.insert(0, OrderDetailPage(orderReadDto: i.order!).container());
-                                  })),
-                                  DataCell(Text(i.user?.fullName??'*').bodyLarge().paddingAll(8).onTap(() {
-                                    tabWidget.insert(0, UserCreateUpdatePage(dto: i.user).container());
-                                  })),
-                                  DataCell(Text(getPrice(i.order?.totalPrice??0)).bodyLarge().paddingAll(8)),
-                                ],
-                              ),
-                          ).toList(),
+                          ...filteredList
+                              .mapIndexed(
+                                (final int index, final TransactionReadDto i) => DataRow(
+                                  cells: <DataCell>[
+                                    DataCell(Text(index.toString()).bodyLarge().paddingAll(8)),
+                                    DataCell(Text(i.descriptions ?? "").bodyLarge().paddingAll(8).onTap(() {
+                                      tabWidget.insert(0, OrderDetailPage(orderReadDto: i.order!).container());
+                                    })),
+                                    DataCell(Text(i.user?.fullName ?? '*').bodyLarge().paddingAll(8).onTap(() {
+                                      tabWidget.insert(0, UserCreateUpdatePage(dto: i.user).container());
+                                    })),
+                                    DataCell(Text(getPrice(i.order?.totalPrice ?? 0)).bodyLarge().paddingAll(8)),
+                                  ],
+                                ),
+                              )
+                              .toList(),
                         ],
                       ).container(width: context.width),
                     ).expanded(),
@@ -78,8 +94,5 @@ class _TransactionsPageState extends State<TransactionsPage> with TransactionsCo
               : const CircularProgressIndicator().alignAtCenter(),
         ),
       );
-
-
-
-
+  }
 }
