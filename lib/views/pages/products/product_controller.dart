@@ -5,7 +5,7 @@ import 'package:utilities_admin_flutter/views/pages/products/product_create_upda
 
 mixin ProductController {
   Rx<PageState> state = PageState.initial.obs;
-
+late String? userId;
   final RxList<ProductReadDto> list = <ProductReadDto>[].obs;
   final RxList<ProductReadDto> filteredList = <ProductReadDto>[].obs;
 
@@ -70,6 +70,7 @@ mixin ProductController {
 
     _productDataSource.filter(
       dto: ProductFilterDto(
+        userIds: userId!=null?<String>[userId!]:null,
         pageSize: 20,
         pageNumber: pageNumber,
         query: controllerTitle.text,

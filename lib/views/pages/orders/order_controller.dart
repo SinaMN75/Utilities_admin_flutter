@@ -3,6 +3,7 @@ import 'package:utilities_admin_flutter/core/core.dart';
 
 mixin OrderController {
   Rx<PageState> state = PageState.initial.obs;
+  late String? userId;
 
   TextEditingController payNumberController = TextEditingController();
 
@@ -30,6 +31,7 @@ mixin OrderController {
     _dataSource.filter(
       dto: OrderFilterDto(
         pageSize: 20,
+        userId: userId,
         pageNumber: pageNumber,
         payNumber: payNumberController.text.length > 1 ? payNumberController.text : null,
         tags: selectedOrderTag.value == TagOrder.all.number ? <int>[] : <int>[selectedOrderTag.value],

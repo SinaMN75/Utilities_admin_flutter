@@ -4,7 +4,8 @@ import 'package:utilities_admin_flutter/core/core.dart';
 import 'package:utilities_admin_flutter/views/pages/comments/comments_controller.dart';
 
 class CommentsPage extends StatefulWidget {
-  const CommentsPage({super.key});
+  const CommentsPage({this.userId,super.key});
+  final String? userId;
 
   @override
   Key? get key => const Key("کامنت ها");
@@ -19,12 +20,15 @@ class _CommentsPageState extends State<CommentsPage> with CommentsController, Au
 
   @override
   void initState() {
+    userId=widget.userId;
     init();
     super.initState();
   }
 
   @override
-  Widget build(final BuildContext context) => scaffold(
+  Widget build(final BuildContext context) {
+    super.build(context);
+    return scaffold(
         constraints: const BoxConstraints(),
         padding: const EdgeInsets.symmetric(horizontal: 20),
         appBar: AppBar(title: const Text("نظرات")),
@@ -117,6 +121,7 @@ class _CommentsPageState extends State<CommentsPage> with CommentsController, Au
           : const CircularProgressIndicator().alignAtCenter(),
     ),
   );
+  }
 
   Widget _filters() => Wrap(
     crossAxisAlignment: WrapCrossAlignment.center,

@@ -7,7 +7,8 @@ import 'package:utilities_admin_flutter/views/pages/orders/order_detail_page.dar
 import 'package:utilities_admin_flutter/views/pages/users/user_create_update/user_create_update_page.dart';
 
 class OrderPage extends StatefulWidget {
-  const OrderPage({super.key});
+  const OrderPage({this.userId,super.key});
+  final String? userId;
 
   @override
   Key? get key => const Key("سفارشات");
@@ -32,6 +33,7 @@ class _OrderPageState extends State<OrderPage> with OrderController, AutomaticKe
 
   @override
   void initState() {
+    userId=widget.userId;
     if (Core.user.tags!.contains(TagUser.adminOrderRead.number)) {
       columns.add(const DataColumn(label: Text("وضعیت")));
     }
@@ -40,7 +42,9 @@ class _OrderPageState extends State<OrderPage> with OrderController, AutomaticKe
   }
 
   @override
-  Widget build(final BuildContext context) => scaffold(
+  Widget build(final BuildContext context) {
+    super.build(context);
+    return scaffold(
         constraints: const BoxConstraints(),
         padding: const EdgeInsets.symmetric(horizontal: 20),
         appBar: AppBar(title: const Text("سفارشات")),
@@ -134,6 +138,7 @@ class _OrderPageState extends State<OrderPage> with OrderController, AutomaticKe
               : const CircularProgressIndicator().alignAtCenter(),
         ),
       );
+  }
 
   Widget _filters() => Wrap(
         crossAxisAlignment: WrapCrossAlignment.center,

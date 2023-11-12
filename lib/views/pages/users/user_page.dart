@@ -71,6 +71,9 @@ class _UserPageState extends State<UserPage> with UserController, AutomaticKeepA
                                           children: <Widget>[
                                             IconButton(onPressed: () => edit(i), icon: const Icon(Icons.edit)),
                                             IconButton(onPressed: () => transaction(i), icon: const Icon(Icons.transcribe)),
+                                            IconButton(onPressed: () => orderPage(i), icon: const Icon(Icons.bookmark_border)),
+                                            IconButton(onPressed: () => comments(i), icon: const Icon(Icons.comment)),
+                                            IconButton(onPressed: () => productPage(i), icon: const Icon(Icons.production_quantity_limits)),
                                           ],
                                         ),
                                       ),

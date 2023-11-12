@@ -1,6 +1,9 @@
 import 'package:utilities/utilities.dart';
 import 'package:utilities_admin_flutter/core/core.dart';
+import 'package:utilities_admin_flutter/views/pages/comments/comments_page.dart';
 import 'package:utilities_admin_flutter/views/pages/main/main_controller.dart';
+import 'package:utilities_admin_flutter/views/pages/orders/order_page.dart';
+import 'package:utilities_admin_flutter/views/pages/products/product_page.dart';
 import 'package:utilities_admin_flutter/views/pages/tractions/transactions_page.dart';
 import 'package:utilities_admin_flutter/views/pages/users/user_create_update/user_create_update_page.dart';
 
@@ -50,4 +53,7 @@ mixin UserController {
 
   void edit(final UserReadDto dto) => tabWidget.insert(0, UserCreateUpdatePage(dto: dto));
   void transaction(final UserReadDto dto) => tabWidget.insert(0, TransactionsPage(userId: dto.id));
+  void orderPage(final UserReadDto dto) => tabWidget.insert(0, OrderPage(userId: dto.id));
+  void comments(final UserReadDto dto) => tabWidget.insert(0, CommentsPage(userId: dto.id));
+  void productPage(final UserReadDto dto) => tabWidget.insert(0, ProductPage(userId: dto.id));
 }

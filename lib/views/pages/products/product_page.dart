@@ -5,7 +5,8 @@ import 'package:utilities_admin_flutter/views/pages/products/product_controller.
 import 'package:utilities_admin_flutter/views/widget/image_preview_page.dart';
 
 class ProductPage extends StatefulWidget {
-  const ProductPage({super.key});
+  const ProductPage({this.userId,super.key});
+  final String? userId;
 
   @override
   Key? get key => const Key("محصولات");
@@ -20,12 +21,15 @@ class _ProductPageState extends State<ProductPage> with ProductController, Autom
 
   @override
   void initState() {
+    userId=widget.userId;
     init();
     super.initState();
   }
 
   @override
-  Widget build(final BuildContext context) => scaffold(
+  Widget build(final BuildContext context) {
+    super.build(context);
+    return scaffold(
         constraints: const BoxConstraints(),
         padding: const EdgeInsets.symmetric(horizontal: 20),
         appBar: AppBar(
@@ -109,6 +113,7 @@ class _ProductPageState extends State<ProductPage> with ProductController, Autom
               : const CircularProgressIndicator().alignAtCenter(),
         ),
       );
+  }
 
   Widget _filters() => Wrap(
         crossAxisAlignment: WrapCrossAlignment.center,

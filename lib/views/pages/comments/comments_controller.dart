@@ -3,6 +3,7 @@ import 'package:utilities_admin_flutter/core/core.dart';
 
 mixin CommentsController {
   Rx<PageState> state = PageState.initial.obs;
+  late String? userId;
 
   final RxList<CommentReadDto> list = <CommentReadDto>[].obs;
 
@@ -24,6 +25,7 @@ mixin CommentsController {
       dto: CommentFilterDto(
         pageSize: 20,
         pageNumber: pageNumber,
+        userId: userId,
         tags: selectedCommentTag.value != TagComment.all.number ? <int>[selectedCommentTag.value] : <int>[],
       ),
       onResponse: (final GenericResponse<CommentReadDto> response) {
