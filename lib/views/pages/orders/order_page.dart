@@ -22,13 +22,13 @@ class _OrderPageState extends State<OrderPage> with OrderController, AutomaticKe
   bool get wantKeepAlive => true;
 
   List<DataColumn> columns = <DataColumn>[
-    const DataColumn(label: Text("شماره سفارش")),
-    const DataColumn(label: Text("فروشنده")),
-    const DataColumn(label: Text("همراه فروشنده")),
-    const DataColumn(label: Text("خریدار")),
-    const DataColumn(label: Text("همراه خریدار")),
-    const DataColumn(label: Text("قیمت کل")),
-    const DataColumn(label: Text("عملیات ها")),
+     DataColumn(label: const Text("شماره سفارش").bodyMedium().bold()),
+     DataColumn(label: const Text("فروشنده").bodyMedium().bold()),
+     DataColumn(label: const Text("همراه فروشنده").bodyMedium().bold()),
+     DataColumn(label: const Text("خریدار").bodyMedium().bold()),
+     DataColumn(label: const Text("همراه خریدار").bodyMedium().bold()),
+     DataColumn(label: const Text("قیمت کل").bodyMedium().bold()),
+     DataColumn(label: const Text("عملیات ها").bodyMedium().bold()),
   ];
 
   @override

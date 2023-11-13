@@ -40,15 +40,15 @@ class _UserPageState extends State<UserPage> with UserController, AutomaticKeepA
                       _filters(),
                       DataTable(
                         columns: <DataColumn>[
-                          DataColumn(label: const Text("ردیف").headlineSmall()),
-                          DataColumn(label: const Text("عکس").headlineSmall()),
-                          DataColumn(label: const Text("نام").headlineSmall()),
-                          DataColumn(label: const Text("نام خانوادگی").headlineSmall()),
-                          DataColumn(label: const Text("نام کاربری").headlineSmall()),
-                          DataColumn(label: const Text("آیدی اینستاگرام").headlineSmall()),
-                          DataColumn(label: const Text("شماره موبایل").headlineSmall()),
-                          DataColumn(label: const Text("وضعیت").headlineSmall()),
-                          if (Core.user.tags!.contains(TagUser.adminCategoryUpdate.number)) DataColumn(label: const Text("عملیات").headlineSmall()),
+                          DataColumn(label: const Text("ردیف").bodyMedium().bold()),
+                          DataColumn(label: const Text("عکس").bodyMedium().bold()),
+                          DataColumn(label: const Text("نام").bodyMedium().bold()),
+                          DataColumn(label: const Text("نام خانوادگی").bodyMedium().bold()),
+                          DataColumn(label: const Text("نام کاربری").bodyMedium().bold()),
+                          DataColumn(label: const Text("آیدی اینستاگرام").bodyMedium().bold()),
+                          DataColumn(label: const Text("شماره موبایل").bodyMedium().bold()),
+                          DataColumn(label: const Text("وضعیت").bodyMedium().bold()),
+                          if (Core.user.tags!.contains(TagUser.adminCategoryUpdate.number)) DataColumn(label: const Text("عملیات").bodyMedium().bold()),
                         ],
                         rows: <DataRow>[
                           ...list
