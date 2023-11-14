@@ -29,7 +29,7 @@ class _MainPageState extends State<MainPage> with MainController, TickerProvider
 
   @override
   void initState() {
-    tabController = TabController(length: 0, vsync: this);
+    tabController = TabController(length: tabWidget.length, vsync: this);
     init();
     super.initState();
   }
@@ -92,18 +92,18 @@ class _MainPageState extends State<MainPage> with MainController, TickerProvider
             const AdminMenuItem(title: 'خروج از سیستم', icon: Icons.logout, route: "logout"),
           ],
           onSelected: (final AdminMenuItem item) {
-            if (item.route == MainPageType.dashboard.title) tabWidget.insert(0, const DashboardPage());
-            if (item.route == MainPageType.about.title) tabWidget.insert(0, const AboutPage());
-            if (item.route == MainPageType.terms.title) tabWidget.insert(0, const TermsPage());
-            if (item.route == MainPageType.category.title) tabWidget.insert(0, const CategoryPage());
-            if (item.route == MainPageType.product.title) tabWidget.insert(0, const ProductPage());
-            if (item.route == MainPageType.comment.title) tabWidget.insert(0, const CommentsPage());
-            if (item.route == MainPageType.report.title) tabWidget.insert(0, const ReportPage());
-            if (item.route == MainPageType.transaction.title) tabWidget.insert(0, const TransactionsPage());
-            if (item.route == MainPageType.banner.title) tabWidget.insert(0, const BannersPage());
-            if (item.route == MainPageType.productDetail.title) tabWidget.insert(0, const BannersPage());
-            if (item.route == MainPageType.user.title) tabWidget.insert(0, const UserPage());
-            if (item.route == MainPageType.order.title) tabWidget.insert(0, const OrderPage());
+            if (item.route == MainPageType.dashboard.title) addTab(const DashboardPage());
+            if (item.route == MainPageType.about.title) addTab(const AboutPage());
+            if (item.route == MainPageType.terms.title) addTab(const TermsPage());
+            if (item.route == MainPageType.category.title) addTab(const CategoryPage());
+            if (item.route == MainPageType.product.title) addTab(const ProductPage());
+            if (item.route == MainPageType.comment.title) addTab(const CommentsPage());
+            if (item.route == MainPageType.report.title) addTab(const ReportPage());
+            if (item.route == MainPageType.transaction.title) addTab(const TransactionsPage());
+            if (item.route == MainPageType.banner.title) addTab(const BannersPage());
+            if (item.route == MainPageType.productDetail.title) addTab(const BannersPage());
+            if (item.route == MainPageType.user.title) addTab(const UserPage());
+            if (item.route == MainPageType.order.title) addTab(const OrderPage());
             if (item.route == "logout") logout();
             Get.forceAppUpdate();
           },
@@ -111,8 +111,10 @@ class _MainPageState extends State<MainPage> with MainController, TickerProvider
         ),
         body: Obx(
           () => defaultTabBar(
+            controller: tabController,
             children: tabWidget,
             tabBar: TabBar(
+              controller: tabController,
                 indicatorSize: TabBarIndicatorSize.tab,
                 tabs: tabWidget
                     .mapIndexed(
@@ -128,4 +130,14 @@ class _MainPageState extends State<MainPage> with MainController, TickerProvider
           ),
         ),
       );
+
+  void addTab(final Widget widget) {
+    if (tabWidget.contains(widget)) {
+      tabController.index = tabWidget.indexOf(widget);
+    } else {
+      tabWidget.insert(0, widget);
+      tabController.dispose();
+      tabController = TabController(length: tabWidget.length, vsync: this);
+    }
+  }
 }
