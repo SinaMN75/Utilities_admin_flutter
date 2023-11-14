@@ -26,7 +26,9 @@ class _UserCreateUpdatePageState extends State<UserCreateUpdatePage> with UserCr
   }
 
   @override
-  Widget build(final BuildContext context) => scaffold(
+  Widget build(final BuildContext context) {
+    super.build(context);
+    return scaffold(
         constraints: const BoxConstraints(),
         padding: const EdgeInsets.symmetric(horizontal: 20),
         appBar: AppBar(title: const Text("")),
@@ -96,6 +98,11 @@ class _UserCreateUpdatePageState extends State<UserCreateUpdatePage> with UserCr
             textField(text: "بیوگرافی", controller: controllerBio, lines: 4),
             const SizedBox(height: 16),
             textField(text: "شماره تماس", controller: controllerPhoneNumber, keyboardType: TextInputType.number, maxLength: 12),
+
+
+
+
+
             textFieldTypeAhead<String>(
               text: "شهر",
               controller: controllerState,
@@ -135,4 +142,5 @@ class _UserCreateUpdatePageState extends State<UserCreateUpdatePage> with UserCr
           ],
         ),
       );
+  }
 }
