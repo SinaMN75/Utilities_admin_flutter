@@ -81,7 +81,7 @@ class _TransactionsPageState extends State<TransactionsPage> with TransactionsCo
                                     DataCell(Text(i.user?.fullName ?? '*').bodyLarge().paddingAll(8).onTap(() {
                                       tabWidget.insert(0, UserCreateUpdatePage(dto: i.user).container());
                                     })),
-                                    DataCell(Text(getPrice(i.order?.totalPrice ?? 0)).bodyLarge().paddingAll(8)),
+                                    DataCell(Text(getPrice(i.order?.totalPrice ?? i.amount?? 0)).bodyLarge().paddingAll(8)),
                                   ],
                                 ),
                               )
