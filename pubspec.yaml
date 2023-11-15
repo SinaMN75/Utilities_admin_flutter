@@ -46,19 +46,7 @@ flutter_launcher_icons:
 flutter:
   uses-material-design: true
   assets:
-    - lib/assets/icons/
     - lib/assets/images/
-    - lib/assets/fonts/
-
-  fonts:
-    - family: IRANSans
-      fonts:
-        - asset: lib/assets/fonts/IRANSansXFaNum-Bold.ttf
-          weight: 700
-        - asset: lib/assets/fonts/IRANSansXFaNum-Light.ttf
-          weight: 500
-        - asset: lib/assets/fonts/IRANSansXFaNum-Medium.ttf
-          weight: 300
 
 flutter_intl:
   enabled: true

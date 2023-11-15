@@ -7,7 +7,7 @@ abstract class AppThemes {
   static const Color lightPrimaryColor = Color.fromRGBO(51, 204, 255, 1);
   static const Color lightSecondaryColor = Color.fromRGBO(0, 0, 51, 1);
 
-  static String? font = "IranSans";
+  static String? font =  Fonts.IranSansFaNum.fontFamily;
 
   static ThemeData light = ThemeData(
     useMaterial3: true,
@@ -74,10 +74,4 @@ abstract class AppImages {
   static const String logo = "$_base/logo.png";
   static const String loginImage = "$_base/login_image.png";
   static const String profilePlaceholder = "$_base/profile_placeholder.png";
-}
-
-abstract class AppIcons {
-  static const String _base = "lib/assets/icons";
-  static const String card = "$_base/card.svg";
-  static const String tickCircle = "$_base/tick_circle.svg";
 }
