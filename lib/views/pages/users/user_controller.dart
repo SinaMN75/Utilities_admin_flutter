@@ -1,7 +1,6 @@
 import 'package:utilities/utilities.dart';
 import 'package:utilities_admin_flutter/core/core.dart';
 import 'package:utilities_admin_flutter/views/pages/comments/comments_page.dart';
-import 'package:utilities_admin_flutter/views/pages/main/main_controller.dart';
 import 'package:utilities_admin_flutter/views/pages/orders/order_page.dart';
 import 'package:utilities_admin_flutter/views/pages/products/product_page.dart';
 import 'package:utilities_admin_flutter/views/pages/tractions/transactions_page.dart';
@@ -51,13 +50,13 @@ mixin UserController {
     );
   }
 
-  void edit(final UserReadDto dto) => tabWidget.insert(0, UserCreateUpdatePage(dto: dto));
+  void edit(final UserReadDto dto) => dialogAlert(UserCreateUpdatePage(dto: dto).container(width: context.width / 1.1));
 
-  void transaction(final UserReadDto dto) => tabWidget.insert(0, TransactionsPage(userId: dto.id));
+  void showTransactions(final UserReadDto dto) => dialogAlert(TransactionsPage(userId: dto.id).container(width: context.width / 1.1));
 
-  void orderPage(final UserReadDto dto) => tabWidget.insert(0, OrderPage(userId: dto.id));
+  void showOrders(final UserReadDto dto) => dialogAlert(OrderPage(userId: dto.id).container(width: context.width / 1.1));
 
-  void comments(final UserReadDto dto) => tabWidget.insert(0, CommentsPage(userId: dto.id));
+  void showComments(final UserReadDto dto) => dialogAlert(CommentsPage(userId: dto.id).container(width: context.width / 1.1));
 
-  void productPage(final UserReadDto dto) => tabWidget.insert(0, ProductPage(userId: dto.id));
+  void showProducts(final UserReadDto dto) => dialogAlert(ProductPage(userId: dto.id).container(width: context.width / 1.1));
 }
