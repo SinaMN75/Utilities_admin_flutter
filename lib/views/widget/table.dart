@@ -12,3 +12,5 @@ Widget dataTable({
 MaterialStateColor dataTableRowColor(final int index) => MaterialStateColor.resolveWith(
       (final Set<MaterialState> states) => index.isOdd ? context.theme.colorScheme.primary.withOpacity(0.1) : context.theme.colorScheme.background,
     );
+
+Widget dataTableImage(final String url) => image(url, width: 40, height: 40).onTap(() => launchURL(url));

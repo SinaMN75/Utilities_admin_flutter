@@ -1,6 +1,5 @@
 import 'package:utilities/utilities.dart';
 import 'package:utilities_admin_flutter/core/core.dart';
-import 'package:utilities_admin_flutter/views/pages/main/main_controller.dart';
 import 'package:utilities_admin_flutter/views/pages/products/product_create_update/add_product_page.dart';
 
 mixin ProductController {
@@ -110,11 +109,7 @@ mixin ProductController {
         ),
       );
 
-  void create({final CategoryReadDto? dto}) {
-    tabWidget.insert(0, const AddProductPage().container());
-  }
+  void create() => dialogAlert(const AddProductPage().container(width: context.width / 1.1));
 
-  void update({required final ProductReadDto dto}) {
-    tabWidget.insert(0, AddProductPage(dto: dto).container());
-  }
+  void update({required final ProductReadDto dto}) => dialogAlert(AddProductPage(dto: dto).container(width: context.width / 1.1));
 }

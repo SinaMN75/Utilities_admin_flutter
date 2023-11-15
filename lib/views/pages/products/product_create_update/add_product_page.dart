@@ -42,7 +42,12 @@ class _AddProductPageState extends State<AddProductPage> with AddProductControll
   }
 
   @override
-  Widget build(final BuildContext context) => scaffold(
+  Widget build(final BuildContext context) {
+    super.build(context);
+    return scaffold(
+      appBar: AppBar(
+        title: Text(dto == null ? "محصول جدید" : "ویرایش ${dto?.title ?? ""}"),
+      ),
       constraints: const BoxConstraints(),
       padding: const EdgeInsets.symmetric(horizontal: 20),
       body: Obx(
@@ -53,6 +58,17 @@ class _AddProductPageState extends State<AddProductPage> with AddProductControll
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
+                      const Text('وضعیت').bodyLarge(),
+                      DropdownButtonFormField<int>(
+                        value: selectedProductTag.value,
+                        items: <DropdownMenuItem<int>>[
+                          DropdownMenuItem<int>(value: TagProduct.all.number, child: const Text("انتخاب")),
+                          DropdownMenuItem<int>(value: TagProduct.released.number, child: const Text("منتشر شده")),
+                          DropdownMenuItem<int>(value: TagProduct.notAccepted.number, child: const Text("رد شده")),
+                          DropdownMenuItem<int>(value: TagProduct.inQueue.number, child: const Text("در انتظار بررسی")),
+                        ],
+                        onChanged: selectedProductTag,
+                      ).paddingSymmetric(vertical: 8),
                       const Text("انتخاب دسته‌بندی").bodyMedium(),
                       Obx(() => DropdownButtonFormField<CategoryReadDto>(
                             value: selectedCategory.value,
@@ -83,23 +99,6 @@ class _AddProductPageState extends State<AddProductPage> with AddProductControll
                             ],
                             onChanged: selectSubCategory,
                           )).paddingSymmetric(vertical: 8),
-                      if (dto != null)
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            const Text('وضعیت').bodyLarge().marginSymmetric(horizontal: 16),
-                            DropdownButtonFormField<int>(
-                              value: selectedProductTag.value,
-                              items: <DropdownMenuItem<int>>[
-                                DropdownMenuItem<int>(value: TagProduct.all.number, child: const Text("انتخاب")),
-                                DropdownMenuItem<int>(value: TagProduct.released.number, child: const Text("منتشر شده")),
-                                DropdownMenuItem<int>(value: TagProduct.notAccepted.number, child: const Text("رد شده")),
-                                DropdownMenuItem<int>(value: TagProduct.inQueue.number, child: const Text("در انتظار بررسی")),
-                              ],
-                              onChanged: selectedProductTag,
-                            ).container(width: 200, margin: const EdgeInsets.all(8)),
-                          ],
-                        ),
                       textField(text: "عنوان", controller: controllerTitle, validator: validateNotEmpty()).marginSymmetric(vertical: 8),
                       const SizedBox(height: 8),
                       const Text("افزودن تصویر"),
@@ -173,7 +172,9 @@ class _AddProductPageState extends State<AddProductPage> with AddProductControll
                 ),
               )
             : const CircularProgressIndicator().alignAtCenter(),
-      )).safeArea();
+      ),
+    );
+  }
 
   Widget _items({required final CroppedFile path, required final CroppedFile originalPath, required final int index}) => Column(
         children: <Widget>[

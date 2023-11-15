@@ -1,7 +1,6 @@
 import 'package:utilities/utilities.dart';
 import 'package:utilities_admin_flutter/core/core.dart';
 import 'package:utilities_admin_flutter/views/pages/categories/category_controller.dart';
-import 'package:utilities_admin_flutter/views/widget/image_preview_page.dart';
 import 'package:utilities_admin_flutter/views/widget/table.dart';
 
 class CategoryPage extends StatefulWidget {
@@ -34,8 +33,7 @@ class _CategoryPageState extends State<CategoryPage> with CategoryController, Au
       appBar: AppBar(
         title: dto == null ? const Text("دسته بندی‌ها") : Text("زیر دسته های ${dto?.title}"),
         actions: <Widget>[
-          if (Core.user.tags!.contains(TagUser.adminCategoryRead.number))
-            IconButton(onPressed: () => create(dto: widget.dto), icon: const Icon(Icons.add_box_outlined, size: 40)),
+          if (Core.user.tags!.contains(TagUser.adminCategoryRead.number)) IconButton(onPressed: () => create(dto: widget.dto), icon: const Icon(Icons.add_box_outlined, size: 40)),
           if (dto == null) IconButton(onPressed: createCategoryFromExcel, icon: const Icon(Icons.upload, size: 40)),
         ],
       ),
@@ -59,11 +57,7 @@ class _CategoryPageState extends State<CategoryPage> with CategoryController, Au
                               color: dataTableRowColor(index),
                               cells: <DataCell>[
                                 DataCell(Text(index.toString()).bodyLarge().paddingAll(8)),
-                                DataCell(
-                                  image(i.media.getImage(), width: 40, height: 40).onTap(
-                                    () => push(ImagePreviewPage(i.media!.map((final MediaReadDto e) => e.url).toList())),
-                                  ),
-                                ),
+                                DataCell(dataTableImage(i.media.getImage())),
                                 DataCell(Text(i.title ?? "").bodyLarge()),
                                 DataCell(Text(i.titleTr1 ?? "").bodyLarge()),
                                 DataCell(
@@ -77,7 +71,7 @@ class _CategoryPageState extends State<CategoryPage> with CategoryController, Au
                                       if (Core.user.tags!.contains(TagUser.adminCategoryUpdate.number))
                                         IconButton(
                                           onPressed: () => update(dto: i),
-                                          icon: Icon(Icons.edit, color: context.theme.colorScheme.primary),
+                                          icon: Icon(Icons.edit, color: context.theme.colorScheme.primary)
                                         ).paddingSymmetric(horizontal: 8),
                                       if (dto == null)
                                         TextButton(

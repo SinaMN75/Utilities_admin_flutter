@@ -7,7 +7,7 @@ abstract class AppThemes {
   static const Color lightPrimaryColor = Color.fromRGBO(51, 204, 255, 1);
   static const Color lightSecondaryColor = Color.fromRGBO(0, 0, 51, 1);
 
-  static String? font =  Fonts.IranSansFaNum.fontFamily;
+  static String? font = Fonts.IranSansFaNum.fontFamily;
 
   static ThemeData light = ThemeData(
     useMaterial3: true,
@@ -19,7 +19,7 @@ abstract class AppThemes {
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ButtonStyle(
         shape: MaterialStatePropertyAll<OutlinedBorder>(RoundedRectangleBorder(borderRadius: BorderRadius.circular(16))),
-        padding: const MaterialStatePropertyAll<EdgeInsets>(EdgeInsets.all(16)),
+        padding: const MaterialStatePropertyAll<EdgeInsets>(EdgeInsets.symmetric(horizontal: 16, vertical: 20)),
         backgroundColor: MaterialStateProperty.resolveWith((final Set<MaterialState> states) {
           if (states.contains(MaterialState.disabled))
             return Colors.grey.shade700;
@@ -27,14 +27,6 @@ abstract class AppThemes {
             return lightSecondaryColor;
         }),
         foregroundColor: const MaterialStatePropertyAll<Color>(Colors.white),
-      ),
-    ),
-    outlinedButtonTheme: const OutlinedButtonThemeData(
-      style: ButtonStyle(
-        padding: MaterialStatePropertyAll<EdgeInsets>(EdgeInsets.all(16)),
-        textStyle: MaterialStatePropertyAll<TextStyle>(TextStyle(color: lightErrorColor, fontWeight: FontWeight.bold)),
-        side: MaterialStatePropertyAll<BorderSide>(BorderSide(color: lightErrorColor)),
-        foregroundColor: MaterialStatePropertyAll<Color>(lightErrorColor),
       ),
     ),
     listTileTheme: ListTileThemeData(
@@ -56,6 +48,9 @@ abstract class AppThemes {
     dataTableTheme: DataTableThemeData(
       headingRowColor: MaterialStateColor.resolveWith((final Set<MaterialState> states) => lightPrimaryColor.withOpacity(0.2)),
       headingRowHeight: 60,
+    ),
+    iconButtonTheme: const IconButtonThemeData(
+      style: ButtonStyle(iconSize: MaterialStatePropertyAll<double>(32)),
     ),
     bottomNavigationBarTheme: BottomNavigationBarThemeData(
       elevation: 1000,

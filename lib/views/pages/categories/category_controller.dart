@@ -111,9 +111,8 @@ mixin CategoryController {
             },
           ).paddingSymmetric(vertical: 12),
         ],
-      ),
+      ).container(width: 500),
       contentPadding: const EdgeInsets.all(20),
-      maxWidth: 500,
     );
   }
 
@@ -130,15 +129,17 @@ mixin CategoryController {
             textField(text: "عنوان", controller: controllerTitle).paddingSymmetric(vertical: 12),
             textField(text: "عنوان انگلیسی", controller: controllerTitleTr1).paddingSymmetric(vertical: 12),
             if (hasImage.value)
-            Stack(
-              children: <Widget>[
-                image(dto.media!.getImage(), width: 100, height: 100),
-                IconButton(onPressed: () {
-                  hasImage(false);
-                  _mediaDataSource.delete(id: dto.media!.first.id!, onResponse: () {}, onError: () {});
-                }, icon: Icon(Icons.delete, color: context.theme.colorScheme.error))
-              ],
-            ),
+              Stack(
+                children: <Widget>[
+                  image(dto.media!.getImage(), width: 100, height: 100),
+                  IconButton(
+                      onPressed: () {
+                        hasImage(false);
+                        _mediaDataSource.delete(id: dto.media!.first.id!, onResponse: () {}, onError: () {});
+                      },
+                      icon: Icon(Icons.delete, color: context.theme.colorScheme.error))
+                ],
+              ),
             customImageCropper(
               maxImages: 1,
               result: (final List<CroppedFile> cropFiles) async {
@@ -177,9 +178,8 @@ mixin CategoryController {
             ).paddingSymmetric(vertical: 12),
           ],
         ),
-      ),
+      ).container(width: 500),
       contentPadding: const EdgeInsets.all(20),
-      maxWidth: 500,
     );
   }
 
@@ -187,19 +187,20 @@ mixin CategoryController {
         result: (final List<CategoryReadDto> categories) {
           categories.forEach((final CategoryReadDto i) {
             delay(
-                100,
-                () => _categoryDataSource.create(
-                      dto: CategoryCreateUpdateDto(
-                        id: i.id,
-                        title: i.title,
-                        titleTr1: i.titleTr1,
-                        parentId: i.parentId != '-' ? i.parentId : null,
-                        tags: <int>[TagCategory.category.number],
-                        isUnique: true,
-                      ),
-                      onResponse: (final GenericResponse<CategoryReadDto> response) => state.loaded(),
-                      onError: (final GenericResponse<dynamic> response) {},
-                    ));
+              100,
+              () => _categoryDataSource.create(
+                dto: CategoryCreateUpdateDto(
+                  id: i.id,
+                  title: i.title,
+                  titleTr1: i.titleTr1,
+                  parentId: i.parentId != '-' ? i.parentId : null,
+                  tags: <int>[TagCategory.category.number],
+                  isUnique: true,
+                ),
+                onResponse: (final GenericResponse<CategoryReadDto> response) => state.loaded(),
+                onError: (final GenericResponse<dynamic> response) {},
+              ),
+            );
           });
         },
       );

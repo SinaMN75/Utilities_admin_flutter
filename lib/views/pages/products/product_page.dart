@@ -3,6 +3,7 @@ import 'package:utilities/utilities.dart';
 import 'package:utilities_admin_flutter/core/core.dart';
 import 'package:utilities_admin_flutter/views/pages/products/product_controller.dart';
 import 'package:utilities_admin_flutter/views/widget/image_preview_page.dart';
+import 'package:utilities_admin_flutter/views/widget/table.dart';
 
 class ProductPage extends StatefulWidget {
   const ProductPage({this.userId, super.key});
@@ -34,15 +35,15 @@ class _ProductPageState extends State<ProductPage> with ProductController, Autom
       constraints: const BoxConstraints(),
       padding: const EdgeInsets.symmetric(horizontal: 20),
       appBar: AppBar(
-        title: const Text("محصولات"),
         actions: <Widget>[
-          if (Core.user.tags!.contains(TagUser.adminProductRead.number)) IconButton(onPressed: create, icon: const Icon(Icons.add_box_outlined, size: 40)),
+          if (Core.user.tags!.contains(TagUser.adminProductRead.number)) IconButton(onPressed: create, icon: const Icon(Icons.add_box_outlined)),
         ],
       ),
       body: Obx(
         () => state.isLoaded()
             ? SingleChildScrollView(
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     _filters(),
                     DataTable(
@@ -60,6 +61,7 @@ class _ProductPageState extends State<ProductPage> with ProductController, Autom
                         ...filteredList
                             .mapIndexed(
                               (final int index, final ProductReadDto i) => DataRow(
+                                color: dataTableRowColor(index),
                                 cells: <DataCell>[
                                   DataCell(Text(index.toString()).bodyLarge().paddingAll(8)),
                                   DataCell(image(i.media.getImage(), width: 32, height: 32).onTap(() {
@@ -119,76 +121,55 @@ class _ProductPageState extends State<ProductPage> with ProductController, Autom
         crossAxisAlignment: WrapCrossAlignment.center,
         alignment: WrapAlignment.center,
         children: <Widget>[
-          Column(
+          textField(text: "عنوان", controller: controllerTitle).container(width: 300, margin: const EdgeInsets.only(bottom: 12)),
+          iconTextVertical(
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              const Text('عنوان').bodyLarge().marginSymmetric(horizontal: 16),
-              const SizedBox(height: 8),
-              textField(hintText: "عنوان", controller: controllerTitle).container(width: 300),
-            ],
-          ),
-          Column(
+            leading: const Text('وضعیت').bodyMedium(),
+            trailing: DropdownButtonFormField<int>(
+              value: selectedProductTag.value,
+              items: <DropdownMenuItem<int>>[
+                DropdownMenuItem<int>(value: TagProduct.all.number, child: const Text("همه")),
+                DropdownMenuItem<int>(value: TagProduct.released.number, child: const Text("منتشر شده")),
+                DropdownMenuItem<int>(value: TagProduct.notAccepted.number, child: const Text("رد شده")),
+                DropdownMenuItem<int>(value: TagProduct.inQueue.number, child: const Text("در انتظار بررسی")),
+              ],
+              onChanged: selectedProductTag,
+            ).container(width: 200),
+          ).paddingSymmetric(horizontal: 8),
+          iconTextVertical(
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              const Text('وضعیت').bodyLarge().marginSymmetric(horizontal: 16),
-              DropdownButtonFormField<int>(
-                value: selectedProductTag.value,
-                items: <DropdownMenuItem<int>>[
-                  DropdownMenuItem<int>(value: TagProduct.all.number, child: const Text("همه")),
-                  DropdownMenuItem<int>(value: TagProduct.released.number, child: const Text("منتشر شده")),
-                  DropdownMenuItem<int>(value: TagProduct.notAccepted.number, child: const Text("رد شده")),
-                  DropdownMenuItem<int>(value: TagProduct.inQueue.number, child: const Text("در انتظار بررسی")),
-                ],
-                onChanged: selectedProductTag,
-              ).container(width: 200, margin: const EdgeInsets.all(8)),
-            ],
-          ),
-          Column(
+            leading: const Text('دسته').bodyMedium(),
+            trailing: DropdownButtonFormField<CategoryReadDto>(
+              value: selectedCategory.value,
+              items: <DropdownMenuItem<CategoryReadDto>>[
+                ...categories
+                    .map(
+                      (final CategoryReadDto e) => DropdownMenuItem<CategoryReadDto>(value: e, child: Text(e.title ?? "")),
+                    )
+                    .toList(),
+              ],
+              onChanged: selectCategory,
+            ).container(width: 200),
+          ).paddingSymmetric(horizontal: 8),
+          iconTextVertical(
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              const Text('مجموعه').bodyLarge().marginSymmetric(horizontal: 16),
-              DropdownButtonFormField<CategoryReadDto>(
-                value: selectedCategory.value,
-                items: <DropdownMenuItem<CategoryReadDto>>[
-                  ...categories
-                      .map(
-                        (final CategoryReadDto e) => DropdownMenuItem<CategoryReadDto>(
-                          value: e,
-                          child: Text(e.title ?? ""),
-                        ),
-                      )
-                      .toList(),
-                ],
-                onChanged: selectCategory,
-              ).container(width: 250, margin: const EdgeInsets.all(8)),
-            ],
-          ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              const Text('زیر مجموعه').bodyLarge().marginSymmetric(horizontal: 16),
-              DropdownButtonFormField<CategoryReadDto>(
-                value: selectedSubCategory.value,
-                items: <DropdownMenuItem<CategoryReadDto>>[
-                  ...subCategories
-                      .map(
-                        (final CategoryReadDto e) => DropdownMenuItem<CategoryReadDto>(
-                          value: e,
-                          child: Text(e.title ?? ""),
-                        ),
-                      )
-                      .toList(),
-                ],
-                onChanged: selectedSubCategory,
-              ).container(width: 280, margin: const EdgeInsets.all(8)),
-            ],
-          ),
-          Column(
-            children: <Widget>[
-              const Text(' '),
-              button(title: "فیلتر", onTap: read, width: 200),
-            ],
-          ),
+            leading: const Text('زیر دسته').bodyMedium(),
+            trailing: DropdownButtonFormField<CategoryReadDto>(
+              value: selectedSubCategory.value,
+              items: <DropdownMenuItem<CategoryReadDto>>[
+                ...subCategories
+                    .map(
+                      (final CategoryReadDto e) => DropdownMenuItem<CategoryReadDto>(
+                        value: e,
+                        child: Text(e.title ?? ""),
+                      ),
+                    )
+                    .toList(),
+              ],
+              onChanged: selectedSubCategory,
+            ).container(width: 200),
+          ).paddingSymmetric(horizontal: 8),
+          button(title: "فیلتر", onTap: read, width: 200).paddingOnly(top: 24),
         ],
       );
 }
