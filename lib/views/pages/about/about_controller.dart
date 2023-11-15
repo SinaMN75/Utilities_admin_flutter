@@ -8,6 +8,10 @@ mixin AboutController {
 
   final TextEditingController controllerTitle = TextEditingController();
   final TextEditingController controllerDescription = TextEditingController();
+  final TextEditingController controllerInstagram = TextEditingController();
+  final TextEditingController controllerTelegram = TextEditingController();
+  final TextEditingController controllerWhatsapp = TextEditingController();
+  final TextEditingController controllerPhoneNumber = TextEditingController();
 
   final ContentDataSource _contentDataSource = ContentDataSource(baseUrl: AppConstants.baseUrl);
 
@@ -31,7 +35,15 @@ mixin AboutController {
     state.loading();
     if (contentReadDto == null)
       _contentDataSource.create(
-        dto: ContentCreateUpdateDto(title: controllerTitle.text, description: controllerDescription.text, tags: <int>[TagContent.aboutUs.number]),
+        dto: ContentCreateUpdateDto(
+          title: controllerTitle.text,
+          description: controllerDescription.text,
+          instagram: controllerInstagram.text,
+          telegram: controllerTelegram.text,
+          whatsApp: controllerWhatsapp.text,
+          phoneNumber1: controllerPhoneNumber.text,
+          tags: <int>[TagContent.aboutUs.number],
+        ),
         onResponse: (final GenericResponse<ContentReadDto> response) {
           init();
         },
@@ -39,7 +51,15 @@ mixin AboutController {
       );
     else
       _contentDataSource.update(
-        dto: ContentCreateUpdateDto(id: contentReadDto!.id, title: controllerTitle.text, description: controllerDescription.text),
+        dto: ContentCreateUpdateDto(
+          id: contentReadDto!.id,
+          title: controllerTitle.text,
+          description: controllerDescription.text,
+          instagram: controllerInstagram.text,
+          telegram: controllerTelegram.text,
+          whatsApp: controllerWhatsapp.text,
+          phoneNumber1: controllerPhoneNumber.text,
+        ),
         onResponse: (final GenericResponse<ContentReadDto> response) {
           init();
         },

@@ -22,21 +22,27 @@ class _AboutPageState extends State<AboutPage> with AboutController, AutomaticKe
   }
 
   @override
-  Widget build(final BuildContext context) => scaffold(
-        constraints: const BoxConstraints(),
-        padding: const EdgeInsets.symmetric(horizontal: 20),
-        appBar: AppBar(title: const Text("درباره ما")),
-        body: Obx(
-          () => state.isLoaded()
-              ? Column(
-                  children: <Widget>[
-                    textField(text: "عنوان", controller: controllerTitle),
-                    textField(text: "متن", controller: controllerDescription, lines: 20),
-                    const Spacer(),
-                    button(title: "ثبت", onTap: createUpdate),
-                  ],
-                )
-              : const CircularProgressIndicator(),
-        ),
-      );
+  Widget build(final BuildContext context) {
+    super.build(context);
+    return scaffold(
+      constraints: const BoxConstraints(),
+      padding: const EdgeInsets.symmetric(horizontal: 20),
+      appBar: AppBar(),
+      body: Obx(
+        () => state.isLoaded()
+            ? Column(
+                children: <Widget>[
+                  textField(text: "عنوان", controller: controllerTitle),
+                  textField(text: "اینستاگرام", controller: controllerInstagram),
+                  textField(text: "تلگرام", controller: controllerTelegram),
+                  textField(text: "واتساپ", controller: controllerWhatsapp),
+                  textField(text: "شماره تماس", controller: controllerPhoneNumber),
+                  textField(text: "متن", controller: controllerDescription, lines: 20, contentPadding: const EdgeInsets.all(20)),
+                  button(title: "ثبت", onTap: createUpdate).paddingSymmetric(vertical: 20),
+                ],
+              ).scrollable()
+            : const CircularProgressIndicator(),
+      ),
+    );
+  }
 }
