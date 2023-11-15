@@ -2,6 +2,7 @@ import 'package:utilities/utilities.dart';
 import 'package:utilities_admin_flutter/core/core.dart';
 import 'package:utilities_admin_flutter/views/pages/categories/category_controller.dart';
 import 'package:utilities_admin_flutter/views/widget/image_preview_page.dart';
+import 'package:utilities_admin_flutter/views/widget/table.dart';
 
 class CategoryPage extends StatefulWidget {
   const CategoryPage({super.key, this.dto});
@@ -43,57 +44,55 @@ class _CategoryPageState extends State<CategoryPage> with CategoryController, Au
             ? Column(
                 children: <Widget>[
                   _filter(),
-                  const SizedBox(height: 20),
-                  SingleChildScrollView(
-                    child: DataTable(
-                      columns: <DataColumn>[
-                        DataColumn(label: const Text("ردیف").headlineSmall()),
-                        DataColumn(label: const Text("تصویر").headlineSmall()),
-                        DataColumn(label: const Text("عنوان").headlineSmall()),
-                        DataColumn(label: const Text("عنوان انگلیسی").headlineSmall()),
-                        DataColumn(label: const Text("عملیات‌ها").headlineSmall()),
-                      ],
-                      rows: <DataRow>[
-                        ...filteredList
-                            .mapIndexed(
-                              (final int index, final CategoryReadDto i) => DataRow(
-                                cells: <DataCell>[
-                                  DataCell(Text(index.toString()).bodyLarge().paddingAll(8)),
-                                  DataCell(
-                                    image(i.media.getImage(), width: 40, height: 40).onTap(
-                                      () => push(ImagePreviewPage(i.media!.map((final MediaReadDto e) => e.url).toList())),
-                                    ),
+                  DataTable(
+                    columns: <DataColumn>[
+                      DataColumn(label: const Text("ردیف").headlineSmall()),
+                      DataColumn(label: const Text("تصویر").headlineSmall()),
+                      DataColumn(label: const Text("عنوان").headlineSmall()),
+                      DataColumn(label: const Text("عنوان انگلیسی").headlineSmall()),
+                      DataColumn(label: const Text("عملیات‌ها").headlineSmall()),
+                    ],
+                    rows: <DataRow>[
+                      ...filteredList
+                          .mapIndexed(
+                            (final int index, final CategoryReadDto i) => DataRow(
+                              color: dataTableRowColor(index),
+                              cells: <DataCell>[
+                                DataCell(Text(index.toString()).bodyLarge().paddingAll(8)),
+                                DataCell(
+                                  image(i.media.getImage(), width: 40, height: 40).onTap(
+                                    () => push(ImagePreviewPage(i.media!.map((final MediaReadDto e) => e.url).toList())),
                                   ),
-                                  DataCell(Text(i.title ?? "").bodyLarge()),
-                                  DataCell(Text(i.titleTr1 ?? "").bodyLarge()),
-                                  DataCell(
-                                    Row(
-                                      children: <Widget>[
-                                        if (Core.user.tags!.contains(TagUser.adminCategoryUpdate.number))
-                                          IconButton(
-                                            onPressed: () => _delete(dto: i),
-                                            icon: Icon(Icons.delete, color: context.theme.colorScheme.error),
-                                          ).paddingSymmetric(horizontal: 8),
-                                        if (Core.user.tags!.contains(TagUser.adminCategoryUpdate.number))
-                                          IconButton(
-                                            onPressed: () => update(dto: i),
-                                            icon: Icon(Icons.edit, color: context.theme.colorScheme.primary),
-                                          ).paddingSymmetric(horizontal: 8),
-                                        if (dto == null)
-                                          TextButton(
-                                            onPressed: () => dialogAlert(CategoryPage(dto: i).container(width: context.width)),
-                                            child: const Text("نمایش زیر دسته‌ها"),
-                                          ).paddingSymmetric(horizontal: 8),
-                                      ],
-                                    ),
+                                ),
+                                DataCell(Text(i.title ?? "").bodyLarge()),
+                                DataCell(Text(i.titleTr1 ?? "").bodyLarge()),
+                                DataCell(
+                                  Row(
+                                    children: <Widget>[
+                                      if (Core.user.tags!.contains(TagUser.adminCategoryUpdate.number))
+                                        IconButton(
+                                          onPressed: () => _delete(dto: i),
+                                          icon: Icon(Icons.delete, color: context.theme.colorScheme.error),
+                                        ).paddingSymmetric(horizontal: 8),
+                                      if (Core.user.tags!.contains(TagUser.adminCategoryUpdate.number))
+                                        IconButton(
+                                          onPressed: () => update(dto: i),
+                                          icon: Icon(Icons.edit, color: context.theme.colorScheme.primary),
+                                        ).paddingSymmetric(horizontal: 8),
+                                      if (dto == null)
+                                        TextButton(
+                                          onPressed: () => dialogAlert(CategoryPage(dto: i).container(width: context.width)),
+                                          child: const Text("نمایش زیر دسته‌ها"),
+                                        ).paddingSymmetric(horizontal: 8),
+                                    ],
                                   ),
-                                ],
-                              ),
-                            )
-                            .toList(),
-                      ],
-                    ).container(width: context.width),
-                  ).expanded(),
+                                ),
+                              ],
+                            ),
+                          )
+                          .toList(),
+                    ],
+                  ).scrollable().container(width: context.width).expanded(),
                 ],
               )
             : const CircularProgressIndicator().alignAtCenter(),
@@ -105,7 +104,7 @@ class _CategoryPageState extends State<CategoryPage> with CategoryController, Au
         children: <Widget>[
           textField(labelText: "عنوان", controller: controllerTitle, onChanged: (final String value) => filter()).expanded(),
         ],
-      ).paddingSymmetric(horizontal: 20);
+      ).paddingSymmetric(horizontal: 20, vertical: 20);
 
   void _delete({required final CategoryReadDto dto}) => alertDialog(
         title: "خذف",
