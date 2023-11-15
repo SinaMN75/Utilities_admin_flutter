@@ -184,8 +184,8 @@ mixin AddProductController {
                   final MediaDataSource mediaDataSource = MediaDataSource(baseUrl: AppConstants.baseUrl);
                   mediaDataSource.delete(
                     id: element,
-                    onResponse: (final GenericResponse<dynamic> resporse) {},
-                    onError: (final GenericResponse<dynamic> errorResponse) {},
+                    onResponse: () {},
+                    onError: () {},
                   );
                 });
 

@@ -77,8 +77,8 @@ mixin UserCreateUpdateController {
       dto.media?.forEach((final MediaReadDto i) async {
         await _mediaDataSource.delete(
           id: i.id!,
-          onResponse: (final GenericResponse<dynamic> response) {},
-          onError: (final GenericResponse<dynamic> response) {},
+          onResponse: () {},
+          onError: () {},
         );
       });
       delay(100, () async {

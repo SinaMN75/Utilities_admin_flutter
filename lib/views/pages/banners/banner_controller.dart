@@ -204,8 +204,8 @@ mixin BannerController {
                   listOfDeleteImage.forEach((final String element) {
                     _mediaDataSource.delete(
                       id: element,
-                      onResponse: (final GenericResponse<dynamic> p0) {},
-                      onError: (final GenericResponse<dynamic> errorResponse) {},
+                      onResponse: () {},
+                      onError: () {},
                     );
                   });
 

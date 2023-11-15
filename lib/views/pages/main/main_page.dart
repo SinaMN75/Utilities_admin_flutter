@@ -35,7 +35,9 @@ class _MainPageState extends State<MainPage> with MainController, TickerProvider
   }
 
   @override
-  Widget build(final BuildContext context) => AdminScaffold(
+  Widget build(final BuildContext context) {
+    super.build(context);
+    return AdminScaffold(
         appBar: AppBar(title: const Text('ادمین پنل')),
         sideBar: SideBar(
           items: <AdminMenuItem>[
@@ -113,6 +115,7 @@ class _MainPageState extends State<MainPage> with MainController, TickerProvider
           () => defaultTabBar(
             controller: tabController,
             children: tabWidget,
+            physics: const NeverScrollableScrollPhysics(),
             tabBar: TabBar(
                 controller: tabController,
                 indicatorSize: TabBarIndicatorSize.tab,
@@ -135,6 +138,7 @@ class _MainPageState extends State<MainPage> with MainController, TickerProvider
           ),
         ),
       );
+  }
 
   void addTab(final Widget widget) {
     if (tabWidget.contains(widget)) {
