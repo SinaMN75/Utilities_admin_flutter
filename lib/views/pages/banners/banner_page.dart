@@ -30,8 +30,7 @@ class _BannersPageState extends State<BannersPage> with BannerController, Automa
         appBar: AppBar(
           title: const Text("بنر‌ها"),
           actions: <Widget>[
-            if (Core.user.tags!.contains(TagUser.adminContentUpdate.number))
-              IconButton(onPressed: () => create(action: () => setState(() {})), icon: const Icon(Icons.add_box_outlined, size: 40)),
+            if (Core.user.tags!.contains(TagUser.adminContentUpdate.number)) IconButton(onPressed: () => create(action: () => setState(() {})), icon: const Icon(Icons.add_box_outlined, size: 40)),
           ],
         ),
         body: Obx(

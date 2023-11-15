@@ -5,7 +5,7 @@ import 'package:utilities_admin_flutter/views/pages/products/product_create_upda
 
 mixin ProductController {
   Rx<PageState> state = PageState.initial.obs;
-late String? userId;
+  late String? userId;
   final RxList<ProductReadDto> list = <ProductReadDto>[].obs;
   final RxList<ProductReadDto> filteredList = <ProductReadDto>[].obs;
 
@@ -15,7 +15,7 @@ late String? userId;
   Rx<CategoryReadDto> selectedSubCategory = CategoryReadDto(id: '').obs;
   RxList<CategoryReadDto> categories = Core.categories.where((final CategoryReadDto e) => !e.children.isNullOrEmpty()).toList().obs;
   RxList<CategoryReadDto> subCategories = (Core.categories.first.children ?? <CategoryReadDto>[]).obs;
-  CategoryReadDto all=CategoryReadDto(id: '',title:'همه');
+  CategoryReadDto all = CategoryReadDto(id: '', title: 'همه');
 
   int pageNumber = 1;
   int pageCount = 0;
@@ -25,7 +25,6 @@ late String? userId;
   void init() {
     categories.insert(0, all);
     selectedCategory = categories.first.obs;
-    // selectedSubCategory = (categories.first.children ?? <CategoryReadDto>[]).first.obs;
     if (list.isEmpty) {
       read();
     } else {
@@ -35,7 +34,8 @@ late String? userId;
 
   void selectCategory(final CategoryReadDto? dto) {
     selectedCategory(dto);
-    if ((dto?.children ?? <CategoryReadDto>[]).isNotEmpty) {//
+    if ((dto?.children ?? <CategoryReadDto>[]).isNotEmpty) {
+      //
       subCategories(categories.singleWhere((final CategoryReadDto e) => e.id == selectedCategory.value.id).children);
       subCategories.insert(0, all);
       selectedSubCategory(subCategories.where((final CategoryReadDto e) => e.parentId == selectedCategory.value.id).first);
@@ -44,7 +44,6 @@ late String? userId;
       selectedSubCategory(subCategories.first);
     }
   }
-
 
   void read() {
     state.loading();
@@ -70,7 +69,7 @@ late String? userId;
 
     _productDataSource.filter(
       dto: ProductFilterDto(
-        userIds: userId!=null?<String>[userId!]:null,
+        userIds: userId != null ? <String>[userId!] : null,
         pageSize: 20,
         pageNumber: pageNumber,
         query: controllerTitle.text,

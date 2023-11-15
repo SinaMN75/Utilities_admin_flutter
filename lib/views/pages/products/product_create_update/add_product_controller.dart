@@ -8,7 +8,7 @@ import 'package:utilities_admin_flutter/core/core.dart';
 
 mixin AddProductController {
   final Rx<PageState> state = PageState.initial.obs;
-  List<String> listOfDeleteImage=<String>[];
+  List<String> listOfDeleteImage = <String>[];
   final RxInt selectedProductTag = TagProduct.all.number.obs;
   ProductReadDto? dto;
   List<MediaReadDto>? images;
@@ -63,7 +63,6 @@ mixin AddProductController {
     if (count == image.length) {
       action();
     } else {
-      // imageFiles.add(await fileFromImageUrl(image[count]));
       count++;
       addToImageFile(image, action);
     }
@@ -78,7 +77,6 @@ mixin AddProductController {
           (final ProductReadDto i) => ProductCreateUpdateDto(color: i.jsonDetail?.color, title: i.title, stock: i.stock, price: i.price, id: i.id),
         )
         .toList());
-    // state.loaded();
     final List<CategoryReadDto> cats = categories.where((final CategoryReadDto p0) => dto!.categories!.map((final CategoryReadDto e) => e.id).toList().contains(p0.id)).toList();
     final List<CategoryReadDto> subCat = cats.first.children!.where((final CategoryReadDto p0) => dto!.categories!.map((final CategoryReadDto e) => e.id).toList().contains(p0.id)).toList();
 
@@ -124,7 +122,6 @@ mixin AddProductController {
             _productDataSource.create(
               dto: filter,
               onResponse: (final GenericResponse<ProductReadDto> response) async {
-
                 imageCropFiles.forEach((final CroppedFile i) async {
                   if (isWeb) {
                     await GetConnect().post(
@@ -138,10 +135,8 @@ mixin AddProductController {
                     );
                   } else {
                     await GetConnect().post(
-                      //
                       "https://api.sinamn75.com/api/Media",
                       FormData(<String, dynamic>{
-                        // 'Files': MultipartFile(i.path, filename: ':).png'),
                         'Files': MultipartFile(File(i.path), filename: ':).png'),
                         "ProductId": response.result!.id,
                       }),
@@ -188,7 +183,7 @@ mixin AddProductController {
                 listOfDeleteImage.forEach((final String element) {
                   final MediaDataSource mediaDataSource = MediaDataSource(baseUrl: AppConstants.baseUrl);
                   mediaDataSource.delete(
-                    id: element ,
+                    id: element,
                     onResponse: (final GenericResponse<dynamic> resporse) {},
                     onError: (final GenericResponse<dynamic> errorResponse) {},
                   );
@@ -207,10 +202,8 @@ mixin AddProductController {
                     );
                   } else {
                     await GetConnect().post(
-                      //
                       "https://api.sinamn75.com/api/Media",
                       FormData(<String, dynamic>{
-                        // 'Files': MultipartFile(i.path, filename: ':).png'),
                         'Files': MultipartFile(File(i.path), filename: ':).png'),
                         "ProductId": response.result!.id,
                       }),

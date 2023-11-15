@@ -5,7 +5,6 @@ import 'package:utilities_admin_flutter/core/core.dart';
 import 'package:utilities_admin_flutter/generated/l10n.dart';
 import 'package:utilities_admin_flutter/views/pages/login/login_page.dart';
 
-
 Future<void> main() async {
   initUtilities();
 

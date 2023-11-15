@@ -28,76 +28,76 @@ class _UserPageState extends State<UserPage> with UserController, AutomaticKeepA
   Widget build(final BuildContext context) {
     super.build(context);
     return scaffold(
-        constraints: const BoxConstraints(),
-        padding: const EdgeInsets.symmetric(horizontal: 20),
-        appBar: AppBar(title: const Text("کاربران")),
-        body: Obx(
-          () => state.isLoaded()
-              ? SingleChildScrollView(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      _filters(),
-                      DataTable(
-                        columns: <DataColumn>[
-                          DataColumn(label: const Text("ردیف").bodyMedium().bold()),
-                          DataColumn(label: const Text("عکس").bodyMedium().bold()),
-                          DataColumn(label: const Text("نام").bodyMedium().bold()),
-                          DataColumn(label: const Text("نام خانوادگی").bodyMedium().bold()),
-                          DataColumn(label: const Text("نام کاربری").bodyMedium().bold()),
-                          DataColumn(label: const Text("آیدی اینستاگرام").bodyMedium().bold()),
-                          DataColumn(label: const Text("شماره موبایل").bodyMedium().bold()),
-                          DataColumn(label: const Text("وضعیت").bodyMedium().bold()),
-                          if (Core.user.tags!.contains(TagUser.adminCategoryUpdate.number)) DataColumn(label: const Text("عملیات").bodyMedium().bold()),
-                        ],
-                        rows: <DataRow>[
-                          ...list
-                              .mapIndexed(
-                                (final int index, final UserReadDto i) => DataRow(
-                                  cells: <DataCell>[
-                                    DataCell(Text(index.toString()).bodyLarge().paddingAll(8)),
-                                    DataCell(image(i.media.getImage(), width: 32, height: 32).onTap(() {
-                                      push(ImagePreviewPage(<String>[i.media.getImage()]));
-                                    })),
-                                    DataCell(Text(i.firstName ?? "").bodyLarge().paddingAll(8)),
-                                    DataCell(Text(i.lastName ?? "").bodyLarge().paddingAll(8)),
-                                    DataCell(Text(i.appUserName ?? "").bodyLarge().paddingAll(8)),
-                                    DataCell(Text(i.jsonDetail?.instagram ?? "").bodyLarge().paddingAll(8)),
-                                    DataCell(Text(i.phoneNumber ?? "").bodyLarge().paddingAll(8)),
-                                    DataCell(Text((i.suspend ?? false) ? "غیر فعال" : "فعال")),
-                                    if (Core.user.tags!.contains(TagUser.adminCategoryUpdate.number))
-                                      DataCell(
-                                        Row(
-                                          children: <Widget>[
-                                            IconButton(onPressed: () => edit(i), icon: const Icon(Icons.edit)),
-                                            IconButton(onPressed: () => transaction(i), icon: const Icon(Icons.transcribe)),
-                                            IconButton(onPressed: () => orderPage(i), icon: const Icon(Icons.bookmark_border)),
-                                            IconButton(onPressed: () => comments(i), icon: const Icon(Icons.comment)),
-                                            IconButton(onPressed: () => productPage(i), icon: const Icon(Icons.production_quantity_limits)),
-                                          ],
-                                        ),
+      constraints: const BoxConstraints(),
+      padding: const EdgeInsets.symmetric(horizontal: 20),
+      appBar: AppBar(title: const Text("کاربران")),
+      body: Obx(
+        () => state.isLoaded()
+            ? SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    _filters(),
+                    DataTable(
+                      columns: <DataColumn>[
+                        DataColumn(label: const Text("ردیف").bodyMedium().bold()),
+                        DataColumn(label: const Text("عکس").bodyMedium().bold()),
+                        DataColumn(label: const Text("نام").bodyMedium().bold()),
+                        DataColumn(label: const Text("نام خانوادگی").bodyMedium().bold()),
+                        DataColumn(label: const Text("نام کاربری").bodyMedium().bold()),
+                        DataColumn(label: const Text("آیدی اینستاگرام").bodyMedium().bold()),
+                        DataColumn(label: const Text("شماره موبایل").bodyMedium().bold()),
+                        DataColumn(label: const Text("وضعیت").bodyMedium().bold()),
+                        if (Core.user.tags!.contains(TagUser.adminCategoryUpdate.number)) DataColumn(label: const Text("عملیات").bodyMedium().bold()),
+                      ],
+                      rows: <DataRow>[
+                        ...list
+                            .mapIndexed(
+                              (final int index, final UserReadDto i) => DataRow(
+                                cells: <DataCell>[
+                                  DataCell(Text(index.toString()).bodyLarge().paddingAll(8)),
+                                  DataCell(image(i.media.getImage(), width: 32, height: 32).onTap(() {
+                                    push(ImagePreviewPage(<String>[i.media.getImage()]));
+                                  })),
+                                  DataCell(Text(i.firstName ?? "").bodyLarge().paddingAll(8)),
+                                  DataCell(Text(i.lastName ?? "").bodyLarge().paddingAll(8)),
+                                  DataCell(Text(i.appUserName ?? "").bodyLarge().paddingAll(8)),
+                                  DataCell(Text(i.jsonDetail?.instagram ?? "").bodyLarge().paddingAll(8)),
+                                  DataCell(Text(i.phoneNumber ?? "").bodyLarge().paddingAll(8)),
+                                  DataCell(Text((i.suspend ?? false) ? "غیر فعال" : "فعال")),
+                                  if (Core.user.tags!.contains(TagUser.adminCategoryUpdate.number))
+                                    DataCell(
+                                      Row(
+                                        children: <Widget>[
+                                          IconButton(onPressed: () => edit(i), icon: const Icon(Icons.edit)),
+                                          IconButton(onPressed: () => transaction(i), icon: const Icon(Icons.transcribe)),
+                                          IconButton(onPressed: () => orderPage(i), icon: const Icon(Icons.bookmark_border)),
+                                          IconButton(onPressed: () => comments(i), icon: const Icon(Icons.comment)),
+                                          IconButton(onPressed: () => productPage(i), icon: const Icon(Icons.production_quantity_limits)),
+                                        ],
                                       ),
-                                  ],
-                                ),
-                              )
-                              .toList(),
-                        ],
-                      ).container(width: context.width),
-                      Pagination(
-                        numOfPages: pageCount,
-                        selectedPage: pageNumber,
-                        pagesVisible: pageCount,
-                        onPageChanged: (final int index) {
-                          pageNumber = index;
-                          filter();
-                        },
-                      ),
-                    ],
-                  ),
-                )
-              : const CircularProgressIndicator().alignAtCenter(),
-        ),
-      );
+                                    ),
+                                ],
+                              ),
+                            )
+                            .toList(),
+                      ],
+                    ).container(width: context.width - 200),
+                    Pagination(
+                      numOfPages: pageCount,
+                      selectedPage: pageNumber,
+                      pagesVisible: pageCount,
+                      onPageChanged: (final int index) {
+                        pageNumber = index;
+                        filter();
+                      },
+                    ),
+                  ],
+                ),
+              )
+            : const CircularProgressIndicator().alignAtCenter(),
+      ),
+    );
   }
 
   Widget _filters() => Wrap(

@@ -74,15 +74,10 @@ mixin BannerController {
                                 result: (final CroppedFile cropped) {
                                   cropFiles(cropped);
                                   baseCropFiles(cropped);
-
                                   action();
-                                  debugPrint("DDDD");
-                                  // cropperCropFiles.add(cropped);
-                                  // result(cropperFiles);
                                 },
                               ),
                             )
-                      // ...imageCropFiles.mapIndexed((final int index, final CroppedFile item) =>).toList(),
                       else
                         Container(
                           child: Icon(Icons.add, size: 60, color: context.theme.dividerColor)
@@ -99,9 +94,6 @@ mixin BannerController {
                                     baseCropFiles(cropped);
 
                                     action();
-                                    debugPrint("DDDD");
-                                    // cropperCropFiles.add(cropped);
-                                    // result(cropperFiles);
                                   },
                                 ),
                               ),
@@ -133,10 +125,8 @@ mixin BannerController {
                     );
                   } else {
                     GetConnect().post(
-                      //
                       "https://api.sinamn75.com/api/Media",
                       FormData(<String, dynamic>{
-                        // 'Files': MultipartFile(i.path, filename: ':).png'),
                         'Files': MultipartFile(File(cropFiles.value.path), filename: ':).png'),
                         "ContentIdId": response.result!.id,
                       }),
@@ -231,7 +221,6 @@ mixin BannerController {
                     );
                   } else {
                     GetConnect().post(
-                      //
                       "https://api.sinamn75.com/api/Media",
                       FormData(<String, dynamic>{
                         'Files': MultipartFile(File(cropFiles.value.path), filename: ':).png'),

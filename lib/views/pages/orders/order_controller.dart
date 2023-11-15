@@ -14,7 +14,7 @@ mixin OrderController {
   final TextEditingController controllerTitle = TextEditingController();
   final RxInt selectedOrderTag = TagOrder.all.number.obs;
 
-  int pageNumber = 1; //
+  int pageNumber = 1;
   int pageCount = 0;
 
   final OrderDataSource _dataSource = OrderDataSource(baseUrl: AppConstants.baseUrl);
@@ -79,12 +79,9 @@ mixin OrderController {
   }
 
   void update({required final OrderCreateUpdateDto dto}) {
-    //
     _dataSource.update(
       dto: dto,
-      onResponse: (final GenericResponse<OrderReadDto> response) {
-        //
-      },
+      onResponse: (final GenericResponse<OrderReadDto> response) {},
       onError: (final GenericResponse<dynamic> errorResponse) {},
       failure: (final String error) {},
     );

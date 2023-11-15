@@ -12,27 +12,12 @@ mixin LoginController {
   final TextEditingController controllerUserName = TextEditingController(text: "alighafoury@gmail.com");
   final TextEditingController controllerPassword = TextEditingController(text: "1234");
 
-
-
   void init() {}
 
-  // void login() {
-  //
-  //   showEasyLoading();
-  //   _userDataSource.getVerificationCodeForLogin(
-  //     dto: GetMobileVerificationCodeForLoginDto(mobile: controllerPhone.text),
-  //     onResponse: (final GenericResponse<UserReadDto> response) {
-  //      push(OtpPage(mobile:controllerPhone.text));
-  //       dismissEasyLoading();
-  //     },
-  //     onError: (final GenericResponse<dynamic> response) {},
-  //   );
-  // }
   void login() {
-
     showEasyLoading();
     _userDataSource.loginWithPassword(
-      dto: LoginWithPasswordDto(email: controllerUserName.text,password: controllerPassword.text),
+      dto: LoginWithPasswordDto(email: controllerUserName.text, password: controllerPassword.text),
       onResponse: (final GenericResponse<UserReadDto> response) {
         setData(UtilitiesConstants.userId, response.result?.id);
         setData(UtilitiesConstants.token, "Bearer ${response.result?.token}");

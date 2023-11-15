@@ -19,7 +19,7 @@ class _ImagePreviewPageState extends State<ImagePreviewPage> {
   @override
   void initState() {
     index = widget.currentIndex ?? 0;
-    controller=PageController(initialPage: index);
+    controller = PageController(initialPage: index);
     super.initState();
   }
 
@@ -49,12 +49,12 @@ class _ImagePreviewPageState extends State<ImagePreviewPage> {
                 ],
               )
             : Center(
-              child: image(
-                widget.list.first,
-                fit: BoxFit.cover,
-                borderRadius: 16,
-                width: Get.width,
-              ).marginSymmetric(horizontal: 20),
-            ),
+                child: image(
+                  widget.list.first,
+                  fit: BoxFit.cover,
+                  borderRadius: 16,
+                  width: Get.width,
+                ).marginSymmetric(horizontal: 20),
+              ),
       );
 }

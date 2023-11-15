@@ -38,7 +38,7 @@ mixin TransactionsController {
     final TextEditingController controllerRefId = TextEditingController();
     final TextEditingController controllerCardNumber = TextEditingController();
     final TextEditingController controllerUser = TextEditingController();
-    final Rx<UserReadDto> selectUser=UserReadDto(id: '').obs;
+    final Rx<UserReadDto> selectUser = UserReadDto(id: '').obs;
     final UserDataSource userDataSource = UserDataSource(baseUrl: AppConstants.baseUrl);
     bottomSheet(
       child: column(
@@ -49,13 +49,11 @@ mixin TransactionsController {
           textField(text: "توضیحات", controller: controllerDescription),
           textField(text: "کد معرف", controller: controllerRefId),
           textField(text: "شماره کارت", controller: controllerCardNumber),
-
-
           textFieldTypeAhead<UserReadDto>(
             hint: "شماره همراه کاربر",
             controller: controllerUser,
             itemBuilder: (final BuildContext context, final UserReadDto value) => Text("${value.fullName ?? ""} - ${value.appPhoneNumber}").paddingAll(16),
-            suggestionsCallback: (final String value) async{
+            suggestionsCallback: (final String value) async {
               List<UserReadDto> list = <UserReadDto>[];
               await userDataSource.filter(
                 dto: UserFilterDto(query: controllerUser.text),
@@ -66,14 +64,12 @@ mixin TransactionsController {
               );
 
               return list;
-
             },
             onSuggestionSelected: (final UserReadDto value) {
               selectUser(value);
               controllerUser.text = value.fullName!;
             },
           ).paddingSymmetric(vertical: 8),
-
           button(
             width: 400,
             title: "ثبت",
@@ -93,7 +89,8 @@ mixin TransactionsController {
                   action();
                 },
                 onError: (final GenericResponse<dynamic> response) {
-                  dismissEasyLoading();},
+                  dismissEasyLoading();
+                },
               );
             },
           ),

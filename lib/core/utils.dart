@@ -14,7 +14,9 @@ void uploadImage({required final Uint8List byte, required final MapEntry<String,
     contentType: "multipart/form-data",
   );
 }
-String getPrice(final int i)=> NumberFormat('###,###,###,###,000').format(i);
+
+String getPrice(final int i) => NumberFormat('###,###,###,###,000').format(i);
+
 bool hasMatch(final String? value, final String pattern) => (value == null) ? false : RegExp(pattern).hasMatch(value);
 
 bool isPhoneNumber(final String s) {

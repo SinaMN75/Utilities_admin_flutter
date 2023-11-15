@@ -35,12 +35,6 @@ class _AddProductPageState extends State<AddProductPage> with AddProductControll
     images = dto?.media;
     imageCropFiles = imageFiles;
     if ((images ?? <String>[]).isNotEmpty) {
-      // addToImageFile(images ?? <String>[], () {
-      //   description = widget.description ?? '';
-      //   imageCropFiles = imageFiles;
-      //   init();
-      //   setState(() {});
-      // });
     } else {}
     init();
 
@@ -136,7 +130,9 @@ class _AddProductPageState extends State<AddProductPage> with AddProductControll
                                       ],
                                     ))
                                 .toList(),
-                            ...imageCropFiles.mapIndexed((final int index, final CroppedFile item) => _items(path: item, originalPath: imageFiles[index], index: index).marginSymmetric(horizontal: 4)).toList(),
+                            ...imageCropFiles
+                                .mapIndexed((final int index, final CroppedFile item) => _items(path: item, originalPath: imageFiles[index], index: index).marginSymmetric(horizontal: 4))
+                                .toList(),
                             Container(
                               child: Icon(Icons.add, size: 60, color: context.theme.dividerColor)
                                   .container(
@@ -150,9 +146,6 @@ class _AddProductPageState extends State<AddProductPage> with AddProductControll
                                       result: (final CroppedFile cropped) {
                                         imageFiles.add(cropped);
                                         setState(() {});
-                                        debugPrint("DDDD");
-                                        // cropperCropFiles.add(cropped);
-                                        // result(cropperFiles);
                                       },
                                     ),
                                   ),
@@ -187,7 +180,6 @@ class _AddProductPageState extends State<AddProductPage> with AddProductControll
           Stack(
             alignment: Alignment.topRight,
             children: <Widget>[
-              // Image.network(originalPath.path, width: 128, height: 128, borderRadius: 16),
               Image.network(originalPath.path, width: 128, height: 128),
               const Icon(
                 Icons.close_outlined,

@@ -37,7 +37,7 @@ mixin AboutController {
         },
         onError: (final GenericResponse<dynamic> response) {},
       );
-     else
+    else
       _contentDataSource.update(
         dto: ContentCreateUpdateDto(id: contentReadDto!.id, title: controllerTitle.text, description: controllerDescription.text),
         onResponse: (final GenericResponse<ContentReadDto> response) {

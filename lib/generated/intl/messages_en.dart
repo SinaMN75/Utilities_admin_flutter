@@ -21,15 +21,12 @@ class MessageLookup extends MessageLookupByLibrary {
   String get localeName => 'en';
 
   final messages = _notInlinedMessages(_notInlinedMessages);
+
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
-        "eneteredNumberIsNotCorrect":
-            MessageLookupByLibrary.simpleMessage("شماره وارد شده صحیح نیست"),
+        "eneteredNumberIsNotCorrect": MessageLookupByLibrary.simpleMessage("شماره وارد شده صحیح نیست"),
         "error": MessageLookupByLibrary.simpleMessage("خطا"),
-        "phoneNumberIsWrong": MessageLookupByLibrary.simpleMessage(
-            "شماره موبایل وارد شده صحیح نیست"),
-        "thisFieldRequired":
-            MessageLookupByLibrary.simpleMessage("فیلد الزامی است"),
-        "wrongEmail":
-            MessageLookupByLibrary.simpleMessage("ایمیل وارد شده صحیح نیست")
+        "phoneNumberIsWrong": MessageLookupByLibrary.simpleMessage("شماره موبایل وارد شده صحیح نیست"),
+        "thisFieldRequired": MessageLookupByLibrary.simpleMessage("فیلد الزامی است"),
+        "wrongEmail": MessageLookupByLibrary.simpleMessage("ایمیل وارد شده صحیح نیست")
       };
 }

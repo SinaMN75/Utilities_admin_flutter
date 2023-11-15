@@ -36,12 +36,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> with OrderController,
         children: <Widget>[
           Row(
             children: <Widget>[
-              image(orderReadDto.user?.media.getImage() ?? '',
-                  placeholder: AppImages.profilePlaceholder,
-                  borderRadius: 40, //
-                  width: 64,
-                  height: 64),
-              // ).onTap(() => push(ProfilePage(userId: order.orderDetails?.first.product?.user?.id ?? ''))),
+              image(orderReadDto.user?.media.getImage() ?? '', placeholder: AppImages.profilePlaceholder, borderRadius: 40, width: 64, height: 64),
               const SizedBox(width: 8),
               Text(orderReadDto.user?.fullName ?? '').headlineLarge(fontSize: 18),
             ],
@@ -65,9 +60,8 @@ class _OrderDetailPageState extends State<OrderDetailPage> with OrderController,
             itemCount: orderReadDto.orderDetails!.length,
             itemBuilder: (final BuildContext context, final int index) => _itemOrderDetail(orderDetail: orderReadDto.orderDetails![index], index: index),
           ),
-
           const Divider(height: 1),
-          const SizedBox(height: 8), //
+          const SizedBox(height: 8),
           _address(order: orderReadDto, address: orderReadDto.address ?? AddressReadDto()),
           const SizedBox(height: 8),
           const Divider(),
@@ -78,13 +72,6 @@ class _OrderDetailPageState extends State<OrderDetailPage> with OrderController,
 
   Widget _productInfo({required final OrderReadDto order}) {
     final int totalPrice = order.totalPrice ?? 0;
-    // order.orderDetails?.forEach((final OrderDetail element) {
-    //   final int price = element.product?.price ?? 0;
-    //   final int discount = element.product?.discountPercent ?? 0;
-    //   final int count = element.count ?? 1;
-    //   final double total = (price - ((discount / 100) * price)) * count;
-    //   totalPrice = totalPrice + total.toInt();
-    // });
 
     return Column(
       children: <Widget>[
@@ -94,12 +81,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> with OrderController,
             const Text('قیمت کل:').titleMedium().bold(),
             Text('${totalPrice.toString().getPrice()} تومان').titleLarge().bold(),
           ],
-        )
-        // Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [Text(s.orderPrice), Text("963,000 تومان")]).marginSymmetric(vertical: 8),
-        // Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [Text(s.shippingCost), Text("0 تومان")]).marginSymmetric(vertical: 8),
-        // Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [Text(s.discount), Text("14,000 تومان")]).marginSymmetric(vertical: 8),
-        // _price(price: totalPrice.toString(), title: s.amountPaid, color: AppColors.green),
-        // Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [Text(s.totalPrice), Text("${getPrice(totalPrice.toString())} ${s.toman}")]).marginSymmetric(vertical: 8),
+        ),
       ],
     );
   }
@@ -125,12 +107,6 @@ class _OrderDetailPageState extends State<OrderDetailPage> with OrderController,
             Text("${orderDetail.count} عدد ").titleMedium(color: Colors.green).bold(),
           ],
         ),
-        // child: ListTile(
-        //   leading: image(orderDetail.product!.parent!.media.getImage()),
-        //   title: Text(orderDetail.product?.title ?? ''),
-        //   subtitle: Text('${orderDetail.count} عدد'),
-        //   trailing: Text("${getPrice(totalPrice.toString())} T"),
-        // ),
       );
 
   Widget _address({required final OrderReadDto order, required final AddressReadDto address}) => Column(
@@ -150,7 +126,6 @@ class _OrderDetailPageState extends State<OrderDetailPage> with OrderController,
               ).expanded(),
             ],
           ).marginOnly(bottom: 8),
-
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
@@ -189,18 +164,6 @@ class _OrderDetailPageState extends State<OrderDetailPage> with OrderController,
               )
             ],
           ),
-          // Row(
-          //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          //   children: [
-          //     Text("${s.postalCode}:${order.address?.postalCode ?? ''}"),
-          //     Text("${s.unit}:${order.address?.unit ?? ''}"),
-          //     Text("${s.plack}:${order.address?.pelak ?? ''}"),
-          //   ],
-          // ),
-          // const SizedBox(height: 8),
-          // Row(
-          //   children: [Text("${s.transferee}:${Core.userReadDto?.fullName ?? ''}")],
-          // ),
         ],
       );
 }

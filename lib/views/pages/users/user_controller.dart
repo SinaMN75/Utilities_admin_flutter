@@ -52,8 +52,12 @@ mixin UserController {
   }
 
   void edit(final UserReadDto dto) => tabWidget.insert(0, UserCreateUpdatePage(dto: dto));
+
   void transaction(final UserReadDto dto) => tabWidget.insert(0, TransactionsPage(userId: dto.id));
+
   void orderPage(final UserReadDto dto) => tabWidget.insert(0, OrderPage(userId: dto.id));
+
   void comments(final UserReadDto dto) => tabWidget.insert(0, CommentsPage(userId: dto.id));
+
   void productPage(final UserReadDto dto) => tabWidget.insert(0, ProductPage(userId: dto.id));
 }

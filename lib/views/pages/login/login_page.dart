@@ -25,7 +25,7 @@ class _LoginPageState extends State<LoginPage> with LoginController {
         body: Row(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            image(AppImages.loginImage, fit: BoxFit.cover).expanded(),
+            if (isWeb || isDesktop) image(AppImages.loginImage, fit: BoxFit.cover).expanded(),
             Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
@@ -41,21 +41,6 @@ class _LoginPageState extends State<LoginPage> with LoginController {
                     ],
                   ).paddingSymmetric(horizontal: context.width / 10),
                 ),
-
-                // Form(
-                //   child: Column(
-                //     crossAxisAlignment: CrossAxisAlignment.stretch,
-                //     children: <Widget>[
-                //       textField(hintText: "شماره همراه", controller: controllerPhone, keyboardType: TextInputType.number, maxLength: 11).paddingSymmetric(vertical: 8),
-                //       // textField(hintText: "رمز عبور", controller: controllerPassword).paddingSymmetric(vertical: 8),
-                //       button(title: "دریافت کد تایید", onTap: login).paddingSymmetric(vertical: 8),
-                //       // const Text('ورود با کد یکبار مصرف').bodyMedium().onTap(() {
-                //     ],
-                //   ).paddingSymmetric(horizontal: context.width / 10),
-                // ),
-
-
-
               ],
             ).expanded(),
           ],

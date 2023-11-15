@@ -32,12 +32,7 @@ class _TransactionDetailPageState extends State<TransactionDetailPage> with Auto
         children: <Widget>[
           Row(
             children: <Widget>[
-              image(transactionReadDto.user?.media.getImage() ?? '',
-                  placeholder: AppImages.profilePlaceholder,
-                  borderRadius: 40, //
-                  width: 64,
-                  height: 64),
-              // ).onTap(() => push(ProfilePage(userId: order.orderDetails?.first.product?.user?.id ?? ''))),
+              image(transactionReadDto.user?.media.getImage() ?? '', placeholder: AppImages.profilePlaceholder, borderRadius: 40, width: 64, height: 64),
               const SizedBox(width: 8),
               Text(transactionReadDto.user?.fullName ?? '').bodyMedium(fontSize: 18),
             ],
@@ -88,11 +83,6 @@ class _TransactionDetailPageState extends State<TransactionDetailPage> with Auto
             Text(totalPrice.toString()).bodyMedium(),
           ],
         )
-        // Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [Text(s.orderPrice), Text("963,000 تومان")]).marginSymmetric(vertical: 8),
-        // Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [Text(s.shippingCost), Text("0 تومان")]).marginSymmetric(vertical: 8),
-        // Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [Text(s.discount), Text("14,000 تومان")]).marginSymmetric(vertical: 8),
-        // _price(price: totalPrice.toString(), title: s.amountPaid, color: AppColors.green),
-        // Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [Text(s.totalPrice), Text("${getPrice(totalPrice.toString())} ${s.toman}")]).marginSymmetric(vertical: 8),
       ],
     );
   }
@@ -118,11 +108,5 @@ class _TransactionDetailPageState extends State<TransactionDetailPage> with Auto
             Text("${orderDetail.count} عدد ").bodyMedium(color: Colors.green),
           ],
         ),
-        // child: ListTile(
-        //   leading: image(orderDetail.product!.parent!.media.getImage()),
-        //   title: Text(orderDetail.product?.title ?? ''),
-        //   subtitle: Text('${orderDetail.count} عدد'),
-        //   trailing: Text("${getPrice(totalPrice.toString())} T"),
-        // ),
       );
 }

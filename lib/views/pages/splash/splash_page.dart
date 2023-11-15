@@ -19,8 +19,7 @@ class _SplashPageState extends State<SplashPage> with SplashController {
   }
 
   @override
-  Widget build(final BuildContext context) =>
-      scaffold(
+  Widget build(final BuildContext context) => scaffold(
         appBar: AppBar(title: const Text("Admin")),
         body: const Column(),
       );

@@ -5,7 +5,8 @@ import 'package:utilities_admin_flutter/views/pages/products/product_controller.
 import 'package:utilities_admin_flutter/views/widget/image_preview_page.dart';
 
 class ProductPage extends StatefulWidget {
-  const ProductPage({this.userId,super.key});
+  const ProductPage({this.userId, super.key});
+
   final String? userId;
 
   @override
@@ -21,7 +22,7 @@ class _ProductPageState extends State<ProductPage> with ProductController, Autom
 
   @override
   void initState() {
-    userId=widget.userId;
+    userId = widget.userId;
     init();
     super.initState();
   }
@@ -30,89 +31,88 @@ class _ProductPageState extends State<ProductPage> with ProductController, Autom
   Widget build(final BuildContext context) {
     super.build(context);
     return scaffold(
-        constraints: const BoxConstraints(),
-        padding: const EdgeInsets.symmetric(horizontal: 20),
-        appBar: AppBar(
-          title: const Text("محصولات"),
-          actions: <Widget>[
-            if (Core.user.tags!.contains(TagUser.adminProductRead.number))   IconButton(onPressed: create, icon: const Icon(Icons.add_box_outlined, size: 40)),
-          ],
-        ),
-        body: Obx(
-          () => state.isLoaded()
-              ? SingleChildScrollView(
-                  child: Column(
-                    children: <Widget>[
-                      _filters(),
-                      DataTable(
-                        columns: <DataColumn>[
-                          DataColumn(label: const Text("ردیف").titleLarge()),
-                          DataColumn(label: const Text("عکس").titleLarge()),
-                          DataColumn(label: const Text("دسته بندی و زیر دسته").titleLarge()),
-                          DataColumn(label: const Text("عنوان").titleLarge()),
-                          DataColumn(label: const Text("مشخصات").titleLarge()),
-                          DataColumn(label: const Text("وضعیت").titleLarge()),
-                          DataColumn(label: const Text("تعداد بازدید").titleLarge()),
-                          DataColumn(label: const Text("عملیات‌ها").titleLarge()),
-                        ],
-                        rows: <DataRow>[
-                          ...filteredList
-                              .mapIndexed(
-                                (final int index, final ProductReadDto i) => DataRow(
-                                  cells: <DataCell>[
-                                    DataCell(Text(index.toString()).bodyLarge().paddingAll(8)),
-                                    DataCell(image(i.media.getImage(), width: 32, height: 32).onTap(() {
-                                      push(ImagePreviewPage(i.media!.map((final MediaReadDto e) => e.url).toList()));
-                                    })),
-                                    DataCell(
-                                        Text(
-                                          "${i.categories!.firstWhereOrNull((final CategoryReadDto i) => i.parentId == null)?.title ?? ""} / ${i.categories!.firstWhereOrNull((final CategoryReadDto i) => i.parentId != null)?.title ?? ""}",
-                                        ).bodyLarge().paddingAll(8)
+      constraints: const BoxConstraints(),
+      padding: const EdgeInsets.symmetric(horizontal: 20),
+      appBar: AppBar(
+        title: const Text("محصولات"),
+        actions: <Widget>[
+          if (Core.user.tags!.contains(TagUser.adminProductRead.number)) IconButton(onPressed: create, icon: const Icon(Icons.add_box_outlined, size: 40)),
+        ],
+      ),
+      body: Obx(
+        () => state.isLoaded()
+            ? SingleChildScrollView(
+                child: Column(
+                  children: <Widget>[
+                    _filters(),
+                    DataTable(
+                      columns: <DataColumn>[
+                        DataColumn(label: const Text("ردیف").titleLarge()),
+                        DataColumn(label: const Text("عکس").titleLarge()),
+                        DataColumn(label: const Text("دسته بندی و زیر دسته").titleLarge()),
+                        DataColumn(label: const Text("عنوان").titleLarge()),
+                        DataColumn(label: const Text("مشخصات").titleLarge()),
+                        DataColumn(label: const Text("وضعیت").titleLarge()),
+                        DataColumn(label: const Text("تعداد بازدید").titleLarge()),
+                        DataColumn(label: const Text("عملیات‌ها").titleLarge()),
+                      ],
+                      rows: <DataRow>[
+                        ...filteredList
+                            .mapIndexed(
+                              (final int index, final ProductReadDto i) => DataRow(
+                                cells: <DataCell>[
+                                  DataCell(Text(index.toString()).bodyLarge().paddingAll(8)),
+                                  DataCell(image(i.media.getImage(), width: 32, height: 32).onTap(() {
+                                    push(ImagePreviewPage(i.media!.map((final MediaReadDto e) => e.url).toList()));
+                                  })),
+                                  DataCell(Text(
+                                    "${i.categories!.firstWhereOrNull((final CategoryReadDto i) => i.parentId == null)?.title ?? ""} / ${i.categories!.firstWhereOrNull((final CategoryReadDto i) => i.parentId != null)?.title ?? ""}",
+                                  ).bodyLarge().paddingAll(8)),
+                                  DataCell(Text(i.title ?? "").bodyLarge().paddingAll(8)),
+                                  DataCell(Text((i.children ?? <ProductReadDto>[]).map((final ProductReadDto e) => e.title).toList().toString())),
+                                  DataCell(Text(UtilitiesTagUtils.tagProductTitleFromTagList(i.tags!)).bodyLarge().paddingAll(8)),
+                                  DataCell(
+                                    iconTextHorizontal(
+                                      leading: const Icon(Icons.remove_red_eye),
+                                      trailing: Text((i.visitProducts ?? <ProductInsight>[]).length.toString()).bodyLarge().paddingAll(8),
                                     ),
-                                    DataCell(Text(i.title ?? "").bodyLarge().paddingAll(8)),
-                                    DataCell(Text((i.children ?? <ProductReadDto>[]).map((final ProductReadDto e) => e.title).toList().toString())),
-                                    DataCell(Text(UtilitiesTagUtils.tagProductTitleFromTagList(i.tags!)).bodyLarge().paddingAll(8)),
-                                    DataCell(
-                                      iconTextHorizontal(
-                                        leading: const Icon(Icons.remove_red_eye),
-                                        trailing: Text((i.visitProducts ?? <ProductInsight>[]).length.toString()).bodyLarge().paddingAll(8),
-                                      ),
-                                    ),
-                                    DataCell(
-                                      Row(
-                                        children: <Widget>[
-                                          if (Core.user.tags!.contains(TagUser.adminProductUpdate.number))  IconButton(
+                                  ),
+                                  DataCell(
+                                    Row(
+                                      children: <Widget>[
+                                        if (Core.user.tags!.contains(TagUser.adminProductUpdate.number))
+                                          IconButton(
                                             onPressed: () => delete(dto: i),
                                             icon: Icon(Icons.delete, color: context.theme.colorScheme.error),
                                           ).paddingSymmetric(horizontal: 8),
-                                          IconButton(
-                                            onPressed: () => update(dto: i),
-                                            icon: Icon(Icons.edit, color: context.theme.colorScheme.primary),
-                                          ).paddingSymmetric(horizontal: 8),
-                                        ],
-                                      ),
+                                        IconButton(
+                                          onPressed: () => update(dto: i),
+                                          icon: Icon(Icons.edit, color: context.theme.colorScheme.primary),
+                                        ).paddingSymmetric(horizontal: 8),
+                                      ],
                                     ),
-                                  ],
-                                ),
-                              )
-                              .toList(),
-                        ],
-                      ).container(width: context.width),
-                      Pagination(
-                        numOfPages: pageCount,
-                        selectedPage: pageNumber,
-                        pagesVisible: pageCount,
-                        onPageChanged: (final int index) {
-                          pageNumber = index;
-                          read();
-                        },
-                      ),
-                    ],
-                  ),
-                )
-              : const CircularProgressIndicator().alignAtCenter(),
-        ),
-      );
+                                  ),
+                                ],
+                              ),
+                            )
+                            .toList(),
+                      ],
+                    ).container(width: context.width),
+                    Pagination(
+                      numOfPages: pageCount,
+                      selectedPage: pageNumber,
+                      pagesVisible: pageCount,
+                      onPageChanged: (final int index) {
+                        pageNumber = index;
+                        read();
+                      },
+                    ),
+                  ],
+                ),
+              )
+            : const CircularProgressIndicator().alignAtCenter(),
+      ),
+    );
   }
 
   Widget _filters() => Wrap(

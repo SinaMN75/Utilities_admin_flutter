@@ -102,13 +102,9 @@ mixin CategoryController {
                                   baseCropFiles(cropped);
 
                                   action();
-                                  debugPrint("DDDD");
-                                  // cropperCropFiles.add(cropped);
-                                  // result(cropperFiles);
                                 },
                               ),
                             )
-                      // ...imageCropFiles.mapIndexed((final int index, final CroppedFile item) =>).toList(),
                       else
                         Container(
                           child: Icon(Icons.add, size: 60, color: context.theme.dividerColor)
@@ -125,9 +121,6 @@ mixin CategoryController {
                                     baseCropFiles(cropped);
 
                                     action();
-                                    debugPrint("DDDD");
-                                    // cropperCropFiles.add(cropped);
-                                    // result(cropperFiles);
                                   },
                                 ),
                               ),
@@ -161,10 +154,8 @@ mixin CategoryController {
                     );
                   } else {
                     GetConnect().post(
-                      //
                       "https://api.sinamn75.com/api/Media",
                       FormData(<String, dynamic>{
-                        // 'Files': MultipartFile(i.path, filename: ':).png'),
                         'Files': MultipartFile(File(cropFiles.value.path), filename: ':).png'),
                         "CategoryId": response.result!.id,
                       }),
@@ -220,14 +211,10 @@ mixin CategoryController {
                                   baseCropFiles(cropped);
 
                                   action();
-                                  debugPrint("DDDD");
-                                  // cropperCropFiles.add(cropped);
-                                  // result(cropperFiles);
                                 },
                               ),
                             )
                       else
-                        // ...imageCropFiles.mapIndexed((final int index, final CroppedFile item) => _items(path: item, originalPath: imageFiles[index], index: index, action: action).marginSymmetric(horizontal: 4)).toList(),
                         Container(
                           child: Icon(Icons.add, size: 60, color: context.theme.dividerColor).container(
                             radius: 10,
@@ -268,10 +255,8 @@ mixin CategoryController {
                     );
                   } else {
                     GetConnect().post(
-                      //
                       "https://api.sinamn75.com/api/Media",
                       FormData(<String, dynamic>{
-                        // 'Files': MultipartFile(i.path, filename: ':).png'),
                         'Files': MultipartFile(File(cropFiles.value.path), filename: ':).png'),
                         "categoryId": response.result!.id,
                       }),
@@ -303,7 +288,6 @@ mixin CategoryController {
           Stack(
             alignment: Alignment.topRight,
             children: <Widget>[
-              // Image.network(originalPath.path, width: 128, height: 128, borderRadius: 16),
               Image.network(url ?? path!.path, width: 128, height: 128),
               const Icon(
                 Icons.close_outlined,
@@ -314,9 +298,7 @@ mixin CategoryController {
                 action();
               }),
             ],
-          ).marginSymmetric(horizontal: 4).onTap(() {
-            // push(ImagePreviewPage(imageFiles.map((final CroppedFile e) => e.path).toList(), currentIndex: index));
-          }),
+          ).marginSymmetric(horizontal: 4).onTap(() {}),
           const SizedBox(height: 8),
           if (originalPath != null)
             SizedBox(

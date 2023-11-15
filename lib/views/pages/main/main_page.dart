@@ -114,14 +114,19 @@ class _MainPageState extends State<MainPage> with MainController, TickerProvider
             controller: tabController,
             children: tabWidget,
             tabBar: TabBar(
-              controller: tabController,
+                controller: tabController,
                 indicatorSize: TabBarIndicatorSize.tab,
                 tabs: tabWidget
                     .mapIndexed(
                       (final int index, final Widget i) => Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
-                          IconButton(onPressed: () => tabWidget.removeAt(index), icon: const Icon(Icons.close)),
+                          IconButton(
+                            onPressed: () {
+                              if (tabWidget.length != 1) tabWidget.removeAt(index);
+                            },
+                            icon: const Icon(Icons.close),
+                          ),
                           Text(i.key.toString().replaceAll("[<'", "").replaceAll("'>]", "")),
                         ],
                       ),
