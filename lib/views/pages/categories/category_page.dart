@@ -43,12 +43,12 @@ class _CategoryPageState extends State<CategoryPage> with CategoryController, Au
                 children: <Widget>[
                   _filter(),
                   DataTable(
-                    columns: <DataColumn>[
-                      DataColumn(label: const Text("ردیف").headlineSmall()),
-                      DataColumn(label: const Text("تصویر").headlineSmall()),
-                      DataColumn(label: const Text("عنوان").headlineSmall()),
-                      DataColumn(label: const Text("عنوان انگلیسی").headlineSmall()),
-                      DataColumn(label: const Text("عملیات‌ها").headlineSmall()),
+                    columns: const <DataColumn>[
+                      DataColumn(label: Text("ردیف")),
+                      DataColumn(label: Text("تصویر")),
+                      DataColumn(label: Text("عنوان")),
+                      DataColumn(label: Text("عنوان انگلیسی")),
+                      DataColumn(label: Text("عملیات‌ها")),
                     ],
                     rows: <DataRow>[
                       ...filteredList
@@ -56,10 +56,10 @@ class _CategoryPageState extends State<CategoryPage> with CategoryController, Au
                             (final int index, final CategoryReadDto i) => DataRow(
                               color: dataTableRowColor(index),
                               cells: <DataCell>[
-                                DataCell(Text(index.toString()).bodyLarge().paddingAll(8)),
+                                DataCell(Text(index.toString())),
                                 DataCell(dataTableImage(i.media.getImage())),
-                                DataCell(Text(i.title ?? "").bodyLarge()),
-                                DataCell(Text(i.titleTr1 ?? "").bodyLarge()),
+                                DataCell(Text(i.title ?? "")),
+                                DataCell(Text(i.titleTr1 ?? "")),
                                 DataCell(
                                   Row(
                                     children: <Widget>[

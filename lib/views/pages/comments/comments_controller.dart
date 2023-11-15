@@ -38,7 +38,7 @@ mixin CommentsController {
 
   void delete({required final CommentReadDto dto}) => alertDialog(
         title: "خذف",
-        subtitle: "آیا از حذف محصول اطمینان دارید",
+        subtitle: "آیا از حذف کامنت اطمینان دارید",
         action1: (
           "بله",
           () {
@@ -48,6 +48,8 @@ mixin CommentsController {
               onResponse: (final GenericResponse<dynamic> response) {
                 snackbarGreen(title: "", subtitle: "انجام شد");
                 list.removeWhere((final CommentReadDto i) => i.id == dto.id);
+                dismissEasyLoading();
+                back();
               },
               onError: (final GenericResponse<dynamic> response) {},
             );
