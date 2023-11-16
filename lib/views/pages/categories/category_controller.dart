@@ -94,7 +94,7 @@ mixin CategoryController {
                 onResponse: (final GenericResponse<CategoryReadDto> response) {
                   if (fileBytes != null)
                     _mediaDataSource.create(
-                      byte: fileBytes!,
+                      byte: fileBytes,
                       categoryId: response.result!.id,
                       fileExtension: "png",
                       tags: <int>[TagMedia.image.number],
@@ -160,7 +160,7 @@ mixin CategoryController {
                   onResponse: (final GenericResponse<CategoryReadDto> response) {
                     if (fileBytes != null)
                       _mediaDataSource.create(
-                        byte: fileBytes!,
+                        byte: fileBytes,
                         categoryId: response.result!.id,
                         fileExtension: "png",
                         tags: <int>[TagMedia.image.number],
