@@ -1,7 +1,7 @@
 import 'package:utilities/utilities.dart';
 import 'package:utilities_admin_flutter/core/core.dart';
 
-mixin BannerController {
+mixin ContentController {
   final ContentDataSource _dataSource = ContentDataSource(baseUrl: AppConstants.baseUrl);
   final MediaDataSource _mediaDataSource = MediaDataSource(baseUrl: AppConstants.baseUrl);
   Rx<PageState> state = PageState.initial.obs;
@@ -40,6 +40,19 @@ mixin BannerController {
   void create({required final ContentCreateUpdateDto dto}) {
     showEasyLoading();
     _dataSource.create(
+      dto: dto,
+      onResponse: (final GenericResponse<ContentReadDto> response) {
+        snackbarDone();
+        dismissEasyLoading();
+        back();
+      },
+      onError: (final GenericResponse<dynamic> response) {},
+    );
+  }
+
+  void update({required final ContentCreateUpdateDto dto}) {
+    showEasyLoading();
+    _dataSource.update(
       dto: dto,
       onResponse: (final GenericResponse<ContentReadDto> response) {
         snackbarDone();

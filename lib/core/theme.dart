@@ -11,7 +11,13 @@ abstract class AppThemes {
 
   static ThemeData light = ThemeData(
     useMaterial3: true,
-    colorScheme: ColorScheme.fromSeed(seedColor: lightPrimaryColor, secondary: lightSecondaryColor, error: lightErrorColor, primary: lightPrimaryColor),
+    colorScheme: ColorScheme.fromSeed(
+      seedColor: lightPrimaryColor,
+      secondary: lightSecondaryColor,
+      error: lightErrorColor,
+      primary: lightPrimaryColor,
+      background: Colors.grey.shade200,
+    ),
     cardTheme: CardTheme(surfaceTintColor: Colors.white, elevation: 10, shadowColor: lightPrimaryColor.withOpacity(0.2)),
     highlightColor: Colors.green,
     fontFamily: font,
@@ -69,6 +75,5 @@ abstract class AppThemes {
 abstract class AppImages {
   static const String _base = "lib/assets/images";
   static const String logo = "$_base/logo.png";
-  static const String loginImage = "$_base/login_image.png";
   static const String profilePlaceholder = "$_base/profile_placeholder.png";
 }

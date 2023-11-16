@@ -13,7 +13,7 @@ enum MainPageType {
   productDetail("productDetail"),
   category("category"),
   transaction("transactions"),
-  banner("banners"),
+  content("content"),
   order("order"),
   report("report"),
   withdrawal("withdrawal"),
