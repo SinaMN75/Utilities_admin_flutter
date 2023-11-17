@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:utilities/utilities.dart';
 import 'package:utilities_admin_flutter/core/core.dart';
 
@@ -66,7 +65,7 @@ mixin CategoryController {
   void create({final CategoryReadDto? dto}) {
     final TextEditingController controllerTitle = TextEditingController();
     final TextEditingController controllerTitleTr1 = TextEditingController();
-    Uint8List? fileBytes;
+    FileData? fileData;
     dialogAlert(
       Column(
         mainAxisSize: MainAxisSize.min,
@@ -76,8 +75,8 @@ mixin CategoryController {
           textField(text: "عنوان انگلیسی", controller: controllerTitleTr1).paddingSymmetric(vertical: 12),
           customImageCropper(
             maxImages: 1,
-            result: (final List<CroppedFile> cropFiles) async {
-              fileBytes = await cropFiles.first.readAsBytes();
+            result: (final List<FileData> cropFiles) {
+              fileData = cropFiles.first;
             },
           ),
           button(
@@ -92,9 +91,9 @@ mixin CategoryController {
                   tags: <int>[TagCategory.category.number],
                 ),
                 onResponse: (final GenericResponse<CategoryReadDto> response) {
-                  if (fileBytes != null)
+                  if (fileData != null)
                     _mediaDataSource.create(
-                      byte: fileBytes,
+                      fileData: fileData!,
                       categoryId: response.result!.id,
                       fileExtension: "png",
                       tags: <int>[TagMedia.image.number],
@@ -119,7 +118,7 @@ mixin CategoryController {
   void update({required final CategoryReadDto dto}) {
     final TextEditingController controllerTitle = TextEditingController();
     final TextEditingController controllerTitleTr1 = TextEditingController();
-    Uint8List? fileBytes;
+    FileData? fileData;
     final RxBool hasImage = (dto.media.getImage().length >= 5).obs;
     dialogAlert(
       Obx(
@@ -142,8 +141,8 @@ mixin CategoryController {
               ),
             customImageCropper(
               maxImages: 1,
-              result: (final List<CroppedFile> cropFiles) async {
-                fileBytes = await cropFiles.first.readAsBytes();
+              result: (final List<FileData> cropFiles) {
+                fileData = cropFiles.first;
               },
             ),
             button(
@@ -158,9 +157,9 @@ mixin CategoryController {
                     tags: <int>[TagCategory.category.number],
                   ),
                   onResponse: (final GenericResponse<CategoryReadDto> response) {
-                    if (fileBytes != null)
+                    if (fileData != null)
                       _mediaDataSource.create(
-                        byte: fileBytes,
+                        fileData: fileData!,
                         categoryId: response.result!.id,
                         fileExtension: "png",
                         tags: <int>[TagMedia.image.number],

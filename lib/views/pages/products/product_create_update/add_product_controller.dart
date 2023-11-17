@@ -16,8 +16,8 @@ mixin AddProductController {
   bool? isFromInstagram;
 
   List<CroppedFile> files = <CroppedFile>[].obs;
-  List<CroppedFile> imageFiles = <CroppedFile>[];
-  List<CroppedFile> imageCropFiles = <CroppedFile>[];
+  List<FileData> imageFiles = <FileData>[];
+  List<FileData> imageCropFiles = <FileData>[];
 
   final ProductDataSource _productDataSource = ProductDataSource(baseUrl: AppConstants.baseUrl);
   final RxList<KeyValueViewModel> keyValueList = <KeyValueViewModel>[].obs;
@@ -122,12 +122,12 @@ mixin AddProductController {
             _productDataSource.create(
               dto: filter,
               onResponse: (final GenericResponse<ProductReadDto> response) async {
-                imageCropFiles.forEach((final CroppedFile i) async {
+                imageCropFiles.forEach((final FileData i) async {
                   if (isWeb) {
                     await GetConnect().post(
                       "https://api.sinamn75.com/api/Media",
                       FormData(<String, dynamic>{
-                        'Files': MultipartFile(await i.readAsBytes(), filename: ':).png'),
+                        'Files': MultipartFile(i.bytes, filename: ':).png'),
                         "ProductId": response.result!.id,
                       }),
                       headers: <String, String>{"Authorization": getString(UtilitiesConstants.token) ?? ""},
@@ -137,7 +137,7 @@ mixin AddProductController {
                     await GetConnect().post(
                       "https://api.sinamn75.com/api/Media",
                       FormData(<String, dynamic>{
-                        'Files': MultipartFile(File(i.path), filename: ':).png'),
+                        'Files': MultipartFile(File(i.path!), filename: ':).png'),
                         "ProductId": response.result!.id,
                       }),
                       headers: <String, String>{"Authorization": getString(UtilitiesConstants.token) ?? ""},
@@ -189,12 +189,12 @@ mixin AddProductController {
                   );
                 });
 
-                imageCropFiles.forEach((final CroppedFile i) async {
+                imageCropFiles.forEach((final FileData i) async {
                   if (isWeb) {
                     await GetConnect().post(
                       "https://api.sinamn75.com/api/Media",
                       FormData(<String, dynamic>{
-                        'Files': MultipartFile(await i.readAsBytes(), filename: ':).png'),
+                        'Files': MultipartFile(i.bytes, filename: ':).png'),
                         "ProductId": response.result!.id,
                       }),
                       headers: <String, String>{"Authorization": getString(UtilitiesConstants.token) ?? ""},
@@ -204,7 +204,7 @@ mixin AddProductController {
                     await GetConnect().post(
                       "https://api.sinamn75.com/api/Media",
                       FormData(<String, dynamic>{
-                        'Files': MultipartFile(File(i.path), filename: ':).png'),
+                        'Files': MultipartFile(File(i.path!), filename: ':).png'),
                         "ProductId": response.result!.id,
                       }),
                       headers: <String, String>{"Authorization": getString(UtilitiesConstants.token) ?? ""},

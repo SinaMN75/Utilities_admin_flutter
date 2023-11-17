@@ -2,7 +2,6 @@ import 'package:utilities/components/pagination.dart';
 import 'package:utilities/utilities.dart';
 import 'package:utilities_admin_flutter/core/core.dart';
 import 'package:utilities_admin_flutter/views/pages/products/product_controller.dart';
-import 'package:utilities_admin_flutter/views/widget/image_preview_page.dart';
 import 'package:utilities_admin_flutter/views/widget/table.dart';
 
 class ProductPage extends StatefulWidget {
@@ -47,15 +46,15 @@ class _ProductPageState extends State<ProductPage> with ProductController, Autom
                   children: <Widget>[
                     _filters(),
                     DataTable(
-                      columns: <DataColumn>[
-                        DataColumn(label: const Text("ردیف").titleLarge()),
-                        DataColumn(label: const Text("عکس").titleLarge()),
-                        DataColumn(label: const Text("دسته بندی و زیر دسته").titleLarge()),
-                        DataColumn(label: const Text("عنوان").titleLarge()),
-                        DataColumn(label: const Text("مشخصات").titleLarge()),
-                        DataColumn(label: const Text("وضعیت").titleLarge()),
-                        DataColumn(label: const Text("تعداد بازدید").titleLarge()),
-                        DataColumn(label: const Text("عملیات‌ها").titleLarge()),
+                      columns: const <DataColumn>[
+                        DataColumn(label: Text("ردیف")),
+                        DataColumn(label: Text("عکس")),
+                        DataColumn(label: Text("دسته بندی و زیر دسته")),
+                        DataColumn(label: Text("عنوان")),
+                        DataColumn(label: Text("مشخصات")),
+                        DataColumn(label: Text("وضعیت")),
+                        DataColumn(label: Text("تعداد بازدید")),
+                        DataColumn(label: Text("عملیات‌ها")),
                       ],
                       rows: <DataRow>[
                         ...filteredList
@@ -63,20 +62,20 @@ class _ProductPageState extends State<ProductPage> with ProductController, Autom
                               (final int index, final ProductReadDto i) => DataRow(
                                 color: dataTableRowColor(index),
                                 cells: <DataCell>[
-                                  DataCell(Text(index.toString()).bodyLarge().paddingAll(8)),
-                                  DataCell(image(i.media.getImage(), width: 32, height: 32).onTap(() {
-                                    push(ImagePreviewPage(i.media!.map((final MediaReadDto e) => e.url).toList()));
-                                  })),
-                                  DataCell(Text(
-                                    "${i.categories!.firstWhereOrNull((final CategoryReadDto i) => i.parentId == null)?.title ?? ""} / ${i.categories!.firstWhereOrNull((final CategoryReadDto i) => i.parentId != null)?.title ?? ""}",
-                                  ).bodyLarge().paddingAll(8)),
-                                  DataCell(Text(i.title ?? "").bodyLarge().paddingAll(8)),
+                                  DataCell(Text(index.toString())),
+                                  DataCell(dataTableImage(i.media.getImage())),
+                                  DataCell(
+                                    Text(
+                                      "${i.categories!.firstWhereOrNull((final CategoryReadDto i) => i.parentId == null)?.title ?? ""} / ${i.categories!.firstWhereOrNull((final CategoryReadDto i) => i.parentId != null)?.title ?? ""}",
+                                    ),
+                                  ),
+                                  DataCell(Text(i.title ?? "")),
                                   DataCell(Text((i.children ?? <ProductReadDto>[]).map((final ProductReadDto e) => e.title).toList().toString())),
-                                  DataCell(Text(UtilitiesTagUtils.tagProductTitleFromTagList(i.tags!)).bodyLarge().paddingAll(8)),
+                                  DataCell(Text(UtilitiesTagUtils.tagProductTitleFromTagList(i.tags!))),
                                   DataCell(
                                     iconTextHorizontal(
                                       leading: const Icon(Icons.remove_red_eye),
-                                      trailing: Text((i.visitProducts ?? <ProductInsight>[]).length.toString()).bodyLarge().paddingAll(8),
+                                      trailing: Text((i.visitProducts ?? <ProductInsight>[]).length.toString()),
                                     ),
                                   ),
                                   DataCell(

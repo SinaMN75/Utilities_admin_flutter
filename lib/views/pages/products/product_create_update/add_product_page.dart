@@ -130,7 +130,7 @@ class _AddProductPageState extends State<AddProductPage> with AddProductControll
                                     ))
                                 .toList(),
                             ...imageCropFiles
-                                .mapIndexed((final int index, final CroppedFile item) => _items(path: item, originalPath: imageFiles[index], index: index).marginSymmetric(horizontal: 4))
+                                .mapIndexed((final int index, final CroppedFile item) => _items(path: item.path, originalPath: imageFiles[index].path!, index: index).marginSymmetric(horizontal: 4))
                                 .toList(),
                             Container(
                               child: Icon(Icons.add, size: 60, color: context.theme.dividerColor)
@@ -142,7 +142,7 @@ class _AddProductPageState extends State<AddProductPage> with AddProductControll
                                   )
                                   .onTap(
                                     () => cropImageCrop(
-                                      result: (final CroppedFile cropped) {
+                                      result: (final FileData cropped) {
                                         imageFiles.add(cropped);
                                         setState(() {});
                                       },
@@ -176,12 +176,12 @@ class _AddProductPageState extends State<AddProductPage> with AddProductControll
     );
   }
 
-  Widget _items({required final CroppedFile path, required final CroppedFile originalPath, required final int index}) => Column(
+  Widget _items({required final String path, required final String originalPath, required final int index}) => Column(
         children: <Widget>[
           Stack(
             alignment: Alignment.topRight,
             children: <Widget>[
-              Image.network(originalPath.path, width: 128, height: 128),
+              Image.network(originalPath, width: 128, height: 128),
               const Icon(
                 Icons.close_outlined,
                 size: 18,
@@ -201,13 +201,13 @@ class _AddProductPageState extends State<AddProductPage> with AddProductControll
               width: 100,
               onTap: () async {
                 final CroppedFile? croppedFile = await ImageCropper().cropImage(
-                  sourcePath: path.path,
+                  sourcePath: path,
                   aspectRatio: const CropAspectRatio(ratioX: 1, ratioY: 1),
                   uiSettings: <PlatformUiSettings>[
                     WebUiSettings(context: context, enforceBoundary: true, enableExif: true, enableZoom: true, showZoomer: true),
                   ],
                 );
-                imageCropFiles[index] = croppedFile!;
+                imageCropFiles[index] = FileData(path: croppedFile?.path, bytes: await croppedFile?.readAsBytes());
                 setState(() {});
               },
             ),
