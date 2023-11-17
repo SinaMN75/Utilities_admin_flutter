@@ -7,7 +7,7 @@ class ContentPage extends StatefulWidget {
   const ContentPage({super.key});
 
   @override
-  Key? get key => const Key("بنرها");
+  Key? get key => const Key("محتوا");
 
   @override
   State<ContentPage> createState() => _ContentPageState();
@@ -53,6 +53,7 @@ class _ContentPageState extends State<ContentPage> with ContentController, Autom
                       ...list
                           .mapIndexed(
                             (final int index, final ContentReadDto i) => DataRow(
+                              color: dataTableRowColor(index),
                               cells: <DataCell>[
                                 DataCell(Text(index.toString())),
                                 DataCell(dataTableImage(i.media.getImage())),
