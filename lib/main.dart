@@ -1,4 +1,3 @@
-import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:utilities/utilities.dart';
 import 'package:utilities_admin_flutter/core/core.dart';
@@ -6,7 +5,7 @@ import 'package:utilities_admin_flutter/generated/l10n.dart';
 import 'package:utilities_admin_flutter/views/pages/login/login_page.dart';
 
 Future<void> main() async {
-  initUtilities();
+  await initUtilities();
 
   EasyLoading.instance
     ..displayDuration = const Duration(milliseconds: 2000)

@@ -1,5 +1,6 @@
 import 'package:utilities/utilities.dart';
 import 'package:utilities_admin_flutter/views/pages/report/report_controller.dart';
+import 'package:utilities_admin_flutter/views/widget/table.dart';
 
 class ReportPage extends StatefulWidget {
   const ReportPage({super.key});
@@ -22,7 +23,9 @@ class _ReportPageState extends State<ReportPage> with ReportController, Automati
   }
 
   @override
-  Widget build(final BuildContext context) => scaffold(
+  Widget build(final BuildContext context) {
+    super.build(context);
+    return scaffold(
         constraints: const BoxConstraints(),
         padding: const EdgeInsets.symmetric(horizontal: 20),
         appBar: AppBar(title: const Text("ریپورت‌ها")),
@@ -42,10 +45,11 @@ class _ReportPageState extends State<ReportPage> with ReportController, Automati
                           ...filteredList
                               .mapIndexed(
                                 (final int index, final ReportReadDto i) => DataRow(
+                                  color: dataTableRowColor(index),
                                   cells: <DataCell>[
-                                    DataCell(Text(index.toString()).bodyLarge().paddingAll(8)),
-                                    DataCell(Text(i.title ?? "").bodyLarge().paddingAll(8)),
-                                    DataCell(Text(i.description ?? "").bodyLarge().paddingAll(8)),
+                                    DataCell(Text(index.toString())),
+                                    DataCell(Text(i.title ?? "")),
+                                    DataCell(Text(i.description ?? "")),
                                     DataCell(TextButton(
                                       onPressed: () {},
                                       child: Text(i.product?.title ?? ""),
@@ -62,4 +66,5 @@ class _ReportPageState extends State<ReportPage> with ReportController, Automati
               : const CircularProgressIndicator().alignAtCenter(),
         ),
       );
+  }
 }

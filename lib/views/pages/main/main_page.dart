@@ -36,99 +36,99 @@ class _MainPageState extends State<MainPage> with MainController, TickerProvider
   Widget build(final BuildContext context) {
     super.build(context);
     return AdminScaffold(
-        appBar: AppBar(title: const Text('ادمین پنل')),
-        sideBar: SideBar(
-          items: <AdminMenuItem>[
-            AdminMenuItem(
-              title: 'داشبورد',
-              route: MainPageType.dashboard.title,
-              icon: Icons.dashboard,
-            ),
-            AdminMenuItem(
-              title: 'دسته بندی',
-              route: MainPageType.category.title,
-              icon: Icons.category,
-            ),
-            AdminMenuItem(
-              title: "محصولات",
-              route: MainPageType.product.title,
-              icon: Icons.card_travel_outlined,
-            ),
-            AdminMenuItem(
-              title: "نظرات",
-              route: MainPageType.comment.title,
-              icon: Icons.comment_outlined,
-            ),
-            AdminMenuItem(
-              title: "کاربران",
-              route: MainPageType.user.title,
-              icon: Icons.person_outline,
-            ),
-            AdminMenuItem(
-              title: "ریپورت‌ها",
-              route: MainPageType.report.title,
-              icon: Icons.report_outlined,
-            ),
-            if (Core.user.tags!.contains(TagUser.adminTransactionRead.number))
-              AdminMenuItem(
-                title: "تراکنش‌ها",
-                route: MainPageType.transaction.title,
-                icon: Icons.credit_card_outlined,
-              ),
-            AdminMenuItem(
-              title: "سفارشات",
-              route: MainPageType.order.title,
-              icon: Icons.shopping_cart_outlined,
-            ),
-            AdminMenuItem(
-              title: 'محتوا',
-              icon: Icons.file_copy,
-              route: MainPageType.content.title,
-            ),
-            const AdminMenuItem(title: 'خروج از سیستم', icon: Icons.logout, route: "logout"),
-          ],
-          onSelected: (final AdminMenuItem item) {
-            if (item.route == MainPageType.dashboard.title) addTab(const DashboardPage());
-            if (item.route == MainPageType.category.title) addTab(const CategoryPage());
-            if (item.route == MainPageType.product.title) addTab(const ProductPage());
-            if (item.route == MainPageType.comment.title) addTab(const CommentsPage());
-            if (item.route == MainPageType.report.title) addTab(const ReportPage());
-            if (item.route == MainPageType.transaction.title) addTab(const TransactionsPage());
-            if (item.route == MainPageType.content.title) addTab(const ContentPage());
-            if (item.route == MainPageType.user.title) addTab(const UserPage());
-            if (item.route == MainPageType.order.title) addTab(const OrderPage());
-            if (item.route == "logout") logout();
-            Get.forceAppUpdate();
-          },
-          selectedRoute: '',
-        ),
-        body: Obx(
-          () => defaultTabBar(
-            controller: tabController,
-            children: tabWidget,
-            physics: const NeverScrollableScrollPhysics(),
-            tabBar: TabBar(
-                controller: tabController,
-                indicatorSize: TabBarIndicatorSize.tab,
-                tabs: tabWidget
-                    .mapIndexed(
-                      (final int index, final Widget i) => Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          IconButton(
-                            onPressed: () {
-                              if (tabWidget.length != 1) tabWidget.removeAt(index);
-                            },
-                            icon: const Icon(Icons.close),
-                          ),
-                          Text(i.key.toString().replaceAll("[<'", "").replaceAll("'>]", "")),
-                        ],
-                      ),
-                    )
-                    .toList()),
+      appBar: AppBar(title: const Text('ادمین پنل')),
+      sideBar: SideBar(
+        items: <AdminMenuItem>[
+          AdminMenuItem(
+            title: 'داشبورد',
+            route: MainPageType.dashboard.title,
+            icon: Icons.dashboard,
           ),
+          AdminMenuItem(
+            title: 'دسته بندی',
+            route: MainPageType.category.title,
+            icon: Icons.category,
+          ),
+          AdminMenuItem(
+            title: "محصولات",
+            route: MainPageType.product.title,
+            icon: Icons.card_travel_outlined,
+          ),
+          AdminMenuItem(
+            title: "نظرات",
+            route: MainPageType.comment.title,
+            icon: Icons.comment_outlined,
+          ),
+          AdminMenuItem(
+            title: "کاربران",
+            route: MainPageType.user.title,
+            icon: Icons.person_outline,
+          ),
+          AdminMenuItem(
+            title: "ریپورت‌ها",
+            route: MainPageType.report.title,
+            icon: Icons.report_outlined,
+          ),
+          if (Core.user.tags!.contains(TagUser.adminTransactionRead.number))
+            AdminMenuItem(
+              title: "تراکنش‌ها",
+              route: MainPageType.transaction.title,
+              icon: Icons.credit_card_outlined,
+            ),
+          AdminMenuItem(
+            title: "سفارشات",
+            route: MainPageType.order.title,
+            icon: Icons.shopping_cart_outlined,
+          ),
+          AdminMenuItem(
+            title: 'محتوا',
+            icon: Icons.file_copy,
+            route: MainPageType.content.title,
+          ),
+          const AdminMenuItem(title: 'خروج از سیستم', icon: Icons.logout, route: "logout"),
+        ],
+        onSelected: (final AdminMenuItem item) {
+          if (item.route == MainPageType.dashboard.title) addTab(const DashboardPage());
+          if (item.route == MainPageType.category.title) addTab(const CategoryPage());
+          if (item.route == MainPageType.product.title) addTab(const ProductPage());
+          if (item.route == MainPageType.comment.title) addTab(const CommentsPage());
+          if (item.route == MainPageType.report.title) addTab(const ReportPage());
+          if (item.route == MainPageType.transaction.title) addTab(const TransactionsPage());
+          if (item.route == MainPageType.content.title) addTab(const ContentPage());
+          if (item.route == MainPageType.user.title) addTab(const UserPage());
+          if (item.route == MainPageType.order.title) addTab(const OrderPage());
+          if (item.route == "logout") logout();
+          Get.forceAppUpdate();
+        },
+        selectedRoute: '',
+      ),
+      body: Obx(
+        () => defaultTabBar(
+          controller: tabController,
+          children: tabWidget,
+          physics: const NeverScrollableScrollPhysics(),
+          tabBar: TabBar(
+              controller: tabController,
+              indicatorSize: TabBarIndicatorSize.tab,
+              tabs: tabWidget
+                  .mapIndexed(
+                    (final int index, final Widget i) => Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        IconButton(
+                          onPressed: () {
+                            if (tabWidget.length != 1) tabWidget.removeAt(index);
+                          },
+                          icon: const Icon(Icons.close),
+                        ),
+                        Text(i.key.toString().replaceAll("[<'", "").replaceAll("'>]", "")),
+                      ],
+                    ),
+                  )
+                  .toList()),
         ),
-      );
+      ),
+    );
   }
 
   void addTab(final Widget widget) {

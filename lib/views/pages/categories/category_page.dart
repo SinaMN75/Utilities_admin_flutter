@@ -69,10 +69,7 @@ class _CategoryPageState extends State<CategoryPage> with CategoryController, Au
                                           icon: Icon(Icons.delete, color: context.theme.colorScheme.error),
                                         ).paddingSymmetric(horizontal: 8),
                                       if (Core.user.tags!.contains(TagUser.adminCategoryUpdate.number))
-                                        IconButton(
-                                          onPressed: () => update(dto: i),
-                                          icon: Icon(Icons.edit, color: context.theme.colorScheme.primary)
-                                        ).paddingSymmetric(horizontal: 8),
+                                        IconButton(onPressed: () => update(dto: i), icon: Icon(Icons.edit, color: context.theme.colorScheme.primary)).paddingSymmetric(horizontal: 8),
                                       if (dto == null)
                                         TextButton(
                                           onPressed: () => dialogAlert(CategoryPage(dto: i).container(width: context.width)),

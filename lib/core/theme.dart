@@ -16,7 +16,7 @@ abstract class AppThemes {
       secondary: lightSecondaryColor,
       error: lightErrorColor,
       primary: lightPrimaryColor,
-      background: Colors.grey.shade200,
+      background: Colors.grey.shade100,
     ),
     cardTheme: CardTheme(surfaceTintColor: Colors.white, elevation: 10, shadowColor: lightPrimaryColor.withOpacity(0.2)),
     highlightColor: Colors.green,
@@ -26,12 +26,14 @@ abstract class AppThemes {
       style: ButtonStyle(
         shape: MaterialStatePropertyAll<OutlinedBorder>(RoundedRectangleBorder(borderRadius: BorderRadius.circular(16))),
         padding: const MaterialStatePropertyAll<EdgeInsets>(EdgeInsets.symmetric(horizontal: 16, vertical: 20)),
-        backgroundColor: MaterialStateProperty.resolveWith((final Set<MaterialState> states) {
-          if (states.contains(MaterialState.disabled))
-            return Colors.grey.shade700;
-          else
-            return lightSecondaryColor;
-        }),
+        backgroundColor: MaterialStateProperty.resolveWith(
+          (final Set<MaterialState> states) {
+            if (states.contains(MaterialState.disabled))
+              return Colors.grey.shade700;
+            else
+              return lightSecondaryColor;
+          },
+        ),
         foregroundColor: const MaterialStatePropertyAll<Color>(Colors.white),
       ),
     ),

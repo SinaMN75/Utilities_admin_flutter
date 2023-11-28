@@ -5,6 +5,8 @@
 list(APPEND FLUTTER_PLUGIN_LIST
   connectivity_plus_windows
   file_selector_windows
+  firebase_auth
+  firebase_core
   local_auth_windows
   share_plus
   syncfusion_pdfviewer_windows

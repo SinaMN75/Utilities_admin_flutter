@@ -68,16 +68,12 @@ class _OrderPageState extends State<OrderPage> with OrderController, AutomaticKe
                           if (i.tags!.contains(TagOrder.conflict.number)) orderTag(TagOrder.conflict);
                           return DataRow(
                             cells: <DataCell>[
-                              DataCell(Text((i.orderNumber ?? 0).toString()).bodyMedium()),
-                              DataCell(
-                                Text(i.productOwner?.fullName ?? "").bodyMedium().onTap(() => tabWidget.insert(0, UserCreateUpdatePage(dto: i.productOwner).container())),
-                              ),
-                              DataCell(
-                                Text(i.productOwner?.phoneNumber ?? "").bodyMedium().onTap(() => tabWidget.insert(0, UserCreateUpdatePage(dto: i.productOwner).container())),
-                              ),
-                              DataCell(Text(i.user?.fullName ?? "").bodyMedium().onTap(() => tabWidget.insert(0, UserCreateUpdatePage(dto: i.user).container()))),
-                              DataCell(Text(i.user?.phoneNumber ?? "").bodyMedium().onTap(() => tabWidget.insert(0, UserCreateUpdatePage(dto: i.user).container()))),
-                              DataCell(Text(i.totalPrice?.toString().getPrice() ?? "").bodyLarge()),
+                              DataCell(Text((i.orderNumber ?? 0).toString())),
+                              DataCell(Text(i.productOwner?.fullName ?? "").onTap(() => tabWidget.insert(0, UserCreateUpdatePage(dto: i.productOwner)))),
+                              DataCell(Text(i.productOwner?.phoneNumber ?? "").onTap(() => tabWidget.insert(0, UserCreateUpdatePage(dto: i.productOwner)))),
+                              DataCell(Text(i.user?.fullName ?? "").onTap(() => tabWidget.insert(0, UserCreateUpdatePage(dto: i.user)))),
+                              DataCell(Text(i.user?.phoneNumber ?? "").onTap(() => tabWidget.insert(0, UserCreateUpdatePage(dto: i.user)))),
+                              DataCell(Text(i.totalPrice?.toString().getPrice() ?? "")),
                               if (Core.user.tags!.contains(TagUser.adminOrderRead.number))
                                 DataCell(
                                   SizedBox(
@@ -113,7 +109,7 @@ class _OrderPageState extends State<OrderPage> with OrderController, AutomaticKe
                                         icon: Icon(Icons.delete, color: context.theme.colorScheme.error),
                                       ).paddingSymmetric(horizontal: 8),
                                     IconButton(
-                                      onPressed: () => tabWidget.insert(0, OrderDetailPage(orderReadDto: i).container()),
+                                      onPressed: () => tabWidget.insert(0, OrderDetailPage(orderReadDto: i)),
                                       icon: Icon(Icons.edit, color: context.theme.colorScheme.primary),
                                     ).paddingSymmetric(horizontal: 8),
                                   ],

@@ -3,6 +3,7 @@ import 'package:utilities_admin_flutter/core/core.dart';
 import 'package:utilities_admin_flutter/views/pages/orders/order_detail_page.dart';
 import 'package:utilities_admin_flutter/views/pages/tractions/transactions_controller.dart';
 import 'package:utilities_admin_flutter/views/pages/users/user_create_update/user_create_update_page.dart';
+import 'package:utilities_admin_flutter/views/widget/table.dart';
 import 'package:utilities_admin_flutter/views/widget/widgets.dart';
 
 class TransactionsPage extends StatefulWidget {
@@ -61,6 +62,7 @@ class _TransactionsPageState extends State<TransactionsPage> with TransactionsCo
                         ...filteredList
                             .mapIndexed(
                               (final int index, final TransactionReadDto i) => DataRow(
+                                color: dataTableRowColor(index),
                                 cells: <DataCell>[
                                   DataCell(Text(index.toString())),
                                   DataCell(

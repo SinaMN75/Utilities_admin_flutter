@@ -61,9 +61,7 @@ class _CommentsPageState extends State<CommentsPage> with CommentsController, Au
                                 DataCell(Text(index.toString())),
                                 DataCell(Text("${i.user?.firstName} ${i.user?.lastName}")),
                                 DataCell(Text(i.product?.title ?? "")),
-                                DataCell(const Text("نمایش نظر")
-                                    .bodyMedium(color: context.theme.primaryColor)
-                                    .onTap(() => alertDialog(title: "", subtitle: i.comment ?? "", action1: ("باشه", back)))),
+                                DataCell(const Text("نمایش نظر").bodyMedium(color: context.theme.primaryColor).onTap(() => alertDialog(title: "", subtitle: i.comment ?? "", action1: ("باشه", back)))),
                                 if (Core.user.tags!.contains(TagUser.adminCategoryRead.number))
                                   DataCell(
                                     Row(

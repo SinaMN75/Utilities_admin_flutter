@@ -71,7 +71,7 @@ mixin UserCreateUpdateController {
   void uploadProfileImage() async {
     final XFile? image = await imagePicker();
     if (image != null) {
-      final CroppedFile? croppedImage = await cropImage(filePath: image.path);
+      final FileData? croppedImage = await cropImage(filePath: image.path);
       stateProfilePhoto.loading();
       state.loading();
       dto.media?.forEach((final MediaReadDto i) async {
@@ -85,7 +85,7 @@ mixin UserCreateUpdateController {
         await GetConnect().post(
           "https://api.sinamn75.com/api/Media",
           FormData(<String, dynamic>{
-            'Files': MultipartFile(await croppedImage?.readAsBytes(), filename: ':).png'),
+            'Files': MultipartFile(croppedImage?.bytes, filename: ':).png'),
             "UserId": dto.id,
           }),
           headers: <String, String>{"Authorization": getString(UtilitiesConstants.token) ?? ""},

@@ -31,7 +31,6 @@ class _UserCreateUpdatePageState extends State<UserCreateUpdatePage> with UserCr
     return scaffold(
       constraints: const BoxConstraints(),
       padding: const EdgeInsets.symmetric(horizontal: 20),
-      appBar: AppBar(title: const Text("")),
       body: column(
         crossAxisAlignment: CrossAxisAlignment.start,
         isScrollable: true,
