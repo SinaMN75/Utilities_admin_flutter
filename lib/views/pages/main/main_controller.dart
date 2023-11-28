@@ -14,6 +14,7 @@ enum MainPageType {
   category("category"),
   transaction("transactions"),
   content("content"),
+  media("media"),
   order("order"),
   report("report"),
   withdrawal("withdrawal"),

@@ -4,9 +4,12 @@ import 'package:utilities_admin_flutter/responsive.dart';
 import 'package:utilities_admin_flutter/views/pages/categories/category_page.dart';
 import 'package:utilities_admin_flutter/views/pages/dashboard/dashboard_controller.dart';
 import 'package:utilities_admin_flutter/views/pages/main/main_controller.dart';
+import 'package:utilities_admin_flutter/views/pages/media/media_page.dart';
+import 'package:utilities_admin_flutter/views/pages/orders/order_page.dart';
 import 'package:utilities_admin_flutter/views/pages/products/product_page.dart';
 import 'package:utilities_admin_flutter/views/pages/report/report_page.dart';
 import 'package:utilities_admin_flutter/views/pages/tractions/transactions_page.dart';
+import 'package:utilities_admin_flutter/views/pages/users/user_page.dart';
 import 'package:utilities_admin_flutter/views/widget/table.dart';
 
 class DashboardPage extends StatefulWidget {
@@ -176,13 +179,13 @@ class _DashboardPageState extends State<DashboardPage> with DashboardController,
                         count: dashboardDataReadDto.users.toString(),
                         color: Colors.blue,
                         iconData: Icons.person_outline,
-                      ),
+                      ).onTap(() => Core.user.tags!.contains(TagUser.adminUserRead.number) ? tabWidget.insert(0, const UserPage()) : null),
                       _card(
                         title: "سفارشات",
                         count: dashboardDataReadDto.orders.toString(),
                         color: Colors.green,
                         iconData: Icons.shopping_cart_outlined,
-                      ),
+                      ).onTap(() => Core.user.tags!.contains(TagUser.adminOrderRead.number) ? tabWidget.insert(0, const OrderPage()) : null),
                       _card(
                         title: "محصولات",
                         count: dashboardDataReadDto.products.toString(),
@@ -194,7 +197,7 @@ class _DashboardPageState extends State<DashboardPage> with DashboardController,
                         count: dashboardDataReadDto.media.toString(),
                         color: Colors.purple,
                         iconData: Icons.dashboard_outlined,
-                      ),
+                      ).onTap(() => tabWidget.insert(0, const MediaPage())),
                       _card(
                         title: "تراکنش‌ها",
                         count: dashboardDataReadDto.transactions.toString(),

@@ -85,6 +85,11 @@ class _MainPageState extends State<MainPage> with MainController, TickerProvider
             icon: Icons.file_copy,
             route: MainPageType.content.title,
           ),
+          AdminMenuItem(
+            title: 'فایل‌ها',
+            icon: Icons.perm_media_outlined,
+            route: MainPageType.media.title,
+          ),
           const AdminMenuItem(title: 'خروج از سیستم', icon: Icons.logout, route: "logout"),
         ],
         onSelected: (final AdminMenuItem item) {
