@@ -3,6 +3,7 @@ import 'package:utilities/utilities.dart';
 import 'package:utilities_admin_flutter/core/core.dart';
 import 'package:utilities_admin_flutter/views/pages/comments/comments_controller.dart';
 import 'package:utilities_admin_flutter/views/widget/table.dart';
+import 'package:utilities_admin_flutter/views/widget/widgets.dart';
 
 class CommentsPage extends StatefulWidget {
   const CommentsPage({this.userId, super.key});
@@ -111,6 +112,7 @@ class _CommentsPageState extends State<CommentsPage> with CommentsController, Au
   Widget _filters() => Wrap(
         crossAxisAlignment: WrapCrossAlignment.center,
         children: <Widget>[
+          textFieldUser(onUserSelected: (final UserReadDto dto) => userId = dto.id),
           DropdownButtonFormField<int>(
             value: selectedCommentTag.value,
             items: <DropdownMenuItem<int>>[

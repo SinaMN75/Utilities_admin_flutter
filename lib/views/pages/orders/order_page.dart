@@ -5,6 +5,7 @@ import 'package:utilities_admin_flutter/views/pages/main/main_controller.dart';
 import 'package:utilities_admin_flutter/views/pages/orders/order_controller.dart';
 import 'package:utilities_admin_flutter/views/pages/orders/order_detail_page.dart';
 import 'package:utilities_admin_flutter/views/pages/users/user_create_update/user_create_update_page.dart';
+import 'package:utilities_admin_flutter/views/widget/widgets.dart';
 
 class OrderPage extends StatefulWidget {
   const OrderPage({this.userId, super.key});
@@ -140,10 +141,8 @@ class _OrderPageState extends State<OrderPage> with OrderController, AutomaticKe
   Widget _filters() => Wrap(
         crossAxisAlignment: WrapCrossAlignment.center,
         children: <Widget>[
-          SizedBox(
-            width: 150,
-            child: textField(keyboardType: TextInputType.number, hintText: "شماره پرداخت", controller: payNumberController),
-          ),
+          textField(keyboardType: TextInputType.number, hintText: "شماره پرداخت", controller: payNumberController).container(width: 200),
+          textFieldUser(onUserSelected: (final UserReadDto dto) => userId = dto.id),
           DropdownButtonFormField<int>(
             value: selectedOrderTag.value,
             items: <DropdownMenuItem<int>>[

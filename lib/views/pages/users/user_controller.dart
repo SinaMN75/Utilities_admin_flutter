@@ -3,7 +3,7 @@ import 'package:utilities_admin_flutter/core/core.dart';
 import 'package:utilities_admin_flutter/views/pages/comments/comments_page.dart';
 import 'package:utilities_admin_flutter/views/pages/orders/order_page.dart';
 import 'package:utilities_admin_flutter/views/pages/products/product_page.dart';
-import 'package:utilities_admin_flutter/views/pages/tractions/transactions_page.dart';
+import 'package:utilities_admin_flutter/views/pages/transactions/transactions_page.dart';
 import 'package:utilities_admin_flutter/views/pages/users/user_create_update/user_create_update_page.dart';
 
 mixin UserController {

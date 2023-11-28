@@ -27,8 +27,10 @@ class _TransactionDetailPageState extends State<TransactionDetailPage> with Auto
   }
 
   @override
-  Widget build(final BuildContext context) => scaffold(
-          body: Column(
+  Widget build(final BuildContext context) {
+    super.build(context);
+    return scaffold(
+      body: Column(
         children: <Widget>[
           Row(
             children: <Widget>[
@@ -60,7 +62,9 @@ class _TransactionDetailPageState extends State<TransactionDetailPage> with Auto
           const SizedBox(height: 8),
           _productInfo(order: orderReadDto),
         ],
-      ));
+      ),
+    );
+  }
 
   Widget _productInfo({required final OrderReadDto order}) {
     int totalPrice = 0;

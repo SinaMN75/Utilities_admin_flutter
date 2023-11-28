@@ -3,6 +3,7 @@ import 'package:utilities/utilities.dart';
 import 'package:utilities_admin_flutter/core/core.dart';
 import 'package:utilities_admin_flutter/views/pages/products/product_controller.dart';
 import 'package:utilities_admin_flutter/views/widget/table.dart';
+import 'package:utilities_admin_flutter/views/widget/widgets.dart';
 
 class ProductPage extends StatefulWidget {
   const ProductPage({this.userId, super.key});
@@ -121,6 +122,7 @@ class _ProductPageState extends State<ProductPage> with ProductController, Autom
         alignment: WrapAlignment.center,
         children: <Widget>[
           textField(text: "عنوان", controller: controllerTitle).container(width: 300, margin: const EdgeInsets.only(bottom: 12)),
+          textFieldUser(onUserSelected: (final UserReadDto dto) => userId = dto.id),
           iconTextVertical(
             crossAxisAlignment: CrossAxisAlignment.start,
             leading: const Text('وضعیت').bodyMedium(),

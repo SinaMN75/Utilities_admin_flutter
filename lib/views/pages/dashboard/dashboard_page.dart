@@ -8,7 +8,7 @@ import 'package:utilities_admin_flutter/views/pages/media/media_page.dart';
 import 'package:utilities_admin_flutter/views/pages/orders/order_page.dart';
 import 'package:utilities_admin_flutter/views/pages/products/product_page.dart';
 import 'package:utilities_admin_flutter/views/pages/report/report_page.dart';
-import 'package:utilities_admin_flutter/views/pages/tractions/transactions_page.dart';
+import 'package:utilities_admin_flutter/views/pages/transactions/transactions_page.dart';
 import 'package:utilities_admin_flutter/views/pages/users/user_page.dart';
 import 'package:utilities_admin_flutter/views/widget/table.dart';
 
@@ -36,31 +36,33 @@ class _DashboardPageState extends State<DashboardPage> with DashboardController,
   Widget build(final BuildContext context) {
     super.build(context);
     return SingleChildScrollView(
-        primary: false,
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          children: <Widget>[
-            _header(),
-            const SizedBox(height: 16),
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Column(
-                  children: <Widget>[
-                    _cards(),
-                    const SizedBox(height: 16),
-                    Obx(() => orderState.isLoaded() ? _completedOrders() : const CircularProgressIndicator().alignAtCenter()),
-                    if (Responsive.isMobile()) const SizedBox(height: 16),
-                    if (Responsive.isMobile()) _products(),
-                  ],
-                ).expanded(flex: 5),
-                if (!Responsive.isMobile()) const SizedBox(width: 16),
-                if (!Responsive.isMobile()) Expanded(flex: 2, child: _products()),
-              ],
-            ),
-          ],
-        ),
-      );
+      primary: false,
+      padding: const EdgeInsets.all(16),
+      child: Column(
+        children: <Widget>[
+          _header(),
+          const SizedBox(height: 16),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Column(
+                children: <Widget>[
+                  _cards(),
+                  const SizedBox(height: 16),
+                  Obx(
+                    () => orderState.isLoaded() && Core.user.tags!.contains(TagUser.adminOrderRead.number) ? _completedOrders() : const CircularProgressIndicator().alignAtCenter(),
+                  ),
+                  if (Responsive.isMobile()) const SizedBox(height: 16),
+                  if (Responsive.isMobile()) _products(),
+                ],
+              ).expanded(flex: 5),
+              if (!Responsive.isMobile()) const SizedBox(width: 16),
+              if (!Responsive.isMobile()) Expanded(flex: 2, child: _products()),
+            ],
+          ),
+        ],
+      ),
+    );
   }
 
   Widget _header() => Row(
@@ -77,7 +79,7 @@ class _DashboardPageState extends State<DashboardPage> with DashboardController,
       );
 
   Widget _products() => Obx(
-        () => cardsState.isLoaded()
+        () => cardsState.isLoaded() && Core.user.tags!.contains(TagUser.adminProductRead.number)
             ? Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
@@ -130,7 +132,7 @@ class _DashboardPageState extends State<DashboardPage> with DashboardController,
   Widget _completedOrders() => Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Text("سفارشات تکمیل شده اخیر", style: Theme.of(context).textTheme.titleMedium),
+          const Text("سفارشات تکمیل شده اخیر").bodyMedium(),
           SizedBox(
             width: double.infinity,
             child: DataTable(

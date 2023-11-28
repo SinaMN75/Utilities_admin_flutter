@@ -9,7 +9,7 @@ import 'package:utilities_admin_flutter/views/pages/main/main_controller.dart';
 import 'package:utilities_admin_flutter/views/pages/orders/order_page.dart';
 import 'package:utilities_admin_flutter/views/pages/products/product_page.dart';
 import 'package:utilities_admin_flutter/views/pages/report/report_page.dart';
-import 'package:utilities_admin_flutter/views/pages/tractions/transactions_page.dart';
+import 'package:utilities_admin_flutter/views/pages/transactions/transactions_page.dart';
 import 'package:utilities_admin_flutter/views/pages/users/user_page.dart';
 
 class MainPage extends StatefulWidget {

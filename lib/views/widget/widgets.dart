@@ -23,5 +23,5 @@ Widget textFieldUser({required final Function(UserReadDto dto) onUserSelected}) 
       controllerPhoneNumber.text = "${value.firstName ?? ""} ${value.lastName} ${value.phoneNumber}";
       onUserSelected(value);
     },
-  ).container(margin: const EdgeInsets.symmetric(horizontal: 8));
+  ).container(margin: const EdgeInsets.symmetric(horizontal: 8), width: 200);
 }

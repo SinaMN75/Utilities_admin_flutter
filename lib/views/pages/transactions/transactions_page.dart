@@ -1,7 +1,7 @@
 import 'package:utilities/utilities.dart';
 import 'package:utilities_admin_flutter/core/core.dart';
 import 'package:utilities_admin_flutter/views/pages/orders/order_detail_page.dart';
-import 'package:utilities_admin_flutter/views/pages/tractions/transactions_controller.dart';
+import 'package:utilities_admin_flutter/views/pages/transactions/transactions_controller.dart';
 import 'package:utilities_admin_flutter/views/pages/users/user_create_update/user_create_update_page.dart';
 import 'package:utilities_admin_flutter/views/widget/table.dart';
 import 'package:utilities_admin_flutter/views/widget/widgets.dart';
