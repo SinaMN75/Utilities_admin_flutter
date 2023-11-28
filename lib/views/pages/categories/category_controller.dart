@@ -181,4 +181,14 @@ mixin CategoryController {
       contentPadding: const EdgeInsets.all(20),
     );
   }
+
+  void importFromExcel() {
+    showFilePicker(
+      fileType: FileType.custom,
+      allowedExtensions: <String>["xlsx"],
+      action: (final List<FileData> files) {
+        _categoryDataSource.importFromExcel(fileData: files.first, onResponse: () {}, onError: () {});
+      },
+    );
+  }
 }
