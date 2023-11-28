@@ -1,5 +1,6 @@
 import 'package:utilities/utilities.dart';
 import 'package:utilities_admin_flutter/core/core.dart';
+import 'package:utilities_admin_flutter/core/excel.dart';
 import 'package:utilities_admin_flutter/views/pages/categories/category_controller.dart';
 import 'package:utilities_admin_flutter/views/widget/table.dart';
 
@@ -34,7 +35,7 @@ class _CategoryPageState extends State<CategoryPage> with CategoryController, Au
         title: dto == null ? const Text("دسته بندی‌ها") : Text("زیر دسته های ${dto?.title}"),
         actions: <Widget>[
           if (Core.user.tags!.contains(TagUser.adminCategoryRead.number)) IconButton(onPressed: () => create(dto: widget.dto), icon: const Icon(Icons.add_box_outlined, size: 40)),
-          if (dto == null) IconButton(onPressed: createCategoryFromExcel, icon: const Icon(Icons.upload, size: 40)),
+          if (dto == null) IconButton(onPressed: () => exportToExcel(list: list), icon: const Icon(Icons.upload, size: 40)),
         ],
       ),
       body: Obx(
