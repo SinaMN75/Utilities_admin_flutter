@@ -17,7 +17,7 @@ jobs:
           java-version: '12.x'
       - uses: subosito/flutter-action@v1
         with:
-          flutter-version: '3.13.6'
+          flutter-version: '3.16.0'
       - name: Init Utilities
         run: git submodule update --init
       - name: Get Utilities
@@ -30,6 +30,6 @@ jobs:
         uses: SamKirkland/FTP-Deploy-Action@4.0.0
         with:
           local-dir: Build/web/
-          server: 45.139.11.86
+          server: 82.115.20.41
           username: admindirectshodcom
-          password: BetterSoft1234
+          password: admindirectshodcom
