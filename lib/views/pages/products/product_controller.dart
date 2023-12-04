@@ -11,7 +11,7 @@ mixin ProductController {
   final TextEditingController controllerTitle = TextEditingController();
   final RxInt selectedProductTag = TagProduct.all.number.obs;
   late Rx<CategoryReadDto> selectedCategory;
-  Rx<CategoryReadDto> selectedSubCategory = CategoryReadDto(id: '').obs;
+  late Rx<CategoryReadDto> selectedSubCategory;
   RxList<CategoryReadDto> categories = Core.categories.where((final CategoryReadDto e) => !e.children.isNullOrEmpty()).toList().obs;
   RxList<CategoryReadDto> subCategories = (Core.categories.first.children ?? <CategoryReadDto>[]).obs;
   CategoryReadDto all = CategoryReadDto(id: '', title: 'همه');
@@ -23,7 +23,9 @@ mixin ProductController {
 
   void init() {
     categories.insert(0, all);
+    subCategories.insert(0, all);
     selectedCategory = categories.first.obs;
+    selectedSubCategory = subCategories.first.obs;
     if (list.isEmpty) {
       read();
     } else {
@@ -34,7 +36,6 @@ mixin ProductController {
   void selectCategory(final CategoryReadDto? dto) {
     selectedCategory(dto);
     if ((dto?.children ?? <CategoryReadDto>[]).isNotEmpty) {
-      //
       subCategories(categories.singleWhere((final CategoryReadDto e) => e.id == selectedCategory.value.id).children);
       subCategories.insert(0, all);
       selectedSubCategory(subCategories.where((final CategoryReadDto e) => e.parentId == selectedCategory.value.id).first);

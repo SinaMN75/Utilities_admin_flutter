@@ -1,9 +1,13 @@
 import 'package:utilities/utilities.dart';
 import 'package:utilities_admin_flutter/core/core.dart';
 
-Widget textFieldUser({required final Function(UserReadDto dto) onUserSelected}) {
+Widget textFieldUser({
+  required final Function(UserReadDto dto) onUserSelected,
+  final String? text,
+}) {
   final TextEditingController controllerPhoneNumber = TextEditingController();
   return textFieldTypeAhead<UserReadDto>(
+    text: text,
     hint: "شماره همراه کاربر",
     controller: controllerPhoneNumber,
     itemBuilder: (final BuildContext context, final UserReadDto value) => Text("${value.firstName ?? ""} ${value.lastName} ${value.phoneNumber}").paddingAll(16),

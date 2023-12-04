@@ -122,7 +122,7 @@ class _ProductPageState extends State<ProductPage> with ProductController, Autom
         alignment: WrapAlignment.center,
         children: <Widget>[
           textField(text: "عنوان", controller: controllerTitle).container(width: 300, margin: const EdgeInsets.only(bottom: 12)),
-          textFieldUser(onUserSelected: (final UserReadDto dto) => userId = dto.id),
+          textFieldUser(onUserSelected: (final UserReadDto dto) => userId = dto.id, text: "شماره همراه کاربر"),
           iconTextVertical(
             crossAxisAlignment: CrossAxisAlignment.start,
             leading: const Text('وضعیت').bodyMedium(),
@@ -150,7 +150,7 @@ class _ProductPageState extends State<ProductPage> with ProductController, Autom
                     .toList(),
               ],
               onChanged: selectCategory,
-            ).container(width: 200),
+            ).container(width: 280),
           ).paddingSymmetric(horizontal: 8),
           iconTextVertical(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -168,7 +168,7 @@ class _ProductPageState extends State<ProductPage> with ProductController, Autom
                     .toList(),
               ],
               onChanged: selectedSubCategory,
-            ).container(width: 200),
+            ).container(width: 280),
           ).paddingSymmetric(horizontal: 8),
           button(title: "فیلتر", onTap: read, width: 200).paddingOnly(top: 24),
         ],

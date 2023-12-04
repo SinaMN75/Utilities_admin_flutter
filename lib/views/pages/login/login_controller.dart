@@ -7,8 +7,6 @@ mixin LoginController {
 
   final UserDataSource _userDataSource = UserDataSource(baseUrl: AppConstants.baseUrl);
 
-  final TextEditingController controllerPhone = TextEditingController();
-  final TextEditingController controllerOtp = TextEditingController();
   final TextEditingController controllerUserName = TextEditingController(text: "info@directshod.com");
   final TextEditingController controllerPassword = TextEditingController(text: "1234");
 
@@ -27,27 +25,5 @@ mixin LoginController {
       },
       onError: (final GenericResponse<dynamic> response) {},
     );
-  }
-
-  void verification() {
-    if (controllerOtp.text.length > 3) {
-      showEasyLoading();
-      _userDataSource.verifyCodeForLogin(
-        dto: VerifyMobileForLoginDto(
-          mobile: controllerPhone.text,
-          verificationCode: controllerOtp.text,
-        ),
-        onResponse: (final GenericResponse<UserReadDto> response) {
-          setData(UtilitiesConstants.userId, response.result?.id);
-          setData(UtilitiesConstants.token, "Bearer ${response.result?.token}");
-          Core.user = response.result!;
-          offAll(const SplashPage());
-          dismissEasyLoading();
-        },
-        onError: (final GenericResponse<dynamic> response) {},
-      );
-    } else {
-      snackbarRed(title: "خطا", subtitle: "کد تایید نامعتبر است");
-    }
   }
 }
