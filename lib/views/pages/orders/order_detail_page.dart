@@ -25,18 +25,20 @@ class _OrderDetailPageState extends State<OrderDetailPage> with OrderController,
   }
 
   @override
-  Widget build(final BuildContext context) => scaffold(
-      bottomNavigationBar: button(
-        title: "ذخیره",
-        onTap: () {
-          if (Core.user.tags!.contains(TagUser.adminOrderRead.number)) {}
-        },
-      ),
-      body: Column(
-        children: <Widget>[
-          Row(
-            children: <Widget>[
-              image(orderReadDto.user?.media.getImage() ?? '', placeholder: AppImages.profilePlaceholder, borderRadius: 40, width: 64, height: 64),
+  Widget build(final BuildContext context) {
+    super.build(context);
+    return scaffold(
+        bottomNavigationBar: button(
+          title: "ذخیره",
+          onTap: () {
+            if (Core.user.tags!.contains(TagUser.adminOrderRead.number)) {}
+          },
+        ),
+        body: Column(
+          children: <Widget>[
+            Row(
+              children: <Widget>[
+                image(orderReadDto.user?.media.getImage() ?? '', placeholder: AppImages.profilePlaceholder, borderRadius: 40, width: 64, height: 64),
               const SizedBox(width: 8),
               Text(orderReadDto.user?.fullName ?? '').headlineLarge(fontSize: 18),
             ],
@@ -69,6 +71,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> with OrderController,
           _productInfo(order: orderReadDto),
         ],
       ));
+  }
 
   Widget _productInfo({required final OrderReadDto order}) {
     final int totalPrice = order.totalPrice ?? 0;
@@ -92,7 +95,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> with OrderController,
         child: Row(
           children: <Widget>[
             Card(
-              child: image(orderDetail.product?.parent?.media.getImage(tagUseCase: TagMedia.post.number) ?? '', width: 64, height: 64),
+              child: image(orderDetail.product?.parent?.media.getImage(tag: TagMedia.post.number) ?? '', width: 64, height: 64),
             ),
             Expanded(
               child: Column(

@@ -97,7 +97,7 @@ class _TransactionDetailPageState extends State<TransactionDetailPage> with Auto
         child: Row(
           children: <Widget>[
             Card(
-              child: image(orderDetail.product?.parent?.media.getImage(tagUseCase: TagMedia.post.number) ?? '', width: 64, height: 64),
+              child: image(orderDetail.product?.parent?.media.getImage(tag: TagMedia.post.number) ?? '', width: 64, height: 64),
             ),
             Expanded(
               child: Column(

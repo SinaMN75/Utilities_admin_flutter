@@ -57,7 +57,7 @@ class _UserPageState extends State<UserPage> with UserController, AutomaticKeepA
                                 color: dataTableRowColor(index),
                                 cells: <DataCell>[
                                   DataCell(Text(index.toString())),
-                                  DataCell(dataTableImage(i.media.getImage())),
+                                  DataCell(dataTableImage(i.media.getImage() ?? AppImages.logo)),
                                   DataCell(Text(i.firstName ?? "")),
                                   DataCell(Text(i.lastName ?? "")),
                                   DataCell(Text(i.appUserName ?? "")),

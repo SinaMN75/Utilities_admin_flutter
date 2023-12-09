@@ -39,7 +39,6 @@ class _CategoryPageState extends State<CategoryPage> with CategoryController, Au
               onPressed: () => create(dto: widget.dto),
               icon: const Icon(Icons.add_box_outlined, size: 40),
             ),
-          if (dto == null) IconButton(onPressed: importFromExcel, icon: const Icon(Icons.upload, size: 40)),
           if (dto == null) IconButton(onPressed: () => exportToExcel(list: list), icon: const Icon(Icons.grid_on_outlined, size: 40)),
         ],
       ),
@@ -63,7 +62,7 @@ class _CategoryPageState extends State<CategoryPage> with CategoryController, Au
                               color: dataTableRowColor(index),
                               cells: <DataCell>[
                                 DataCell(Text(index.toString())),
-                                DataCell(dataTableImage(i.media.getImage())),
+                                DataCell(dataTableImage(i.media.getImage() ?? AppImages.logo)),
                                 DataCell(Text(i.title ?? "")),
                                 DataCell(Text(i.titleTr1 ?? "")),
                                 DataCell(
@@ -82,7 +81,7 @@ class _CategoryPageState extends State<CategoryPage> with CategoryController, Au
                                       if (dto == null)
                                         TextButton(
                                           onPressed: () => dialogAlert(CategoryPage(dto: i).container(width: context.width)),
-                                          child: const Text("نمایش زیر دسته‌ها"),
+                                          child: Text(" ${i.children?.length ?? 0} زیر‌دسته"),
                                         ).paddingSymmetric(horizontal: 8),
                                     ],
                                   ),
@@ -107,7 +106,7 @@ class _CategoryPageState extends State<CategoryPage> with CategoryController, Au
       ).paddingSymmetric(horizontal: 20, vertical: 20);
 
   void _delete({required final CategoryReadDto dto}) => alertDialog(
-        title: "خذف",
+    title: "حذف",
         subtitle: "آیا از حذف دسته بندی اطمینان دارید",
         action1: ("بله", () => delete(dto: dto)),
       );

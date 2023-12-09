@@ -119,7 +119,7 @@ mixin CategoryController {
     final TextEditingController controllerTitle = TextEditingController();
     final TextEditingController controllerTitleTr1 = TextEditingController();
     FileData? fileData;
-    final RxBool hasImage = (dto.media.getImage().length >= 5).obs;
+    final RxBool hasImage = (dto.media.getImage() != null).obs;
     dialogAlert(
       Obx(
         () => Column(
@@ -179,16 +179,6 @@ mixin CategoryController {
         ),
       ).container(width: 500),
       contentPadding: const EdgeInsets.all(20),
-    );
-  }
-
-  void importFromExcel() {
-    showFilePicker(
-      fileType: FileType.custom,
-      allowedExtensions: <String>["xlsx"],
-      action: (final List<FileData> files) {
-        _categoryDataSource.importFromExcel(fileData: files.first, onResponse: () {}, onError: () {});
-      },
     );
   }
 }

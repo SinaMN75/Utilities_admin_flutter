@@ -56,7 +56,7 @@ class _ContentPageState extends State<ContentPage> with ContentController, Autom
                               color: dataTableRowColor(index),
                               cells: <DataCell>[
                                 DataCell(Text(index.toString())),
-                                DataCell(dataTableImage(i.media.getImage())),
+                                DataCell(dataTableImage(i.media.getImage() ?? AppImages.logo)),
                                 DataCell(Text(i.title ?? "")),
                                 DataCell(Text(UtilitiesTagUtils.tagContentFromIntList(i.tags!).title)),
                                 DataCell(

@@ -64,7 +64,7 @@ class _ProductPageState extends State<ProductPage> with ProductController, Autom
                                 color: dataTableRowColor(index),
                                 cells: <DataCell>[
                                   DataCell(Text(index.toString())),
-                                  DataCell(dataTableImage(i.media.getImage())),
+                                  DataCell(dataTableImage(i.media.getImage() ?? AppImages.logo)),
                                   DataCell(
                                     Text(
                                       "${i.categories!.firstWhereOrNull((final CategoryReadDto i) => i.parentId == null)?.title ?? ""} / ${i.categories!.firstWhereOrNull((final CategoryReadDto i) => i.parentId != null)?.title ?? ""}",

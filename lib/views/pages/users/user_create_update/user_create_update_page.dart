@@ -47,7 +47,7 @@ class _UserCreateUpdatePageState extends State<UserCreateUpdatePage> with UserCr
                     alignment: Alignment.bottomLeft,
                     children: <Widget>[
                       image(
-                        dto.media.getImage(),
+                        dto.media.getImage() ?? AppImages.profilePlaceholder,
                         placeholder: AppImages.profilePlaceholder,
                         fit: BoxFit.cover,
                         borderRadius: 1000,

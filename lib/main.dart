@@ -36,6 +36,12 @@ class App extends StatefulWidget {
 
 class _AppState extends State<App> {
   @override
+  void initState() {
+    clearData();
+    super.initState();
+  }
+
+  @override
   Widget build(final BuildContext context) => GetMaterialApp(
         enableLog: false,
         localizationsDelegates: const <LocalizationsDelegate<dynamic>>[
