@@ -58,12 +58,19 @@ class _UserPageState extends State<UserPage> with UserController, AutomaticKeepA
                                 cells: <DataCell>[
                                   DataCell(Text(index.toString())),
                                   DataCell(dataTableImage(i.media.getImage() ?? AppImages.logo)),
-                                  DataCell(Text(i.firstName ?? "")),
-                                  DataCell(Text(i.lastName ?? "")),
-                                  DataCell(Text(i.appUserName ?? "")),
-                                  DataCell(Text(i.jsonDetail?.instagram ?? "")),
-                                  DataCell(Text(i.phoneNumber ?? "")),
-                                  DataCell(Text((i.suspend ?? false) ? "غیر فعال" : "فعال")),
+                                  DataCell(Text(i.firstName ?? "--")),
+                                  DataCell(Text(i.lastName ?? "--")),
+                                  DataCell(Text(i.appUserName ?? "--")),
+                                  DataCell(Text(i.jsonDetail?.instagram ?? "--")),
+                                  DataCell(Text(i.phoneNumber ?? "--")),
+                                  DataCell(
+                                    (i.suspend ?? false)
+                                        ? const Icon(Icons.power_settings_new_outlined, color: Colors.green)
+                                        : const Icon(
+                                            Icons.power_settings_new_outlined,
+                                            color: Colors.green,
+                                          ),
+                                  ),
                                   if (Core.user.tags!.contains(TagUser.adminCategoryUpdate.number))
                                     DataCell(
                                       PopupMenuButton<int>(

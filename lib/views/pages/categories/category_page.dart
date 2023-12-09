@@ -106,7 +106,7 @@ class _CategoryPageState extends State<CategoryPage> with CategoryController, Au
       ).paddingSymmetric(horizontal: 20, vertical: 20);
 
   void _delete({required final CategoryReadDto dto}) => alertDialog(
-    title: "حذف",
+        title: "حذف",
         subtitle: "آیا از حذف دسته بندی اطمینان دارید",
         action1: ("بله", () => delete(dto: dto)),
       );

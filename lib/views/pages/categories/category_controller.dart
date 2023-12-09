@@ -100,6 +100,8 @@ mixin CategoryController {
                       onResponse: () {},
                       onError: () {},
                     );
+                  list.add(response.result!);
+                  filteredList.add(response.result!);
                   dismissEasyLoading();
                   controllerTitle.clear();
                   controllerTitleTr1.clear();
@@ -116,8 +118,8 @@ mixin CategoryController {
   }
 
   void update({required final CategoryReadDto dto}) {
-    final TextEditingController controllerTitle = TextEditingController();
-    final TextEditingController controllerTitleTr1 = TextEditingController();
+    final TextEditingController controllerTitle = TextEditingController(text: dto.title);
+    final TextEditingController controllerTitleTr1 = TextEditingController(text: dto.titleTr1);
     FileData? fileData;
     final RxBool hasImage = (dto.media.getImage() != null).obs;
     dialogAlert(
