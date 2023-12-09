@@ -118,14 +118,16 @@ mixin ContentController {
                         tags: <int>[selectedTag.value.number],
                       ),
                       onResponse: (final GenericResponse<ContentReadDto> response) {
-                        _mediaDataSource.create(
-                          contentId: response.result?.id,
-                          fileData: fileData!,
-                          fileExtension: "png",
-                          tags: <int>[TagMedia.image.number],
-                          onResponse: () {},
-                          onError: () {},
-                        );
+                        if (fileData != null)
+                          _mediaDataSource.create(
+                            contentId: response.result?.id,
+                            fileData: fileData!,
+                            fileExtension: "png",
+                            tags: <int>[TagMedia.image.number],
+                            onResponse: () {},
+                            onError: () {},
+                          );
+                        list.add(response.result!);
                         snackbarDone();
                         dismissEasyLoading();
                         back();

@@ -89,7 +89,7 @@ class _ContentPageState extends State<ContentPage> with ContentController, Autom
   }
 
   void _delete({required final ContentReadDto dto}) => alertDialog(
-        title: "خذف",
+        title: "حذف",
         subtitle: "آیا از حذف محتوا اطمینان دارید",
         action1: ("بله", () => delete(dto: dto)),
       );

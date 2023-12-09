@@ -23,22 +23,9 @@ class _OrderPageState extends State<OrderPage> with OrderController, AutomaticKe
   @override
   bool get wantKeepAlive => true;
 
-  List<DataColumn> columns = <DataColumn>[
-    DataColumn(label: const Text("شماره سفارش").bodyMedium().bold()),
-    DataColumn(label: const Text("فروشنده").bodyMedium().bold()),
-    DataColumn(label: const Text("همراه فروشنده").bodyMedium().bold()),
-    DataColumn(label: const Text("خریدار").bodyMedium().bold()),
-    DataColumn(label: const Text("همراه خریدار").bodyMedium().bold()),
-    DataColumn(label: const Text("قیمت کل").bodyMedium().bold()),
-    DataColumn(label: const Text("عملیات ها").bodyMedium().bold()),
-  ];
-
   @override
   void initState() {
     userId = widget.userId;
-    if (Core.user.tags!.contains(TagUser.adminOrderRead.number)) {
-      columns.add(const DataColumn(label: Text("وضعیت")));
-    }
     init();
     super.initState();
   }
@@ -58,7 +45,15 @@ class _OrderPageState extends State<OrderPage> with OrderController, AutomaticKe
                   children: <Widget>[
                     _filters(),
                     DataTable(
-                      columns: columns,
+                      columns: const <DataColumn>[
+                        DataColumn(label: Text("شماره سفارش")),
+                        DataColumn(label: Text("فروشنده")),
+                        DataColumn(label: Text("همراه فروشنده")),
+                        DataColumn(label: Text("خریدار")),
+                        DataColumn(label: Text("همراه خریدار")),
+                        DataColumn(label: Text("قیمت کل")),
+                        DataColumn(label: Text("عملیات ها")),
+                      ],
                       rows: list.map(
                         (final OrderReadDto i) {
                           final Rx<TagOrder> orderTag = TagOrder.inProcess.obs;
@@ -75,47 +70,41 @@ class _OrderPageState extends State<OrderPage> with OrderController, AutomaticKe
                               DataCell(Text(i.user?.fullName ?? "").onTap(() => tabWidget.insert(0, UserCreateUpdatePage(dto: i.user)))),
                               DataCell(Text(i.user?.phoneNumber ?? "").onTap(() => tabWidget.insert(0, UserCreateUpdatePage(dto: i.user)))),
                               DataCell(Text(i.totalPrice?.toString().getPrice() ?? "")),
-                              if (Core.user.tags!.contains(TagUser.adminOrderRead.number))
+                              if (Core.user.tags!.contains(TagUser.adminOrderUpdate.number))
                                 DataCell(
-                                  SizedBox(
-                                    child: Row(
-                                      children: <Widget>[
-                                        SizedBox(
-                                          width: 200,
-                                          child: DropdownButtonFormField<TagOrder>(
-                                            value: orderTag.value,
-                                            items: <DropdownMenuItem<TagOrder>>[
-                                              DropdownMenuItem<TagOrder>(value: TagOrder.inProcess, child: Text(TagOrder.inProcess.title)),
-                                              DropdownMenuItem<TagOrder>(value: TagOrder.paid, child: Text(TagOrder.paid.title)),
-                                              DropdownMenuItem<TagOrder>(value: TagOrder.shipping, child: Text(TagOrder.shipping.title)),
-                                              DropdownMenuItem<TagOrder>(value: TagOrder.complete, child: Text(TagOrder.complete.title)),
-                                              DropdownMenuItem<TagOrder>(value: TagOrder.conflict, child: Text(TagOrder.conflict.title))
-                                            ],
-                                            onChanged: (final TagOrder? value) {
-                                              orderTag(value);
-                                              update(dto: OrderCreateUpdateDto(id: i.id, tags: <int>[value!.number]));
-                                            },
-                                          ).container(width: 15),
-                                        ),
-                                      ],
-                                    ),
+                                  Row(
+                                    children: <Widget>[
+                                      if (Core.user.tags!.contains(TagUser.adminOrderUpdate.number))
+                                        DropdownButtonFormField<TagOrder>(
+                                          value: orderTag.value,
+                                          items: <DropdownMenuItem<TagOrder>>[
+                                            DropdownMenuItem<TagOrder>(value: TagOrder.inProcess, child: Text(TagOrder.inProcess.title)),
+                                            DropdownMenuItem<TagOrder>(value: TagOrder.paid, child: Text(TagOrder.paid.title)),
+                                            DropdownMenuItem<TagOrder>(value: TagOrder.shipping, child: Text(TagOrder.shipping.title)),
+                                            DropdownMenuItem<TagOrder>(value: TagOrder.complete, child: Text(TagOrder.complete.title)),
+                                            DropdownMenuItem<TagOrder>(value: TagOrder.conflict, child: Text(TagOrder.conflict.title))
+                                          ],
+                                          onChanged: (final TagOrder? value) {
+                                            orderTag(value);
+                                            update(dto: OrderCreateUpdateDto(id: i.id, tags: <int>[value!.number]));
+                                          },
+                                        ).container(width: 200),
+                                      Row(
+                                        children: <Widget>[
+                                          if (Core.user.tags!.contains(TagUser.adminOrderUpdate.number))
+                                            IconButton(
+                                              onPressed: () => delete(dto: i),
+                                              icon: Icon(Icons.delete, color: context.theme.colorScheme.error),
+                                            ).paddingSymmetric(horizontal: 8),
+                                          IconButton(
+                                            onPressed: () => tabWidget.insert(0, OrderDetailPage(orderReadDto: i)),
+                                            icon: Icon(Icons.edit, color: context.theme.colorScheme.primary),
+                                          ).paddingSymmetric(horizontal: 8),
+                                        ],
+                                      ),
+                                    ],
                                   ),
                                 ),
-                              DataCell(
-                                Row(
-                                  children: <Widget>[
-                                    if (Core.user.tags!.contains(TagUser.adminOrderRead.number))
-                                      IconButton(
-                                        onPressed: () => delete(dto: i),
-                                        icon: Icon(Icons.delete, color: context.theme.colorScheme.error),
-                                      ).paddingSymmetric(horizontal: 8),
-                                    IconButton(
-                                      onPressed: () => tabWidget.insert(0, OrderDetailPage(orderReadDto: i)),
-                                      icon: Icon(Icons.edit, color: context.theme.colorScheme.primary),
-                                    ).paddingSymmetric(horizontal: 8),
-                                  ],
-                                ),
-                              ),
                             ],
                           );
                         },
@@ -158,17 +147,4 @@ class _OrderPageState extends State<OrderPage> with OrderController, AutomaticKe
           button(title: "فیلتر", onTap: read, width: 200),
         ],
       );
-
-  Widget dropDownWidget(final OrderReadDto i) => DropdownButtonFormField<int>(
-        value: selectedOrderTag.value,
-        items: <DropdownMenuItem<int>>[
-          const DropdownMenuItem<int>(value: 0, child: Text("همه")),
-          DropdownMenuItem<int>(value: TagOrder.paid.number, child: const Text("پرداخت شده")),
-          DropdownMenuItem<int>(value: TagOrder.inProcess.number, child: const Text("درحال بررسی")),
-          DropdownMenuItem<int>(value: TagOrder.shipping.number, child: const Text("در حال ارسال")),
-          DropdownMenuItem<int>(value: TagOrder.complete.number, child: const Text("تحویل شده")),
-          DropdownMenuItem<int>(value: TagOrder.complete.number, child: const Text("اختلاف")),
-        ],
-        onChanged: selectedOrderTag,
-      ).container(width: 200, margin: const EdgeInsets.all(10));
 }

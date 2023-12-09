@@ -6,7 +6,7 @@ class OrderDetailPage extends StatefulWidget {
   const OrderDetailPage({required this.orderReadDto, super.key});
 
   @override
-  Key? get key => const Key("اطلاعات سفارش ها");
+  Key? get key => Key("اطلاعات سفارش ${orderReadDto.orderNumber}");
   final OrderReadDto orderReadDto;
 
   @override
