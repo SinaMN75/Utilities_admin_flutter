@@ -50,11 +50,11 @@ class _ProductPageState extends State<ProductPage> with ProductController, Autom
                       columns: const <DataColumn>[
                         DataColumn(label: Text("ردیف")),
                         DataColumn(label: Text("عکس")),
-                        DataColumn(label: Text("دسته بندی و زیر دسته")),
+                        DataColumn(label: Text("دسته بندی")),
                         DataColumn(label: Text("عنوان")),
                         DataColumn(label: Text("مشخصات")),
                         DataColumn(label: Text("وضعیت")),
-                        DataColumn(label: Text("تعداد بازدید")),
+                        DataColumn(label: Text("تعدادبازدید")),
                         DataColumn(label: Text("عملیات‌ها")),
                       ],
                       rows: <DataRow>[

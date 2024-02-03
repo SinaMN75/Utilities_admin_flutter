@@ -1,6 +1,5 @@
 import 'package:flutter_admin_scaffold/admin_scaffold.dart';
 import 'package:utilities/utilities.dart';
-import 'package:utilities_admin_flutter/core/core.dart';
 import 'package:utilities_admin_flutter/views/pages/categories/category_page.dart';
 import 'package:utilities_admin_flutter/views/pages/comments/comments_page.dart';
 import 'package:utilities_admin_flutter/views/pages/content/content_page.dart';
@@ -9,6 +8,7 @@ import 'package:utilities_admin_flutter/views/pages/main/main_controller.dart';
 import 'package:utilities_admin_flutter/views/pages/orders/order_page.dart';
 import 'package:utilities_admin_flutter/views/pages/products/product_page.dart';
 import 'package:utilities_admin_flutter/views/pages/report/report_page.dart';
+import 'package:utilities_admin_flutter/views/pages/splash/splash_page.dart';
 import 'package:utilities_admin_flutter/views/pages/transactions/transactions_page.dart';
 import 'package:utilities_admin_flutter/views/pages/users/user_page.dart';
 
@@ -69,12 +69,11 @@ class _MainPageState extends State<MainPage> with MainController, TickerProvider
             route: MainPageType.report.title,
             icon: Icons.report_outlined,
           ),
-          if (Core.user.tags!.contains(TagUser.adminTransactionRead.number))
-            AdminMenuItem(
-              title: "تراکنش‌ها",
-              route: MainPageType.transaction.title,
-              icon: Icons.credit_card_outlined,
-            ),
+          AdminMenuItem(
+            title: "تراکنش‌ها",
+            route: MainPageType.transaction.title,
+            icon: Icons.credit_card_outlined,
+          ),
           AdminMenuItem(
             title: "سفارشات",
             route: MainPageType.order.title,
@@ -102,7 +101,11 @@ class _MainPageState extends State<MainPage> with MainController, TickerProvider
           if (item.route == MainPageType.content.title) addTab(const ContentPage());
           if (item.route == MainPageType.user.title) addTab(const UserPage());
           if (item.route == MainPageType.order.title) addTab(const OrderPage());
-          if (item.route == "logout") logout();
+          if (item.route == "logout")
+            logout(onLoggedOut: () {
+              clearData();
+              offAll(const SplashPage());
+            });
           Get.forceAppUpdate();
         },
         selectedRoute: '',

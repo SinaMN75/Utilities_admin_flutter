@@ -12,11 +12,11 @@ Widget textFieldUser({
     controller: controllerPhoneNumber,
     itemBuilder: (final BuildContext context, final UserReadDto value) => Text("${value.firstName ?? ""} ${value.lastName} ${value.phoneNumber}").paddingAll(16),
     suggestionsCallback: (final String value) async {
-      List<UserReadDto> list = <UserReadDto>[];
+      final RxList<UserReadDto> list = <UserReadDto>[].obs;
       await UserDataSource(baseUrl: AppConstants.baseUrl).filter(
         dto: UserFilterDto(query: controllerPhoneNumber.text),
         onResponse: (final GenericResponse<UserReadDto> response) {
-          list = response.resultList!;
+          list(response.resultList);
         },
         onError: (final GenericResponse<dynamic> errorResponse) {},
       );

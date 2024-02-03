@@ -4,11 +4,14 @@ import 'package:utilities_admin_flutter/core/core.dart';
 mixin TransactionsController {
   Rx<PageState> state = PageState.initial.obs;
   late String? userId;
+  DateTime dateTimeStart = DateTime(2000);
+  DateTime dateTimeEnd = DateTime(2030);
   final RxInt selectedTransactionTag = TagProduct.all.number.obs;
   final RxList<TransactionReadDto> list = <TransactionReadDto>[].obs;
-  final RxList<TransactionReadDto> filteredList = <TransactionReadDto>[].obs;
 
   final TextEditingController controllerTitle = TextEditingController();
+  final TextEditingController controllerStartDate = TextEditingController();
+  final TextEditingController controllerEndDate = TextEditingController();
   final TransactionDataSource _transactionDataSource = TransactionDataSource(baseUrl: AppConstants.baseUrl);
 
   void init() {
@@ -19,13 +22,16 @@ mixin TransactionsController {
   }
 
   void filter() {
+    state.loading();
     _transactionDataSource.filter(
       dto: TransactionFilterDto(
-        userId: userId,
+        buyerId: userId,
+        sellerId: userId,
+        dateTimeStart: dateTimeStart.toUtc().toIso8601String(),
+        dateTimeEnd: dateTimeEnd.toUtc().toIso8601String(),
       ),
       onResponse: (final GenericResponse<TransactionReadDto> response) {
         list(response.resultList);
-        filteredList(list);
         state.loaded();
       },
       onError: (final GenericResponse<dynamic> response) {},
@@ -60,7 +66,7 @@ mixin TransactionsController {
                 onResponse: (final GenericResponse<UserReadDto> response) {
                   list = response.resultList!;
                 },
-                onError: (final GenericResponse<dynamic> errorerrorResponse) {},
+                onError: (final GenericResponse<dynamic> errorResponse) {},
               );
 
               return list;

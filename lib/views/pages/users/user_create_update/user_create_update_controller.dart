@@ -75,7 +75,7 @@ mixin UserCreateUpdateController {
       stateProfilePhoto.loading();
       state.loading();
       dto.media?.forEach((final MediaReadDto i) async {
-        await _mediaDataSource.delete(
+        _mediaDataSource.delete(
           id: i.id!,
           onResponse: () {},
           onError: () {},
@@ -91,7 +91,7 @@ mixin UserCreateUpdateController {
           headers: <String, String>{"Authorization": getString(UtilitiesConstants.token) ?? ""},
           contentType: "multipart/form-data",
         );
-        await _userDataSource.readById(
+        _userDataSource.readById(
           id: dto.id,
           onResponse: (final GenericResponse<UserReadDto> response) {
             dto = response.result!;
@@ -113,7 +113,6 @@ mixin UserCreateUpdateController {
         lastName: controllerLastName.text,
         appUserName: controllerUserName.text,
         bio: controllerBio.text,
-        birthDate: birthDate.toIso8601String(),
         appPhoneNumber: controllerPhoneNumber.text,
         state: controllerState.text,
         instagram: controllerInstagram.text,

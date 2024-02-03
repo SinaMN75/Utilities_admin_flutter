@@ -142,6 +142,7 @@ mixin CategoryController {
                 ],
               ),
             customImageCropper(
+              useCropper: false,
               maxImages: 1,
               result: (final List<FileData> cropFiles) {
                 fileData = cropFiles.first;

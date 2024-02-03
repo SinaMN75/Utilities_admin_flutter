@@ -34,9 +34,9 @@ class _TransactionDetailPageState extends State<TransactionDetailPage> with Auto
         children: <Widget>[
           Row(
             children: <Widget>[
-              image(transactionReadDto.user?.media.getImage() ?? '', placeholder: AppImages.profilePlaceholder, borderRadius: 40, width: 64, height: 64),
+              image(transactionReadDto.buyer?.media.getImage() ?? '', placeholder: AppImages.profilePlaceholder, borderRadius: 40, width: 64, height: 64),
               const SizedBox(width: 8),
-              Text(transactionReadDto.user?.fullName ?? '').bodyMedium(fontSize: 18),
+              Text(transactionReadDto.buyer?.fullName ?? '').bodyMedium(fontSize: 18),
             ],
           ),
           const SizedBox(height: 8),

@@ -92,6 +92,8 @@ mixin ContentController {
             ),
             textField(labelText: "آدرس", controller: controllerAddress).paddingSymmetric(vertical: 4),
             customImageCropper(
+              useCropper: false,
+              aspectRatio: const CropAspectRatio(ratioX: 1, ratioY: 2),
               maxImages: 1,
               result: (final List<FileData> croppedFile) {
                 fileData = croppedFile.first;

@@ -1,8 +1,6 @@
 import 'package:utilities/utilities.dart';
 import 'package:utilities_admin_flutter/core/core.dart';
-import 'package:utilities_admin_flutter/views/pages/orders/order_detail_page.dart';
 import 'package:utilities_admin_flutter/views/pages/transactions/transactions_controller.dart';
-import 'package:utilities_admin_flutter/views/pages/users/user_create_update/user_create_update_page.dart';
 import 'package:utilities_admin_flutter/views/widget/table.dart';
 import 'package:utilities_admin_flutter/views/widget/widgets.dart';
 
@@ -39,10 +37,11 @@ class _TransactionsPageState extends State<TransactionsPage> with TransactionsCo
         actions: <Widget>[
           if (Core.user.tags!.contains(TagUser.adminProductRead.number))
             IconButton(
-                onPressed: () => create(
-                      action: filter,
-                    ),
-                icon: const Icon(Icons.add_box_outlined, size: 40)),
+              onPressed: () => create(
+                action: filter,
+              ),
+              icon: const Icon(Icons.add_box_outlined, size: 40),
+            ),
         ],
       ),
       body: Obx(
@@ -54,32 +53,20 @@ class _TransactionsPageState extends State<TransactionsPage> with TransactionsCo
                     child: DataTable(
                       columns: const <DataColumn>[
                         DataColumn(label: Text("ردیف")),
-                        DataColumn(label: Text("عنوان")),
                         DataColumn(label: Text("خریدار")),
+                        DataColumn(label: Text("فروشنده")),
                         DataColumn(label: Text("مبلغ")),
                       ],
                       rows: <DataRow>[
-                        ...filteredList
+                        ...list
                             .mapIndexed(
                               (final int index, final TransactionReadDto i) => DataRow(
                                 color: dataTableRowColor(index),
                                 cells: <DataCell>[
                                   DataCell(Text(index.toString())),
-                                  DataCell(
-                                    Text(i.descriptions ?? "").onTap(
-                                      () {
-                                        dialogAlert(OrderDetailPage(orderReadDto: i.order!).container(width: context.width / 1.2));
-                                      },
-                                    ),
-                                  ),
-                                  DataCell(
-                                    Text(i.user?.fullName ?? '*').onTap(
-                                      () {
-                                        dialogAlert(UserCreateUpdatePage(dto: i.user).container(width: context.width / 1.2));
-                                      },
-                                    ),
-                                  ),
-                                  DataCell(Text(getPrice(i.order?.totalPrice ?? i.amount ?? 0))),
+                                  DataCell(Text(i.buyer?.appUserName ?? "")),
+                                  DataCell(Text(i.seller?.appUserName ?? '*')),
+                                  DataCell(Text(getPrice(i.amount ?? 0))),
                                 ],
                               ),
                             )
@@ -94,14 +81,41 @@ class _TransactionsPageState extends State<TransactionsPage> with TransactionsCo
     );
   }
 
-  Widget _filter() => Row(
+  Widget _filter() => Wrap(
+        alignment: WrapAlignment.center,
+        crossAxisAlignment: WrapCrossAlignment.center,
         children: <Widget>[
           textFieldUser(
+            text: "خریدار",
             onUserSelected: (final UserReadDto dto) {
               userId = dto.id;
               filter();
             },
-          ).expanded(),
+          ).container(width: 300),
+          textFieldUser(
+            text: "فروشنده",
+            onUserSelected: (final UserReadDto dto) {
+              userId = dto.id;
+              filter();
+            },
+          ).container(width: 300),
+          textFieldPersianDatePicker(
+            text: "تاریخ شروع",
+            controller: controllerStartDate,
+            onChange: (final DateTime dateTime, final Jalali jalali) {
+              dateTimeStart = dateTime;
+              controllerStartDate.text = dateTime.toJalali().formatFullDate();
+            },
+          ).paddingAll(8).container(width: 300),
+          textFieldPersianDatePicker(
+            text: "تاریخ پایان",
+            controller: controllerEndDate,
+            onChange: (final DateTime dateTime, final Jalali jalali) {
+              dateTimeEnd = dateTime;
+              controllerEndDate.text = dateTime.toJalali().formatFullDate();
+            },
+          ).paddingAll(8).container(width: 300),
+          button(title: "فیلتر", onTap: filter).container(width: 300),
         ],
       ).paddingSymmetric(vertical: 8);
 }

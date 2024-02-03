@@ -54,8 +54,8 @@ abstract class AppThemes {
       contentPadding: const EdgeInsets.symmetric(vertical: 16, horizontal: 12),
     ),
     dataTableTheme: DataTableThemeData(
-      dataTextStyle: TextStyle(fontFamily: font, fontSize: 16, color: Colors.black87),
-      headingTextStyle: TextStyle(fontFamily: font, fontSize: 18, fontWeight: FontWeight.bold, color: Colors.black87),
+      dataTextStyle: TextStyle(fontFamily: font, fontSize: 14, color: Colors.black87),
+      headingTextStyle: TextStyle(fontFamily: font, fontSize: 16, fontWeight: FontWeight.bold, color: Colors.black87),
       headingRowColor: MaterialStateColor.resolveWith((final Set<MaterialState> states) => lightPrimaryColor.withOpacity(0.2)),
       headingRowHeight: 60,
     ),
