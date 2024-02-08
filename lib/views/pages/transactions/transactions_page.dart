@@ -89,14 +89,12 @@ class _TransactionsPageState extends State<TransactionsPage> with TransactionsCo
             text: "خریدار",
             onUserSelected: (final UserReadDto dto) {
               userId = dto.id;
-              filter();
             },
           ).container(width: 300),
           textFieldUser(
             text: "فروشنده",
             onUserSelected: (final UserReadDto dto) {
               userId = dto.id;
-              filter();
             },
           ).container(width: 300),
           textFieldPersianDatePicker(
@@ -116,6 +114,7 @@ class _TransactionsPageState extends State<TransactionsPage> with TransactionsCo
             },
           ).paddingAll(8).container(width: 300),
           button(title: "فیلتر", onTap: filter).container(width: 300),
+          button(title: "دریافت گزارش", onTap: generateReport).container(width: 300),
         ],
       ).paddingSymmetric(vertical: 8);
 }

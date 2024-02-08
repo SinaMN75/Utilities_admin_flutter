@@ -38,6 +38,23 @@ mixin TransactionsController {
     );
   }
 
+  void generateReport() {
+    _transactionDataSource.generateReport(
+      dto: TransactionFilterDto(
+        buyerId: userId,
+        sellerId: userId,
+        dateTimeStart: dateTimeStart.toUtc().toIso8601String(),
+        dateTimeEnd: dateTimeEnd.toUtc().toIso8601String(),
+      ),
+      onResponse: (final GenericResponse<MediaReadDto> response) {
+        response.resultList?.forEach((final MediaReadDto i) {
+          launchURL(i.url, mode: LaunchMode.externalApplication);
+        });
+      },
+      onError: (final GenericResponse<dynamic> response) {},
+    );
+  }
+
   void create({required final VoidCallback action, final String? userId}) {
     final TextEditingController controllerAmount = TextEditingController();
     final TextEditingController controllerDescription = TextEditingController();
