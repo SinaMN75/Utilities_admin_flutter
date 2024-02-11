@@ -50,7 +50,7 @@ class _DashboardPageState extends State<DashboardPage> with DashboardController,
                   _cards(),
                   const SizedBox(height: 16),
                   Obx(
-                    () => orderState.isLoaded() && Core.user.tags!.contains(TagUser.adminOrderRead.number) ? _completedOrders() : const CircularProgressIndicator().alignAtCenter(),
+                    () => orderState.isLoaded() && Core.user.tags!.contains(TagUser.adminOrderRead.number) ? _completedOrders() : const SizedBox(),
                   ),
                   if (Responsive.isMobile()) const SizedBox(height: 16),
                   if (Responsive.isMobile()) _products(),
@@ -104,7 +104,7 @@ class _DashboardPageState extends State<DashboardPage> with DashboardController,
                   ),
                 ],
               )
-            : const CircularProgressIndicator().alignAtCenter(),
+            : const SizedBox(),
       ).container(padding: const EdgeInsets.all(16), backgroundColor: context.theme.colorScheme.background, radius: 10);
 
   Widget _chartDataCard({

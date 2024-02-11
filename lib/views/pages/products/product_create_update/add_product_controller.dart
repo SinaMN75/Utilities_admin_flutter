@@ -9,13 +9,13 @@ import 'package:utilities_admin_flutter/core/core.dart';
 mixin AddProductController {
   final Rx<PageState> state = PageState.initial.obs;
   List<String> listOfDeleteImage = <String>[];
-  final RxInt selectedProductTag = TagProduct.all.number.obs;
+  final RxInt selectedProductStatus = TagProduct.all.number.obs;
+  final RxInt selectedProductType = TagProduct.all.number.obs;
   ProductReadDto? dto;
   List<MediaReadDto>? images;
   String? description;
   bool? isFromInstagram;
 
-  List<CroppedFile> files = <CroppedFile>[].obs;
   List<FileData> imageFiles = <FileData>[];
   List<FileData> imageCropFiles = <FileData>[];
 
@@ -30,7 +30,12 @@ mixin AddProductController {
 
   late Rx<CategoryReadDto> selectedCategory;
   late Rx<CategoryReadDto> selectedSubCategory;
-  RxList<CategoryReadDto> categories = Core.categories.where((final CategoryReadDto e) => !e.children.isNullOrEmpty()).toList().obs;
+  RxList<CategoryReadDto> categories = Core.categories
+      .where(
+        (final CategoryReadDto e) => !e.children.isNullOrEmpty(),
+      )
+      .toList()
+      .obs;
   RxList<CategoryReadDto> subCategories = (Core.categories.first.children ?? <CategoryReadDto>[]).obs;
 
   void init() {
@@ -74,11 +79,25 @@ mixin AddProductController {
     keyValueList(dto!.jsonDetail?.keyValues ?? <KeyValueViewModel>[]);
     subProducts((dto!.children ?? <ProductReadDto>[])
         .map(
-          (final ProductReadDto i) => ProductCreateUpdateDto(color: i.jsonDetail?.color, title: i.title, stock: i.stock, price: i.price, id: i.id),
+          (final ProductReadDto i) => ProductCreateUpdateDto(
+            color: i.jsonDetail?.color,
+            title: i.title,
+            stock: i.stock,
+            price: i.price,
+            id: i.id,
+          ),
         )
         .toList());
-    final List<CategoryReadDto> cats = categories.where((final CategoryReadDto p0) => dto!.categories!.map((final CategoryReadDto e) => e.id).toList().contains(p0.id)).toList();
-    final List<CategoryReadDto> subCat = cats.first.children!.where((final CategoryReadDto p0) => dto!.categories!.map((final CategoryReadDto e) => e.id).toList().contains(p0.id)).toList();
+    final List<CategoryReadDto> cats = categories
+        .where(
+          (final CategoryReadDto p0) => dto!.categories!.map((final CategoryReadDto e) => e.id).toList().contains(p0.id),
+        )
+        .toList();
+    final List<CategoryReadDto> subCat = cats.first.children!
+        .where(
+          (final CategoryReadDto p0) => dto!.categories!.map((final CategoryReadDto e) => e.id).toList().contains(p0.id),
+        )
+        .toList();
 
     selectedCategory(cats.first);
     selectedSubCategory(subCat.first);
@@ -106,7 +125,11 @@ mixin AddProductController {
         key: formKey,
         action: () {
           if (keyValueList.isEmpty) return snackbarRed(title: s.error, subtitle: "حداقل یک ویژگی وارد کنید");
-          if (subProducts.isEmpty) return snackbarRed(title: s.error, subtitle: "حداقل یک نوع محصول با قیمت و موجودی وارد کنید");
+          if (subProducts.isEmpty)
+            return snackbarRed(
+              title: s.error,
+              subtitle: "حداقل یک نوع محصول با قیمت و موجودی وارد کنید",
+            );
           if (dto == null) {
             state.loading();
 
@@ -177,7 +200,7 @@ mixin AddProductController {
                 children: subProducts,
                 price: subProducts.first.price,
                 keyValues: keyValueList,
-                tags: <int>[TagProduct.physical.number, selectedProductTag.value],
+                tags: <int>[TagProduct.physical.number, selectedProductStatus.value, selectedProductType.value],
               ),
               onResponse: (final GenericResponse<ProductReadDto> response) {
                 listOfDeleteImage.forEach((final String element) {

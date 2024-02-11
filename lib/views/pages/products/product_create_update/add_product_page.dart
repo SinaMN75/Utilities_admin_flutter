@@ -27,7 +27,9 @@ class _AddProductPageState extends State<AddProductPage> with AddProductControll
     dto = widget.dto;
     if (dto != null) {
       dto!.tags!.forEach((final int _element) {
-        selectedProductTag(TagProduct.values.where((final TagProduct element) => element.number == _element).toList().first.number);
+        selectedProductStatus(
+          TagProduct.values.where((final TagProduct element) => element.number == _element).toList().first.number,
+        );
       });
     }
     isFromInstagram = widget.isFromInstagram ?? false;
@@ -45,9 +47,7 @@ class _AddProductPageState extends State<AddProductPage> with AddProductControll
   Widget build(final BuildContext context) {
     super.build(context);
     return scaffold(
-      appBar: AppBar(
-        title: Text(dto == null ? "محصول جدید" : "ویرایش ${dto?.title ?? ""}"),
-      ),
+      appBar: AppBar(title: Text(dto == null ? "محصول جدید" : "ویرایش ${dto?.title ?? ""}")),
       constraints: const BoxConstraints(),
       padding: const EdgeInsets.symmetric(horizontal: 20),
       body: Obx(
@@ -58,16 +58,30 @@ class _AddProductPageState extends State<AddProductPage> with AddProductControll
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
+                      const Text('نوع').bodyLarge(),
+                      DropdownButtonFormField<int>(
+                        value: selectedProductType.value,
+                        items: <DropdownMenuItem<int>>[
+                          DropdownMenuItem<int>(value: TagProduct.all.number, child: const Text("همه")),
+                          DropdownMenuItem<int>(value: TagProduct.book.number, child: const Text("کتاب")),
+                          DropdownMenuItem<int>(value: TagProduct.journal.number, child: const Text("ژورنال")),
+                          DropdownMenuItem<int>(value: TagProduct.video.number, child: const Text("ویدیو")),
+                          DropdownMenuItem<int>(value: TagProduct.news.number, child: const Text("اخبار")),
+                          DropdownMenuItem<int>(value: TagProduct.product.number, child: const Text("محصول")),
+                          DropdownMenuItem<int>(value: TagProduct.link.number, child: const Text("لینک")),
+                        ],
+                        onChanged: selectedProductType,
+                      ).paddingSymmetric(vertical: 8),
                       const Text('وضعیت').bodyLarge(),
                       DropdownButtonFormField<int>(
-                        value: selectedProductTag.value,
+                        value: selectedProductStatus.value,
                         items: <DropdownMenuItem<int>>[
                           DropdownMenuItem<int>(value: TagProduct.all.number, child: const Text("انتخاب")),
                           DropdownMenuItem<int>(value: TagProduct.released.number, child: const Text("منتشر شده")),
                           DropdownMenuItem<int>(value: TagProduct.notAccepted.number, child: const Text("رد شده")),
                           DropdownMenuItem<int>(value: TagProduct.inQueue.number, child: const Text("در انتظار بررسی")),
                         ],
-                        onChanged: selectedProductTag,
+                        onChanged: selectedProductStatus,
                       ).paddingSymmetric(vertical: 8),
                       const Text("انتخاب دسته‌بندی").bodyMedium(),
                       Obx(() => DropdownButtonFormField<CategoryReadDto>(
@@ -99,7 +113,11 @@ class _AddProductPageState extends State<AddProductPage> with AddProductControll
                             ],
                             onChanged: selectSubCategory,
                           )).paddingSymmetric(vertical: 8),
-                      textField(text: "عنوان", controller: controllerTitle, validator: validateNotEmpty()).marginSymmetric(vertical: 8),
+                      textField(
+                        text: "عنوان",
+                        controller: controllerTitle,
+                        validator: validateNotEmpty(),
+                      ).marginSymmetric(vertical: 8),
                       const SizedBox(height: 8),
                       const Text("افزودن تصویر"),
                       SingleChildScrollView(
@@ -116,7 +134,15 @@ class _AddProductPageState extends State<AddProductPage> with AddProductControll
                                               Icons.close_outlined,
                                               size: 18,
                                               color: Colors.white,
-                                            ).container(width: 22, height: 22, backgroundColor: Colors.red, radius: 50).marginAll(4).onTap(() {
+                                            )
+                                                .container(
+                                                  width: 22,
+                                                  height: 22,
+                                                  backgroundColor: Colors.red,
+                                                  radius: 50,
+                                                )
+                                                .marginAll(4)
+                                                .onTap(() {
                                               listOfDeleteImage.add(e.id!);
                                               images!.removeAt(index);
                                               setState(() {});
@@ -130,7 +156,13 @@ class _AddProductPageState extends State<AddProductPage> with AddProductControll
                                     ))
                                 .toList(),
                             ...imageCropFiles
-                                .mapIndexed((final int index, final CroppedFile item) => _items(path: item.path, originalPath: imageFiles[index].path!, index: index).marginSymmetric(horizontal: 4))
+                                .mapIndexed(
+                                  (final int index, final CroppedFile item) => _items(
+                                    path: item.path,
+                                    originalPath: imageFiles[index].path!,
+                                    index: index,
+                                  ).marginSymmetric(horizontal: 4),
+                                )
                                 .toList(),
                             Container(
                               child: Icon(Icons.add, size: 60, color: context.theme.dividerColor)
@@ -204,10 +236,19 @@ class _AddProductPageState extends State<AddProductPage> with AddProductControll
                   sourcePath: path,
                   aspectRatio: const CropAspectRatio(ratioX: 1, ratioY: 1),
                   uiSettings: <PlatformUiSettings>[
-                    WebUiSettings(context: context, enforceBoundary: true, enableExif: true, enableZoom: true, showZoomer: true),
+                    WebUiSettings(
+                      context: context,
+                      enforceBoundary: true,
+                      enableExif: true,
+                      enableZoom: true,
+                      showZoomer: true,
+                    ),
                   ],
                 );
-                imageCropFiles[index] = FileData(path: croppedFile?.path, bytes: await croppedFile?.readAsBytes());
+                imageCropFiles[index] = FileData(
+                  path: croppedFile?.path,
+                  bytes: await croppedFile?.readAsBytes(),
+                );
                 setState(() {});
               },
             ),
@@ -229,9 +270,17 @@ class _AddProductPageState extends State<AddProductPage> with AddProductControll
               key: _formKey,
               child: Row(
                 children: <Widget>[
-                  textField(controller: controllerKey, hintText: "مثال: جنس", validator: validateNotEmpty()).expanded(),
+                  textField(
+                    controller: controllerKey,
+                    hintText: "مثال: جنس",
+                    validator: validateNotEmpty(),
+                  ).expanded(),
                   const SizedBox(width: 16),
-                  textField(controller: controllerValue, hintText: "مثال: چرم", validator: validateNotEmpty()).expanded(),
+                  textField(
+                    controller: controllerValue,
+                    hintText: "مثال: چرم",
+                    validator: validateNotEmpty(),
+                  ).expanded(),
                   const Icon(Icons.add).paddingSymmetric(horizontal: 8).onTap(() {
                     validateForm(
                       key: _formKey,
@@ -266,7 +315,10 @@ class _AddProductPageState extends State<AddProductPage> with AddProductControll
                           padding: const EdgeInsets.all(8),
                         )
                         .expanded(),
-                    Icon(Icons.remove, color: context.theme.colorScheme.error).paddingSymmetric(horizontal: 8).onTap(() {
+                    Icon(
+                      Icons.remove,
+                      color: context.theme.colorScheme.error,
+                    ).paddingSymmetric(horizontal: 8).onTap(() {
                       keyValueList.remove(e);
                     }),
                   ],
@@ -300,7 +352,11 @@ class _AddProductPageState extends State<AddProductPage> with AddProductControll
                       () => Container(
                         width: 50,
                         height: 50,
-                        decoration: BoxDecoration(color: color.value, shape: BoxShape.circle, border: Border.all()),
+                        decoration: BoxDecoration(
+                          color: color.value,
+                          shape: BoxShape.circle,
+                          border: Border.all(),
+                        ),
                       ).onTap(
                         () => showColorPickerBottomSheet(
                           pickerColor: color.value,
@@ -346,7 +402,12 @@ class _AddProductPageState extends State<AddProductPage> with AddProductControll
                           key: _formKey,
                           action: () {
                             subProducts.add(
-                              ProductCreateUpdateDto(title: des.text, color: colorString, stock: stock.text.toInt(), price: price.text.toInt()),
+                              ProductCreateUpdateDto(
+                                title: des.text,
+                                color: colorString,
+                                stock: stock.text.toInt(),
+                                price: price.text.toInt(),
+                              ),
                             );
                             des.clear();
                             colorString = "";
@@ -371,7 +432,11 @@ class _AddProductPageState extends State<AddProductPage> with AddProductControll
                         Container(
                           width: 50,
                           height: 50,
-                          decoration: BoxDecoration(color: hexStringToColor(i.color!), shape: BoxShape.circle, border: Border.all()),
+                          decoration: BoxDecoration(
+                            color: hexStringToColor(i.color!),
+                            shape: BoxShape.circle,
+                            border: Border.all(),
+                          ),
                         ),
                         Text(i.title!)
                             .bodyMedium()
