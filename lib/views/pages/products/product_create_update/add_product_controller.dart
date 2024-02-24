@@ -1,8 +1,5 @@
 import 'dart:io';
-import 'dart:typed_data';
 
-import 'package:http/http.dart' as http;
-import 'package:path/path.dart';
 import 'package:utilities/utilities.dart';
 import 'package:utilities_admin_flutter/core/core.dart';
 
@@ -85,6 +82,7 @@ mixin AddProductController {
             stock: i.stock,
             price: i.price,
             id: i.id,
+            tags: <int>[],
           ),
         )
         .toList());
@@ -241,27 +239,4 @@ mixin AddProductController {
           }
         },
       );
-
-  Future<File> fileFromImageUrl(final String url) async {
-    final http.Response response = await http.get(Uri.parse(url));
-
-    final Directory documentDirectory = await getApplicationDocumentsDirectory();
-
-    final File file = File(join(documentDirectory.path, url.split('/').last));
-
-    file.writeAsBytesSync(response.bodyBytes);
-
-    return file;
-  }
-
-  Future<Uint8List> byteFromImageUrl(final String url) async {
-    final http.Response response = await http.get(Uri.parse(url));
-    return response.bodyBytes;
-  }
-
-  Future<File> byteFromImageUrl2(final String url) async {
-    final http.Response response = await http.get(Uri.parse(url));
-    final Uint8List tt = response.bodyBytes;
-    return File.fromRawPath(tt);
-  }
 }

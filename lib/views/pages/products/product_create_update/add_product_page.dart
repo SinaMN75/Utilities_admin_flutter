@@ -25,7 +25,7 @@ class _AddProductPageState extends State<AddProductPage> with AddProductControll
   void initState() {
     dto = widget.dto;
     if (dto != null) {
-      dto!.tags!.forEach((final int _element) {
+      dto!.tags.forEach((final int _element) {
         selectedProductStatus(
           TagProduct.values.where((final TagProduct element) => element.number == _element).toList().first.number,
         );
@@ -132,7 +132,7 @@ class _AddProductPageState extends State<AddProductPage> with AddProductControll
                         validator: validateNotEmpty(),
                       ).paddingSymmetric(vertical: 8),
                       const SizedBox(height: 8),
-                      _filePickerList(
+                      filePickerList(
                         title: "افزودن تصویر",
                         files: images,
                         onFileSelected: (final List<FileData> list) {
@@ -143,7 +143,7 @@ class _AddProductPageState extends State<AddProductPage> with AddProductControll
                         ),
                       ),
                       const SizedBox(height: 12),
-                      _filePickerList(
+                      filePickerList(
                         title: "افزودن PDF",
                         files: pdfs,
                         fileType: FileType.any,
@@ -174,112 +174,6 @@ class _AddProductPageState extends State<AddProductPage> with AddProductControll
               )
             : const CircularProgressIndicator().alignAtCenter(),
       ),
-    );
-  }
-
-  Widget _filePickerList({
-    required final String title,
-    required final Function(List<FileData> fileData) onFileSelected,
-    required final Function(List<FileData> fileData) onFileDeleted,
-    final List<FileData>? files,
-    final List<String>? allowedExt,
-    final FileType fileType = FileType.image,
-  }) {
-    final RxList<FileData> addedFiles = <FileData>[].obs;
-    final RxList<FileData> deletedFiles = <FileData>[].obs;
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        Text(title).titleMedium(),
-        const SizedBox(height: 8),
-        Obx(
-          () => Row(
-            children: <Widget>[
-              ...(files ?? <FileData>[])
-                  .mapIndexed(
-                    (final int index, final FileData i) => Stack(
-                      children: <Widget>[
-                        image(
-                          i.url ?? "",
-                          width: 100,
-                          height: 100,
-                          borderRadius: 12,
-                          fit: BoxFit.cover,
-                        ).paddingSymmetric(horizontal: 8),
-                        const Icon(
-                          Icons.close,
-                          color: Colors.white,
-                          size: 24,
-                        )
-                            .container(
-                          backgroundColor: context.theme.colorScheme.error,
-                          radius: 100,
-                        )
-                            .onTap(() {
-                          deletedFiles.add(i);
-                          onFileDeleted(deletedFiles);
-                        }),
-                      ],
-                    ),
-                  )
-                  .toList(),
-              ...addedFiles
-                  .mapIndexed(
-                    (final int index, final FileData i) => Stack(
-                      children: <Widget>[
-                        if (i.fileType == FileDataType.image)
-                          image(
-                            "",
-                            fileData: i,
-                            width: 100,
-                            height: 100,
-                            borderRadius: 12,
-                            fit: BoxFit.cover,
-                          ).paddingSymmetric(horizontal: 8),
-                        if (i.fileType == FileDataType.pdf)
-                          const Icon(Icons.picture_as_pdf_outlined, color: Colors.red, size: 50).container(
-                            radius: 12,
-                            width: 100,
-                            height: 100,
-                            borderWidth: 4,
-                            borderColor: context.theme.colorScheme.onBackground,
-                            margin: const EdgeInsets.symmetric(horizontal: 8),
-                          ),
-                        const Icon(Icons.close, color: Colors.white, size: 24)
-                            .container(
-                          backgroundColor: context.theme.colorScheme.error,
-                          radius: 100,
-                        )
-                            .onTap(() {
-                          addedFiles.removeAt(index);
-                        }),
-                      ],
-                    ),
-                  )
-                  .toList(),
-              const Icon(Icons.add, size: 60)
-                  .container(
-                    width: 100,
-                    height: 100,
-                    borderWidth: 4,
-                    borderColor: context.theme.colorScheme.primary,
-                    radius: 12,
-                  )
-                  .onTap(
-                    () => showFilePicker(
-                      fileType: fileType,
-                      allowMultiple: true,
-                      allowedExtensions: allowedExt,
-                      action: (final List<FileData> files) {
-                        addedFiles.addAll(files);
-                        onFileSelected(addedFiles);
-                      },
-                    ),
-                  ),
-            ],
-          ),
-        ),
-      ],
     );
   }
 
@@ -434,6 +328,7 @@ class _AddProductPageState extends State<AddProductPage> with AddProductControll
                                 color: colorString,
                                 stock: stock.text.toInt(),
                                 price: price.text.toInt(),
+                                tags: <int>[],
                               ),
                             );
                             des.clear();
