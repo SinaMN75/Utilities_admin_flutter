@@ -48,13 +48,13 @@ mixin ProductController {
   void read() {
     state.loading();
     List<int> tags = <int>[
-      TagProduct.physical.number,
+      // TagProduct.physical.number,
     ];
     if (selectedProductTag.value != TagProduct.all.number) {
       tags.add(selectedProductTag.value);
     } else {
       tags = <int>[
-        TagProduct.physical.number,
+        // TagProduct.physical.number,
       ];
     }
 

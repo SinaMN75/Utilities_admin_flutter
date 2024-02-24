@@ -1,7 +1,6 @@
 import 'package:utilities/utilities.dart';
 import 'package:utilities_admin_flutter/core/core.dart';
 import 'package:utilities_admin_flutter/views/pages/products/product_create_update/add_product_controller.dart';
-import 'package:utilities_admin_flutter/views/widget/image_preview_page.dart';
 
 class AddProductPage extends StatefulWidget {
   const AddProductPage({super.key, this.dto, this.action, this.isFromInstagram, this.images, this.description});
@@ -34,10 +33,22 @@ class _AddProductPageState extends State<AddProductPage> with AddProductControll
     }
     isFromInstagram = widget.isFromInstagram ?? false;
     getProductById(id: dto?.id);
-    images = dto?.media;
-    imageCropFiles = imageFiles;
-    if ((images ?? <String>[]).isNotEmpty) {
-    } else {}
+    images = (dto?.media ?? <MediaReadDto>[])
+        .where(
+          (final MediaReadDto i) => i.tags!.contains(TagMedia.image.number),
+        )
+        .map(
+          (final MediaReadDto e) => FileData(url: e.url),
+        )
+        .toList();
+    pdfs = (dto?.media ?? <MediaReadDto>[])
+        .where(
+          (final MediaReadDto i) => i.tags!.contains(TagMedia.pdf.number),
+        )
+        .map(
+          (final MediaReadDto e) => FileData(url: e.url),
+        )
+        .toList();
     init();
 
     super.initState();
@@ -99,89 +110,47 @@ class _AddProductPageState extends State<AddProductPage> with AddProductControll
                             onChanged: selectCategory,
                           )).paddingSymmetric(vertical: 8),
                       const Text("انتخاب زیر دسته").bodyMedium(),
-                      Obx(() => DropdownButtonFormField<CategoryReadDto>(
-                            value: selectedSubCategory.value,
-                            items: <DropdownMenuItem<CategoryReadDto>>[
-                              ...subCategories
-                                  .map(
-                                    (final CategoryReadDto e) => DropdownMenuItem<CategoryReadDto>(
-                                      value: e,
-                                      child: Text(e.title ?? ""),
-                                    ),
-                                  )
-                                  .toList(),
-                            ],
-                            onChanged: selectSubCategory,
-                          )).paddingSymmetric(vertical: 8),
+                      Obx(
+                        () => DropdownButtonFormField<CategoryReadDto>(
+                          value: selectedSubCategory.value,
+                          items: <DropdownMenuItem<CategoryReadDto>>[
+                            ...subCategories
+                                .map(
+                                  (final CategoryReadDto e) => DropdownMenuItem<CategoryReadDto>(
+                                    value: e,
+                                    child: Text(e.title ?? ""),
+                                  ),
+                                )
+                                .toList(),
+                          ],
+                          onChanged: selectSubCategory,
+                        ),
+                      ).paddingSymmetric(vertical: 8),
                       textField(
                         text: "عنوان",
                         controller: controllerTitle,
                         validator: validateNotEmpty(),
-                      ).marginSymmetric(vertical: 8),
+                      ).paddingSymmetric(vertical: 8),
                       const SizedBox(height: 8),
-                      const Text("افزودن تصویر"),
-                      SingleChildScrollView(
-                        scrollDirection: Axis.horizontal,
-                        child: Row(
-                          children: <Widget>[
-                            ...(images ?? <String>[])
-                                .mapIndexed((final int index, final MediaReadDto e) => Column(
-                                      children: <Widget>[
-                                        Stack(
-                                          children: <Widget>[
-                                            image(e.url, width: 128, height: 128, borderRadius: 8),
-                                            const Icon(
-                                              Icons.close_outlined,
-                                              size: 18,
-                                              color: Colors.white,
-                                            )
-                                                .container(
-                                                  width: 22,
-                                                  height: 22,
-                                                  backgroundColor: Colors.red,
-                                                  radius: 50,
-                                                )
-                                                .marginAll(4)
-                                                .onTap(() {
-                                              listOfDeleteImage.add(e.id!);
-                                              images!.removeAt(index);
-                                              setState(() {});
-                                            }),
-                                          ],
-                                        ).marginSymmetric(horizontal: 8),
-                                        const SizedBox(
-                                          height: 30,
-                                        )
-                                      ],
-                                    ))
-                                .toList(),
-                            ...imageCropFiles
-                                .mapIndexed(
-                                  (final int index, final CroppedFile item) => _items(
-                                    path: item.path,
-                                    originalPath: imageFiles[index].path!,
-                                    index: index,
-                                  ).marginSymmetric(horizontal: 4),
-                                )
-                                .toList(),
-                            Container(
-                              child: Icon(Icons.add, size: 60, color: context.theme.dividerColor)
-                                  .container(
-                                    radius: 10,
-                                    borderColor: context.theme.dividerColor,
-                                    width: 100,
-                                    height: 100,
-                                  )
-                                  .onTap(
-                                    () => cropImageCrop(
-                                      result: (final FileData cropped) {
-                                        imageFiles.add(cropped);
-                                        setState(() {});
-                                      },
-                                    ),
-                                  ),
-                            ),
-                          ],
+                      _filePickerList(
+                        title: "افزودن تصویر",
+                        files: images,
+                        onFileSelected: (final List<FileData> list) {
+                          images = list;
+                        },
+                        onFileDeleted: (final List<FileData> list) => list.forEach(
+                          (final FileData i) => pdfs.remove(i),
+                        ),
+                      ),
+                      const SizedBox(height: 12),
+                      _filePickerList(
+                        title: "افزودن PDF",
+                        files: pdfs,
+                        fileType: FileType.any,
+                        allowedExt: <String>["pdf"],
+                        onFileSelected: (final List<FileData> list) => pdfs = list,
+                        onFileDeleted: (final List<FileData> list) => list.forEach(
+                          (final FileData i) => pdfs.remove(i),
                         ),
                       ),
                       _keyValue().paddingSymmetric(vertical: 12),
@@ -208,53 +177,111 @@ class _AddProductPageState extends State<AddProductPage> with AddProductControll
     );
   }
 
-  Widget _items({required final String path, required final String originalPath, required final int index}) => Column(
-        children: <Widget>[
-          Stack(
-            alignment: Alignment.topRight,
+  Widget _filePickerList({
+    required final String title,
+    required final Function(List<FileData> fileData) onFileSelected,
+    required final Function(List<FileData> fileData) onFileDeleted,
+    final List<FileData>? files,
+    final List<String>? allowedExt,
+    final FileType fileType = FileType.image,
+  }) {
+    final RxList<FileData> addedFiles = <FileData>[].obs;
+    final RxList<FileData> deletedFiles = <FileData>[].obs;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Text(title).titleMedium(),
+        const SizedBox(height: 8),
+        Obx(
+          () => Row(
             children: <Widget>[
-              Image.network(originalPath, width: 128, height: 128),
-              const Icon(
-                Icons.close_outlined,
-                size: 18,
-                color: Colors.white,
-              ).container(width: 22, height: 22, backgroundColor: Colors.red, radius: 50).marginAll(4).onTap(() {
-                imageFiles.removeAt(index);
-                setState(() {});
-              }),
-            ],
-          ).marginSymmetric(horizontal: 4).onTap(() {
-            push(ImagePreviewPage(images!.map((final MediaReadDto e) => e.url).toList(), currentIndex: index));
-          }),
-          const SizedBox(height: 8),
-          SizedBox(
-            child: button(
-              title: 'کراپ',
-              width: 100,
-              onTap: () async {
-                final CroppedFile? croppedFile = await ImageCropper().cropImage(
-                  sourcePath: path,
-                  aspectRatio: const CropAspectRatio(ratioX: 1, ratioY: 1),
-                  uiSettings: <PlatformUiSettings>[
-                    WebUiSettings(
-                      context: context,
-                      enforceBoundary: true,
-                      enableExif: true,
-                      enableZoom: true,
-                      showZoomer: true,
+              ...(files ?? <FileData>[])
+                  .mapIndexed(
+                    (final int index, final FileData i) => Stack(
+                      children: <Widget>[
+                        image(
+                          i.url ?? "",
+                          width: 100,
+                          height: 100,
+                          borderRadius: 12,
+                          fit: BoxFit.cover,
+                        ).paddingSymmetric(horizontal: 8),
+                        const Icon(
+                          Icons.close,
+                          color: Colors.white,
+                          size: 24,
+                        )
+                            .container(
+                          backgroundColor: context.theme.colorScheme.error,
+                          radius: 100,
+                        )
+                            .onTap(() {
+                          deletedFiles.add(i);
+                          onFileDeleted(deletedFiles);
+                        }),
+                      ],
                     ),
-                  ],
-                );
-                imageCropFiles[index] = FileData(
-                  path: croppedFile?.path,
-                  bytes: await croppedFile?.readAsBytes(),
-                );
-                setState(() {});
-              },
-            ),
+                  )
+                  .toList(),
+              ...addedFiles
+                  .mapIndexed(
+                    (final int index, final FileData i) => Stack(
+                      children: <Widget>[
+                        if (i.fileType == FileDataType.image)
+                          image(
+                            "",
+                            fileData: i,
+                            width: 100,
+                            height: 100,
+                            borderRadius: 12,
+                            fit: BoxFit.cover,
+                          ).paddingSymmetric(horizontal: 8),
+                        if (i.fileType == FileDataType.pdf)
+                          const Icon(Icons.picture_as_pdf_outlined, color: Colors.red, size: 50).container(
+                            radius: 12,
+                            width: 100,
+                            height: 100,
+                            borderWidth: 4,
+                            borderColor: context.theme.colorScheme.onBackground,
+                            margin: const EdgeInsets.symmetric(horizontal: 8),
+                          ),
+                        const Icon(Icons.close, color: Colors.white, size: 24)
+                            .container(
+                          backgroundColor: context.theme.colorScheme.error,
+                          radius: 100,
+                        )
+                            .onTap(() {
+                          addedFiles.removeAt(index);
+                        }),
+                      ],
+                    ),
+                  )
+                  .toList(),
+              const Icon(Icons.add, size: 60)
+                  .container(
+                    width: 100,
+                    height: 100,
+                    borderWidth: 4,
+                    borderColor: context.theme.colorScheme.primary,
+                    radius: 12,
+                  )
+                  .onTap(
+                    () => showFilePicker(
+                      fileType: fileType,
+                      allowMultiple: true,
+                      allowedExtensions: allowedExt,
+                      action: (final List<FileData> files) {
+                        addedFiles.addAll(files);
+                        onFileSelected(addedFiles);
+                      },
+                    ),
+                  ),
+            ],
           ),
-        ],
-      );
+        ),
+      ],
+    );
+  }
 
   Widget _keyValue() {
     final GlobalKey<FormState> _formKey = GlobalKey<FormState>();

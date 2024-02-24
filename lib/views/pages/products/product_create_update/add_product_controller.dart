@@ -12,14 +12,14 @@ mixin AddProductController {
   final RxInt selectedProductStatus = TagProduct.all.number.obs;
   final RxInt selectedProductType = TagProduct.all.number.obs;
   ProductReadDto? dto;
-  List<MediaReadDto>? images;
   String? description;
   bool? isFromInstagram;
 
-  List<FileData> imageFiles = <FileData>[];
-  List<FileData> imageCropFiles = <FileData>[];
+  List<FileData> pdfs = <FileData>[];
+  List<FileData> images = <FileData>[];
 
   final ProductDataSource _productDataSource = ProductDataSource(baseUrl: AppConstants.baseUrl);
+  final MediaDataSource _mediaDataSource = MediaDataSource(baseUrl: AppConstants.baseUrl);
   final RxList<KeyValueViewModel> keyValueList = <KeyValueViewModel>[].obs;
   final RxList<ProductCreateUpdateDto> subProducts = <ProductCreateUpdateDto>[].obs;
   final RxList<ProductCreateUpdateDto> deletedSubProducts = <ProductCreateUpdateDto>[].obs;
@@ -133,44 +133,41 @@ mixin AddProductController {
           if (dto == null) {
             state.loading();
 
-            final ProductCreateUpdateDto filter = ProductCreateUpdateDto(
+            final ProductCreateUpdateDto createDto = ProductCreateUpdateDto(
               title: controllerTitle.text,
               description: controllerDescription.text,
               categories: <String>[selectedCategory.value.id, selectedSubCategory.value.id],
               children: subProducts,
               price: subProducts.first.price,
               keyValues: keyValueList,
-              tags: <int>[TagProduct.physical.number, TagProduct.released.number],
+              tags: <int>[selectedProductType.value, selectedProductStatus.value],
             );
             _productDataSource.create(
-              dto: filter,
+              dto: createDto,
               onResponse: (final GenericResponse<ProductReadDto> response) async {
-                imageCropFiles.forEach((final FileData i) async {
-                  if (isWeb) {
-                    await GetConnect().post(
-                      "https://api.sinamn75.com/api/Media",
-                      FormData(<String, dynamic>{
-                        'Files': MultipartFile(i.bytes, filename: ':).png'),
-                        "ProductId": response.result!.id,
-                      }),
-                      headers: <String, String>{"Authorization": getString(UtilitiesConstants.token) ?? ""},
-                      contentType: "multipart/form-data",
-                    );
-                  } else {
-                    await GetConnect().post(
-                      "https://api.sinamn75.com/api/Media",
-                      FormData(<String, dynamic>{
-                        'Files': MultipartFile(File(i.path!), filename: ':).png'),
-                        "ProductId": response.result!.id,
-                      }),
-                      headers: <String, String>{"Authorization": getString(UtilitiesConstants.token) ?? ""},
-                      contentType: "multipart/form-data",
-                    );
-                  }
+                images.forEach((final FileData i) async {
+                  _mediaDataSource.create(
+                    fileData: i,
+                    fileExtension: "jpg",
+                    productId: response.result?.id,
+                    tags: <int>[TagMedia.image.number],
+                    onResponse: () {},
+                    onError: () {},
+                  );
+                });
+                pdfs.forEach((final FileData i) async {
+                  _mediaDataSource.create(
+                    fileData: i,
+                    productId: response.result?.id,
+                    fileExtension: "pdf",
+                    tags: <int>[TagMedia.pdf.number],
+                    onResponse: () {},
+                    onError: () {},
+                  );
                 });
 
-                imageFiles.clear();
-                imageCropFiles.clear();
+                images.clear();
+                pdfs.clear();
                 keyValueList.clear();
                 subProducts.clear();
                 controllerTitle.clear();
@@ -212,7 +209,7 @@ mixin AddProductController {
                   );
                 });
 
-                imageCropFiles.forEach((final FileData i) async {
+                images.forEach((final FileData i) async {
                   if (isWeb) {
                     await GetConnect().post(
                       "https://api.sinamn75.com/api/Media",
