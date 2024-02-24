@@ -64,7 +64,7 @@ class _ContentPageState extends State<ContentPage> with ContentController, Autom
                                     children: <Widget>[
                                       if (Core.user.tags!.contains(TagUser.adminContentUpdate.number))
                                         IconButton(
-                                          onPressed: () => _delete(dto: i),
+                                          onPressed: () => delete(dto: i),
                                           icon: Icon(Icons.delete, color: context.theme.colorScheme.error),
                                         ).paddingSymmetric(horizontal: 8),
                                       if (Core.user.tags!.contains(TagUser.adminContentUpdate.number))
@@ -87,10 +87,4 @@ class _ContentPageState extends State<ContentPage> with ContentController, Autom
       ),
     );
   }
-
-  void _delete({required final ContentReadDto dto}) => alertDialog(
-        title: "حذف",
-        subtitle: "آیا از حذف محتوا اطمینان دارید",
-        action1: ("بله", () => delete(dto: dto)),
-      );
 }

@@ -4,8 +4,7 @@ import 'package:utilities_admin_flutter/core/core.dart';
 mixin ContentController {
   final ContentDataSource _dataSource = ContentDataSource(baseUrl: AppConstants.baseUrl);
   final MediaDataSource _mediaDataSource = MediaDataSource(baseUrl: AppConstants.baseUrl);
-  Rx<PageState> state = PageState.initial.obs;
-
+  final Rx<PageState> state = PageState.initial.obs;
   final RxList<ContentReadDto> list = <ContentReadDto>[].obs;
 
   void init() {
@@ -23,21 +22,21 @@ mixin ContentController {
     );
   }
 
-  void delete({required final ContentReadDto dto}) {
-    showEasyLoading();
-    _dataSource.delete(
-      id: dto.id!,
-      onResponse: (final GenericResponse<dynamic> response) {
-        snackbarGreen(title: "", subtitle: "حذف دسته بندی ${dto.title} انجام شد");
-        list.removeWhere((final ContentReadDto i) => i.id == dto.id);
-        back();
-        dismissEasyLoading();
-      },
-      onError: (final GenericResponse<dynamic> response) {},
-    );
-  }
-
-  void deleteMedia({required final MediaReadDto dto}) => _mediaDataSource.delete(id: dto.id!, onResponse: () {}, onError: () {});
+  void delete({required final ContentReadDto dto}) => alertDialog(
+        title: "حذف",
+        subtitle: "آیا از حذف محتوا اطمینان دارید",
+        action1: (
+          "بله",
+          () => _dataSource.delete(
+                id: dto.id!,
+                onResponse: (final GenericResponse<dynamic> response) {
+                  list.removeWhere((final ContentReadDto i) => i.id == dto.id);
+                  back();
+                },
+                onError: (final GenericResponse<dynamic> response) {},
+              )
+        ),
+      );
 
   void createUpdate({final ContentReadDto? dto}) {
     final TextEditingController controllerTitle = TextEditingController(text: dto?.title);
@@ -47,9 +46,11 @@ mixin ContentController {
     final TextEditingController controllerWhatsapp = TextEditingController(text: dto?.jsonDetail?.whatsApp);
     final TextEditingController controllerPhoneNumber = TextEditingController(text: dto?.jsonDetail?.phoneNumber1);
     final TextEditingController controllerAddress = TextEditingController(text: dto?.jsonDetail?.address1);
+    final TextEditingController controllerWebSite = TextEditingController(text: dto?.jsonDetail?.website);
     final Rx<TagContent> selectedTag = UtilitiesTagUtils.tagContentFromIntList(dto?.tags ?? <int>[]).obs;
+    final List<FileData> deletedImages = <FileData>[];
+    List<FileData> images = dto?.media?.map((final MediaReadDto e) => FileData(url: e.url, id: e.id)).toList() ?? <FileData>[];
     final GlobalKey<FormState> formKey = GlobalKey();
-    FileData? fileData;
     dialogAlert(
       Form(
         key: formKey,
@@ -90,16 +91,22 @@ mixin ContentController {
                 textField(labelText: "شماره تماس", controller: controllerPhoneNumber).paddingAll(4).expanded(),
               ],
             ),
-            textField(labelText: "آدرس", controller: controllerAddress).paddingSymmetric(vertical: 4),
-            customImageCropper(
-              useCropper: false,
-              aspectRatio: const CropAspectRatio(ratioX: 1, ratioY: 2),
-              maxImages: 1,
-              result: (final List<FileData> croppedFile) {
-                fileData = croppedFile.first;
-              },
-              images: dto?.media ?? <MediaReadDto>[],
-              onMediaDelete: (final MediaReadDto dto) => deleteMedia(dto: dto),
+            Row(
+              children: <Widget>[
+                textField(labelText: "آدرس", controller: controllerAddress).paddingAll(4).expanded(),
+                textField(labelText: "وبسایت", controller: controllerWebSite).paddingAll(4).expanded(),
+              ],
+            ),
+            filePickerList(
+              title: "افزودن تصویر",
+              files: images,
+              onFileSelected: (final List<FileData> list) => images = list,
+              onFileDeleted: (final List<FileData> list) => list.forEach(
+                (final FileData i) {
+                  images.remove(i);
+                  deletedImages.add(i);
+                },
+              ),
             ),
             button(
               title: "ثبت",
@@ -113,6 +120,7 @@ mixin ContentController {
                         title: controllerTitle.text,
                         description: controllerDescription.text,
                         instagram: controllerInstagram.text,
+                        website: controllerWebSite.text,
                         telegram: controllerTelegram.text,
                         whatsApp: controllerWhatsapp.text,
                         phoneNumber1: controllerPhoneNumber.text,
@@ -120,15 +128,16 @@ mixin ContentController {
                         tags: <int>[selectedTag.value.number],
                       ),
                       onResponse: (final GenericResponse<ContentReadDto> response) {
-                        if (fileData != null)
+                        images.forEach((final FileData i) async {
                           _mediaDataSource.create(
+                            fileData: i,
+                            fileExtension: "jpg",
                             contentId: response.result?.id,
-                            fileData: fileData!,
-                            fileExtension: "png",
                             tags: <int>[TagMedia.image.number],
                             onResponse: () {},
                             onError: () {},
                           );
+                        });
                         list.add(response.result!);
                         snackbarDone();
                         dismissEasyLoading();
@@ -145,22 +154,26 @@ mixin ContentController {
                         description: controllerDescription.text,
                         instagram: controllerInstagram.text,
                         telegram: controllerTelegram.text,
+                        website: controllerWebSite.text,
                         whatsApp: controllerWhatsapp.text,
                         phoneNumber1: controllerPhoneNumber.text,
                         address1: controllerAddress.text,
                         tags: <int>[selectedTag.value.number],
                       ),
                       onResponse: (final GenericResponse<ContentReadDto> response) {
-                        if (fileData != null)
-                          _mediaDataSource.create(
-                            contentId: dto.id,
-                            fileData: fileData!,
-                            fileExtension: "png",
+                        images.forEach(
+                          (final FileData i) async => _mediaDataSource.create(
+                            fileData: i,
+                            fileExtension: "jpg",
+                            contentId: response.result?.id,
                             tags: <int>[TagMedia.image.number],
                             onResponse: () {},
                             onError: () {},
-                          );
-                        snackbarDone();
+                          ),
+                        );
+                        deletedImages.forEach(
+                          (final FileData i) => _mediaDataSource.delete(id: i.id!, onResponse: () {}, onError: () {}),
+                        );
                         dismissEasyLoading();
                         back();
                       },
