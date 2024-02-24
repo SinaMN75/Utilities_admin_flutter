@@ -131,6 +131,11 @@ mixin ContentController {
                         images.forEach((final FileData i) async {
                           _mediaDataSource.create(
                             fileData: i,
+                            title: i.jsonDetail?.title,
+                            album: i.jsonDetail?.album,
+                            artist: i.jsonDetail?.artist,
+                            size: i.jsonDetail?.size,
+                            time: i.jsonDetail?.time,
                             fileExtension: "jpg",
                             contentId: response.result?.id,
                             tags: <int>[TagMedia.image.number],
