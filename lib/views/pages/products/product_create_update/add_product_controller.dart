@@ -1,17 +1,18 @@
-import 'dart:io';
-
 import 'package:utilities/utilities.dart';
 import 'package:utilities_admin_flutter/core/core.dart';
 
 mixin AddProductController {
   final Rx<PageState> state = PageState.initial.obs;
-  List<String> listOfDeleteImage = <String>[];
   final RxInt selectedProductStatus = TagProduct.all.number.obs;
   final RxInt selectedProductType = TagProduct.all.number.obs;
   ProductReadDto? dto;
   String? description;
   bool? isFromInstagram;
 
+  List<FileData> deletedImages = <FileData>[];
+  List<FileData> editedImages = <FileData>[];
+  List<FileData> deletedPdfs = <FileData>[];
+  List<FileData> editedPdfs = <FileData>[];
   List<FileData> pdfs = <FileData>[];
   List<FileData> images = <FileData>[];
 
@@ -195,41 +196,56 @@ mixin AddProductController {
                 children: subProducts,
                 price: subProducts.first.price,
                 keyValues: keyValueList,
-                tags: <int>[TagProduct.physical.number, selectedProductStatus.value, selectedProductType.value],
+                tags: <int>[selectedProductStatus.value, selectedProductType.value],
               ),
               onResponse: (final GenericResponse<ProductReadDto> response) {
-                listOfDeleteImage.forEach((final String element) {
-                  final MediaDataSource mediaDataSource = MediaDataSource(baseUrl: AppConstants.baseUrl);
-                  mediaDataSource.delete(
-                    id: element,
-                    onResponse: () {},
-                    onError: () {},
+                deletedImages.forEach((final FileData i) {
+                  _mediaDataSource.delete(id: i.id!, onResponse: () {}, onError: () {});
+                });
+                deletedPdfs.forEach((final FileData i) {
+                  _mediaDataSource.delete(id: i.id!, onResponse: () {}, onError: () {});
+                });
+                editedImages.forEach((final FileData i) {
+                  _mediaDataSource.update(
+                    dto: MediaUpdateDto(
+                      id: i.id,
+                      title: i.jsonDetail?.title,
+                      link2: i.jsonDetail?.link2,
+                      description: i.jsonDetail?.description,
+                      time: i.jsonDetail?.time,
+                      size: i.jsonDetail?.size,
+                      order: i.order,
+                      tags: i.tags,
+                      link1: i.jsonDetail?.link1,
+                      link3: i.jsonDetail?.link3,
+                      album: i.jsonDetail?.album,
+                      artist: i.jsonDetail?.artist,
+                    ),
+                    onResponse: (final GenericResponse<MediaReadDto> response) {},
+                    onError: (final GenericResponse<dynamic> response) {},
+                  );
+                });
+                editedPdfs.forEach((final FileData i) {
+                  _mediaDataSource.update(
+                    dto: MediaUpdateDto(
+                      id: i.id,
+                      title: i.jsonDetail?.title,
+                      link2: i.jsonDetail?.link2,
+                      description: i.jsonDetail?.description,
+                      time: i.jsonDetail?.time,
+                      size: i.jsonDetail?.size,
+                      order: i.order,
+                      tags: i.tags,
+                      link1: i.jsonDetail?.link1,
+                      link3: i.jsonDetail?.link3,
+                      album: i.jsonDetail?.album,
+                      artist: i.jsonDetail?.artist,
+                    ),
+                    onResponse: (final GenericResponse<MediaReadDto> response) {},
+                    onError: (final GenericResponse<dynamic> response) {},
                   );
                 });
 
-                images.forEach((final FileData i) async {
-                  if (isWeb) {
-                    await GetConnect().post(
-                      "https://api.sinamn75.com/api/Media",
-                      FormData(<String, dynamic>{
-                        'Files': MultipartFile(i.bytes, filename: ':).png'),
-                        "ProductId": response.result!.id,
-                      }),
-                      headers: <String, String>{"Authorization": getString(UtilitiesConstants.token) ?? ""},
-                      contentType: "multipart/form-data",
-                    );
-                  } else {
-                    await GetConnect().post(
-                      "https://api.sinamn75.com/api/Media",
-                      FormData(<String, dynamic>{
-                        'Files': MultipartFile(File(i.path!), filename: ':).png'),
-                        "ProductId": response.result!.id,
-                      }),
-                      headers: <String, String>{"Authorization": getString(UtilitiesConstants.token) ?? ""},
-                      contentType: "multipart/form-data",
-                    );
-                  }
-                });
                 state.loaded();
                 action();
                 back();

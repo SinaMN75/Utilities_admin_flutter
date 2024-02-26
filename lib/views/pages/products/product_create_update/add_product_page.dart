@@ -25,9 +25,9 @@ class _AddProductPageState extends State<AddProductPage> with AddProductControll
   void initState() {
     dto = widget.dto;
     if (dto != null) {
-      dto!.tags.forEach((final int _element) {
+      dto!.tags.forEach((final int e) {
         selectedProductStatus(
-          TagProduct.values.where((final TagProduct element) => element.number == _element).toList().first.number,
+          TagProduct.values.where((final TagProduct i) => i.number == e).toList().first.number,
         );
       });
     }
@@ -38,7 +38,11 @@ class _AddProductPageState extends State<AddProductPage> with AddProductControll
           (final MediaReadDto i) => i.tags!.contains(TagMedia.image.number),
         )
         .map(
-          (final MediaReadDto e) => FileData(url: e.url),
+          (final MediaReadDto e) => FileData(
+            url: e.url,
+            fileType: FileDataType.image,
+            jsonDetail: e.jsonDetail,
+          ),
         )
         .toList();
     pdfs = (dto?.media ?? <MediaReadDto>[])
@@ -46,7 +50,13 @@ class _AddProductPageState extends State<AddProductPage> with AddProductControll
           (final MediaReadDto i) => i.tags!.contains(TagMedia.pdf.number),
         )
         .map(
-          (final MediaReadDto e) => FileData(url: e.url),
+          (final MediaReadDto e) => FileData(
+            url: e.url,
+            fileType: FileDataType.pdf,
+            jsonDetail: e.jsonDetail,
+            id: e.id,
+            tags: e.tags,
+          ),
         )
         .toList();
     init();
@@ -61,118 +71,120 @@ class _AddProductPageState extends State<AddProductPage> with AddProductControll
       appBar: AppBar(title: Text(dto == null ? "محصول جدید" : "ویرایش ${dto?.title ?? ""}")),
       constraints: const BoxConstraints(),
       padding: const EdgeInsets.symmetric(horizontal: 20),
-      body: Obx(
-        () => state.isLoaded()
-            ? SingleChildScrollView(
-                child: Form(
-                  key: formKey,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      const Text('نوع').bodyLarge(),
-                      DropdownButtonFormField<int>(
-                        value: selectedProductType.value,
-                        items: <DropdownMenuItem<int>>[
-                          DropdownMenuItem<int>(value: TagProduct.all.number, child: const Text("همه")),
-                          DropdownMenuItem<int>(value: TagProduct.book.number, child: const Text("کتاب")),
-                          DropdownMenuItem<int>(value: TagProduct.journal.number, child: const Text("ژورنال")),
-                          DropdownMenuItem<int>(value: TagProduct.video.number, child: const Text("ویدیو")),
-                          DropdownMenuItem<int>(value: TagProduct.news.number, child: const Text("اخبار")),
-                          DropdownMenuItem<int>(value: TagProduct.product.number, child: const Text("محصول")),
-                          DropdownMenuItem<int>(value: TagProduct.link.number, child: const Text("لینک")),
-                        ],
-                        onChanged: selectedProductType,
-                      ).paddingSymmetric(vertical: 8),
-                      const Text('وضعیت').bodyLarge(),
-                      DropdownButtonFormField<int>(
-                        value: selectedProductStatus.value,
-                        items: <DropdownMenuItem<int>>[
-                          DropdownMenuItem<int>(value: TagProduct.all.number, child: const Text("انتخاب")),
-                          DropdownMenuItem<int>(value: TagProduct.released.number, child: const Text("منتشر شده")),
-                          DropdownMenuItem<int>(value: TagProduct.notAccepted.number, child: const Text("رد شده")),
-                          DropdownMenuItem<int>(value: TagProduct.inQueue.number, child: const Text("در انتظار بررسی")),
-                        ],
-                        onChanged: selectedProductStatus,
-                      ).paddingSymmetric(vertical: 8),
-                      const Text("انتخاب دسته‌بندی").bodyMedium(),
-                      Obx(() => DropdownButtonFormField<CategoryReadDto>(
-                            value: selectedCategory.value,
-                            items: <DropdownMenuItem<CategoryReadDto>>[
-                              ...categories
-                                  .map(
-                                    (final CategoryReadDto e) => DropdownMenuItem<CategoryReadDto>(
-                                      value: e,
-                                      child: Text(e.title ?? ""),
-                                    ),
-                                  )
-                                  .toList(),
-                            ],
-                            onChanged: selectCategory,
-                          )).paddingSymmetric(vertical: 8),
-                      const Text("انتخاب زیر دسته").bodyMedium(),
-                      Obx(
-                        () => DropdownButtonFormField<CategoryReadDto>(
-                          value: selectedSubCategory.value,
-                          items: <DropdownMenuItem<CategoryReadDto>>[
-                            ...subCategories
-                                .map(
-                                  (final CategoryReadDto e) => DropdownMenuItem<CategoryReadDto>(
-                                    value: e,
-                                    child: Text(e.title ?? ""),
-                                  ),
-                                )
-                                .toList(),
-                          ],
-                          onChanged: selectSubCategory,
-                        ),
-                      ).paddingSymmetric(vertical: 8),
-                      textField(
-                        text: "عنوان",
-                        controller: controllerTitle,
-                        validator: validateNotEmpty(),
-                      ).paddingSymmetric(vertical: 8),
-                      const SizedBox(height: 8),
-                      filePickerList(
-                        title: "افزودن تصویر",
-                        files: images,
-                        onFileSelected: (final List<FileData> list) {
-                          images = list;
-                        },
-                        onFileDeleted: (final List<FileData> list) => list.forEach(
-                          (final FileData i) => pdfs.remove(i),
-                        ),
-                      ),
-                      const SizedBox(height: 12),
-                      filePickerList(
-                        title: "افزودن PDF",
-                        files: pdfs,
-                        fileType: FileType.any,
-                        allowedExt: <String>["pdf"],
-                        onFileSelected: (final List<FileData> list) => pdfs = list,
-                        onFileDeleted: (final List<FileData> list) => list.forEach(
-                          (final FileData i) => pdfs.remove(i),
-                        ),
-                      ),
-                      _keyValue().paddingSymmetric(vertical: 12),
-                      _subProducts().paddingSymmetric(vertical: 12),
-                      const SizedBox(height: 20),
-                      textField(
-                        text: "توضیحات تکمیلی",
-                        controller: controllerDescription,
-                        keyboardType: TextInputType.multiline,
-                        lines: 3,
-                        contentPadding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
-                      ).paddingSymmetric(vertical: 8),
-                      if (Core.user.tags!.contains(TagUser.adminProductUpdate.number))
-                        button(
-                          title: "ثبت",
-                          onTap: () => createUpdate(action: () => widget.action?.call()),
-                        ).paddingOnly(bottom: 40),
+      body: SingleChildScrollView(
+        child: Form(
+          key: formKey,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              const Text('نوع').bodyLarge(),
+              Obx(
+                () => DropdownButtonFormField<int>(
+                  value: selectedProductType.value,
+                  items: <DropdownMenuItem<int>>[
+                    DropdownMenuItem<int>(value: TagProduct.all.number, child: const Text("همه")),
+                    DropdownMenuItem<int>(value: TagProduct.book.number, child: const Text("کتاب")),
+                    DropdownMenuItem<int>(value: TagProduct.journal.number, child: const Text("ژورنال")),
+                    DropdownMenuItem<int>(value: TagProduct.video.number, child: const Text("ویدیو")),
+                    DropdownMenuItem<int>(value: TagProduct.news.number, child: const Text("اخبار")),
+                    DropdownMenuItem<int>(value: TagProduct.product.number, child: const Text("محصول")),
+                    DropdownMenuItem<int>(value: TagProduct.link.number, child: const Text("لینک")),
+                  ],
+                  onChanged: selectedProductType,
+                ).paddingSymmetric(vertical: 8),
+              ),
+              const Text('وضعیت').bodyLarge(),
+              Obx(
+                () => DropdownButtonFormField<int>(
+                  value: selectedProductStatus.value,
+                  items: <DropdownMenuItem<int>>[
+                    DropdownMenuItem<int>(value: TagProduct.all.number, child: const Text("انتخاب")),
+                    DropdownMenuItem<int>(value: TagProduct.released.number, child: const Text("منتشر شده")),
+                    DropdownMenuItem<int>(value: TagProduct.notAccepted.number, child: const Text("رد شده")),
+                    DropdownMenuItem<int>(value: TagProduct.inQueue.number, child: const Text("در انتظار بررسی")),
+                  ],
+                  onChanged: selectedProductStatus,
+                ).paddingSymmetric(vertical: 8),
+              ),
+              const Text("انتخاب دسته‌بندی").bodyMedium(),
+              Obx(() => DropdownButtonFormField<CategoryReadDto>(
+                    value: selectedCategory.value,
+                    items: <DropdownMenuItem<CategoryReadDto>>[
+                      ...categories
+                          .map(
+                            (final CategoryReadDto e) => DropdownMenuItem<CategoryReadDto>(
+                              value: e,
+                              child: Text(e.title ?? ""),
+                            ),
+                          )
+                          .toList(),
                     ],
-                  ).paddingOnly(top: 8, right: 16, left: 16, bottom: 50),
+                    onChanged: selectCategory,
+                  )).paddingSymmetric(vertical: 8),
+              const Text("انتخاب زیر دسته").bodyMedium(),
+              Obx(
+                () => DropdownButtonFormField<CategoryReadDto>(
+                  value: selectedSubCategory.value,
+                  items: <DropdownMenuItem<CategoryReadDto>>[
+                    ...subCategories
+                        .map(
+                          (final CategoryReadDto e) => DropdownMenuItem<CategoryReadDto>(
+                            value: e,
+                            child: Text(e.title ?? ""),
+                          ),
+                        )
+                        .toList(),
+                  ],
+                  onChanged: selectSubCategory,
                 ),
-              )
-            : const CircularProgressIndicator().alignAtCenter(),
+              ).paddingSymmetric(vertical: 8),
+              textField(
+                text: "عنوان",
+                controller: controllerTitle,
+                validator: validateNotEmpty(),
+              ).paddingSymmetric(vertical: 8),
+              const SizedBox(height: 8),
+              filePickerList(
+                title: "افزودن تصویر",
+                files: images,
+                onFileSelected: (final List<FileData> list) {
+                  images = list;
+                },
+                onFileDeleted: (final List<FileData> list) => list.forEach(
+                  (final FileData i) => pdfs.remove(i),
+                ),
+                onFileEdited: (final List<FileData> list) => editedImages.addAll(list),
+              ),
+              const SizedBox(height: 12),
+              filePickerList(
+                title: "افزودن PDF",
+                files: pdfs,
+                fileType: FileType.any,
+                allowedExt: <String>["pdf"],
+                onFileSelected: (final List<FileData> list) => pdfs = list,
+                onFileDeleted: (final List<FileData> list) => list.forEach(
+                  (final FileData i) => pdfs.remove(i),
+                ),
+                onFileEdited: (final List<FileData> list) => editedPdfs.addAll(list),
+              ),
+              _keyValue().paddingSymmetric(vertical: 12),
+              _subProducts().paddingSymmetric(vertical: 12),
+              const SizedBox(height: 20),
+              textField(
+                text: "توضیحات تکمیلی",
+                controller: controllerDescription,
+                keyboardType: TextInputType.multiline,
+                lines: 3,
+                contentPadding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+              ).paddingSymmetric(vertical: 8),
+              if (Core.user.tags!.contains(TagUser.adminProductUpdate.number))
+                button(
+                  title: "ثبت",
+                  onTap: () => createUpdate(action: () => widget.action?.call()),
+                ).paddingOnly(bottom: 40),
+            ],
+          ).paddingOnly(top: 8, right: 16, left: 16, bottom: 50),
+        ),
       ),
     );
   }
