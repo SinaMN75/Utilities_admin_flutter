@@ -49,12 +49,26 @@ mixin ContentController {
     final TextEditingController controllerWebSite = TextEditingController(text: dto?.jsonDetail?.website);
     final Rx<TagContent> selectedTag = UtilitiesTagUtils.tagContentFromIntList(dto?.tags ?? <int>[]).obs;
     final List<FileData> deletedImages = <FileData>[];
-    List<FileData> images = dto?.media?.map((final MediaReadDto e) => FileData(url: e.url, id: e.id)).toList() ?? <FileData>[];
+    final List<FileData> editedImages = <FileData>[];
+    final List<FileData> deletedPdfs = <FileData>[];
+    final List<FileData> editedPdfs = <FileData>[];
+    List<FileData> pdfs = (dto?.media ?? <MediaReadDto>[])
+        .where((final MediaReadDto i) => i.tags!.contains(TagMedia.pdf.number))
+        .map(
+          (final MediaReadDto e) => FileData(url: e.url, id: e.id),
+        )
+        .toList();
+    List<FileData> images = (dto?.media ?? <MediaReadDto>[])
+        .where((final MediaReadDto i) => i.tags!.contains(TagMedia.image.number))
+        .map(
+          (final MediaReadDto e) => FileData(url: e.url, id: e.id),
+        )
+        .toList();
     final GlobalKey<FormState> formKey = GlobalKey();
     dialogAlert(
       Form(
         key: formKey,
-        child: Column(
+        child: ListView(
           children: <Widget>[
             Obx(
               () => DropdownButtonFormField<TagContent>(
@@ -68,6 +82,7 @@ mixin ContentController {
                   DropdownMenuItem<TagContent>(value: TagContent.homeBannerSmall2, child: Text(TagContent.homeBannerSmall2.title)),
                   DropdownMenuItem<TagContent>(value: TagContent.smallDetail1, child: Text(TagContent.smallDetail1.title)),
                   DropdownMenuItem<TagContent>(value: TagContent.smallDetail2, child: Text(TagContent.smallDetail2.title)),
+                  DropdownMenuItem<TagContent>(value: TagContent.news, child: Text(TagContent.news.title)),
                 ],
                 onChanged: selectedTag,
               ),
@@ -100,14 +115,25 @@ mixin ContentController {
             filePickerList(
               title: "افزودن تصویر",
               files: images,
-              onFileSelected: (final List<FileData> list) => images = list,
+              onFileSelected: (final List<FileData> list) {
+                images = list;
+              },
               onFileDeleted: (final List<FileData> list) => list.forEach(
-                (final FileData i) {
-                  images.remove(i);
-                  deletedImages.add(i);
-                },
+                (final FileData i) => pdfs.remove(i),
               ),
-              onFileEdited: (final List<FileData> fileData) {},
+              onFileEdited: editedImages.addAll,
+            ),
+            const SizedBox(height: 12),
+            filePickerList(
+              title: "افزودن PDF",
+              files: pdfs,
+              fileType: FileType.any,
+              allowedExt: <String>["pdf"],
+              onFileSelected: (final List<FileData> list) => pdfs = list,
+              onFileDeleted: (final List<FileData> list) => list.forEach(
+                (final FileData i) => pdfs.remove(i),
+              ),
+              onFileEdited: editedPdfs.addAll,
             ),
             button(
               title: "ثبت",
@@ -129,7 +155,23 @@ mixin ContentController {
                         tags: <int>[selectedTag.value.number],
                       ),
                       onResponse: (final GenericResponse<ContentReadDto> response) {
+                        deletedImages.forEach((final FileData i) {
+                          _mediaDataSource.delete(id: i.id!, onResponse: () {}, onError: () {});
+                        });
+                        deletedPdfs.forEach((final FileData i) {
+                          _mediaDataSource.delete(id: i.id!, onResponse: () {}, onError: () {});
+                        });
                         images.forEach((final FileData i) async {
+                          _mediaDataSource.create(
+                            fileData: i,
+                            fileExtension: "jpg",
+                            contentId: response.result?.id,
+                            tags: <int>[TagMedia.image.number],
+                            onResponse: () {},
+                            onError: () {},
+                          );
+                        });
+                        pdfs.forEach((final FileData i) async {
                           _mediaDataSource.create(
                             fileData: i,
                             fileExtension: "jpg",

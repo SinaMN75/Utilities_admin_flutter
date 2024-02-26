@@ -153,7 +153,7 @@ class _AddProductPageState extends State<AddProductPage> with AddProductControll
                 onFileDeleted: (final List<FileData> list) => list.forEach(
                   (final FileData i) => pdfs.remove(i),
                 ),
-                onFileEdited: (final List<FileData> list) => editedImages.addAll(list),
+                onFileEdited: editedImages.addAll,
               ),
               const SizedBox(height: 12),
               filePickerList(
@@ -165,7 +165,7 @@ class _AddProductPageState extends State<AddProductPage> with AddProductControll
                 onFileDeleted: (final List<FileData> list) => list.forEach(
                   (final FileData i) => pdfs.remove(i),
                 ),
-                onFileEdited: (final List<FileData> list) => editedPdfs.addAll(list),
+                onFileEdited: editedPdfs.addAll,
               ),
               _keyValue().paddingSymmetric(vertical: 12),
               _subProducts().paddingSymmetric(vertical: 12),
