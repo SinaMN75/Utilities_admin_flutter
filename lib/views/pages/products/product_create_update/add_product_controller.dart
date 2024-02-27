@@ -146,6 +146,7 @@ mixin AddProductController {
               onResponse: (final GenericResponse<ProductReadDto> response) async {
                 images.forEach((final FileData i) async {
                   _mediaDataSource.create(
+                    parentId: i.parentId,
                     fileData: i,
                     fileExtension: "jpg",
                     productId: response.result?.id,
@@ -156,6 +157,7 @@ mixin AddProductController {
                 });
                 pdfs.forEach((final FileData i) async {
                   _mediaDataSource.create(
+                    parentId: i.parentId,
                     fileData: i,
                     productId: response.result?.id,
                     fileExtension: "pdf",
@@ -243,6 +245,28 @@ mixin AddProductController {
                     ),
                     onResponse: (final GenericResponse<MediaReadDto> response) {},
                     onError: (final GenericResponse<dynamic> response) {},
+                  );
+                });
+                images.forEach((final FileData i) async {
+                  _mediaDataSource.create(
+                    fileData: i,
+                    parentId: i.parentId,
+                    fileExtension: "jpg",
+                    productId: response.result?.id,
+                    tags: <int>[TagMedia.image.number],
+                    onResponse: () {},
+                    onError: () {},
+                  );
+                });
+                pdfs.forEach((final FileData i) async {
+                  _mediaDataSource.create(
+                    fileData: i,
+                    parentId: i.parentId,
+                    productId: response.result?.id,
+                    fileExtension: "pdf",
+                    tags: <int>[TagMedia.pdf.number],
+                    onResponse: () {},
+                    onError: () {},
                   );
                 });
 

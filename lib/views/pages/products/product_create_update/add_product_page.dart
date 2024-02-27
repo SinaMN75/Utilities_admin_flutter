@@ -24,13 +24,6 @@ class _AddProductPageState extends State<AddProductPage> with AddProductControll
   @override
   void initState() {
     dto = widget.dto;
-    if (dto != null) {
-      dto!.tags.forEach((final int e) {
-        selectedProductStatus(
-          TagProduct.values.where((final TagProduct i) => i.number == e).toList().first.number,
-        );
-      });
-    }
     isFromInstagram = widget.isFromInstagram ?? false;
     getProductById(id: dto?.id);
     images = (dto?.media ?? <MediaReadDto>[])
@@ -42,6 +35,21 @@ class _AddProductPageState extends State<AddProductPage> with AddProductControll
             url: e.url,
             fileType: FileDataType.image,
             jsonDetail: e.jsonDetail,
+            parentId: e.parentId,
+            tags: e.tags,
+            id: e.id,
+            children: (e.children ?? <MediaReadDto>[])
+                .map(
+                  (final MediaReadDto e) => FileData(
+                    url: e.url,
+                    fileType: FileDataType.image,
+                    jsonDetail: e.jsonDetail,
+                    parentId: e.parentId,
+                    tags: e.tags,
+                    id: e.id,
+                  ),
+                )
+                .toList(),
           ),
         )
         .toList();
@@ -52,10 +60,23 @@ class _AddProductPageState extends State<AddProductPage> with AddProductControll
         .map(
           (final MediaReadDto e) => FileData(
             url: e.url,
-            fileType: FileDataType.pdf,
+            fileType: FileDataType.image,
             jsonDetail: e.jsonDetail,
-            id: e.id,
+            parentId: e.parentId,
             tags: e.tags,
+            id: e.id,
+            children: (e.children ?? <MediaReadDto>[])
+                .map(
+                  (final MediaReadDto e) => FileData(
+                    url: e.url,
+                    fileType: FileDataType.image,
+                    jsonDetail: e.jsonDetail,
+                    parentId: e.parentId,
+                    tags: e.tags,
+                    id: e.id,
+                  ),
+                )
+                .toList(),
           ),
         )
         .toList();
@@ -151,7 +172,10 @@ class _AddProductPageState extends State<AddProductPage> with AddProductControll
                   images = list;
                 },
                 onFileDeleted: (final List<FileData> list) => list.forEach(
-                  (final FileData i) => pdfs.remove(i),
+                  (final FileData i) {
+                    images.remove(i);
+                    deletedImages.add(i);
+                  },
                 ),
                 onFileEdited: editedImages.addAll,
               ),
@@ -163,7 +187,10 @@ class _AddProductPageState extends State<AddProductPage> with AddProductControll
                 allowedExt: <String>["pdf"],
                 onFileSelected: (final List<FileData> list) => pdfs = list,
                 onFileDeleted: (final List<FileData> list) => list.forEach(
-                  (final FileData i) => pdfs.remove(i),
+                  (final FileData i) {
+                    pdfs.remove(i);
+                    deletedPdfs.add(i);
+                  },
                 ),
                 onFileEdited: editedPdfs.addAll,
               ),
