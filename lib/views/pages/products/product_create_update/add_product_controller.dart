@@ -9,12 +9,9 @@ mixin AddProductController {
   String? description;
   bool? isFromInstagram;
 
-  List<FileData> deletedImages = <FileData>[];
-  List<FileData> editedImages = <FileData>[];
-  List<FileData> deletedPdfs = <FileData>[];
-  List<FileData> editedPdfs = <FileData>[];
-  List<FileData> pdfs = <FileData>[];
-  List<FileData> images = <FileData>[];
+  List<FileData> deletedFiles = <FileData>[];
+  List<FileData> editedFiles = <FileData>[];
+  List<FileData> files = <FileData>[];
 
   final ProductDataSource _productDataSource = ProductDataSource(baseUrl: AppConstants.baseUrl);
   final MediaDataSource _mediaDataSource = MediaDataSource(baseUrl: AppConstants.baseUrl);
@@ -144,31 +141,18 @@ mixin AddProductController {
             _productDataSource.create(
               dto: createDto,
               onResponse: (final GenericResponse<ProductReadDto> response) async {
-                images.forEach((final FileData i) async {
+                files.forEach((final FileData i) async {
                   _mediaDataSource.create(
                     parentId: i.parentId,
                     fileData: i,
-                    fileExtension: "jpg",
+                    fileExtension: i.extension!,
                     productId: response.result?.id,
                     tags: <int>[TagMedia.image.number],
                     onResponse: () {},
                     onError: () {},
                   );
                 });
-                pdfs.forEach((final FileData i) async {
-                  _mediaDataSource.create(
-                    parentId: i.parentId,
-                    fileData: i,
-                    productId: response.result?.id,
-                    fileExtension: "pdf",
-                    tags: <int>[TagMedia.pdf.number],
-                    onResponse: () {},
-                    onError: () {},
-                  );
-                });
-
-                images.clear();
-                pdfs.clear();
+                files.clear();
                 keyValueList.clear();
                 subProducts.clear();
                 controllerTitle.clear();
@@ -201,13 +185,10 @@ mixin AddProductController {
                 tags: <int>[selectedProductStatus.value, selectedProductType.value],
               ),
               onResponse: (final GenericResponse<ProductReadDto> response) {
-                deletedImages.forEach((final FileData i) {
+                deletedFiles.forEach((final FileData i) {
                   _mediaDataSource.delete(id: i.id!, onResponse: () {}, onError: () {});
                 });
-                deletedPdfs.forEach((final FileData i) {
-                  _mediaDataSource.delete(id: i.id!, onResponse: () {}, onError: () {});
-                });
-                editedImages.forEach((final FileData i) {
+                editedFiles.forEach((final FileData i) {
                   _mediaDataSource.update(
                     dto: MediaUpdateDto(
                       id: i.id,
@@ -227,49 +208,17 @@ mixin AddProductController {
                     onError: (final GenericResponse<dynamic> response) {},
                   );
                 });
-                editedPdfs.forEach((final FileData i) {
-                  _mediaDataSource.update(
-                    dto: MediaUpdateDto(
-                      id: i.id,
-                      title: i.jsonDetail?.title,
-                      link2: i.jsonDetail?.link2,
-                      description: i.jsonDetail?.description,
-                      time: i.jsonDetail?.time,
-                      size: i.jsonDetail?.size,
-                      order: i.order,
-                      tags: i.tags,
-                      link1: i.jsonDetail?.link1,
-                      link3: i.jsonDetail?.link3,
-                      album: i.jsonDetail?.album,
-                      artist: i.jsonDetail?.artist,
-                    ),
-                    onResponse: (final GenericResponse<MediaReadDto> response) {},
-                    onError: (final GenericResponse<dynamic> response) {},
-                  );
-                });
-                images.forEach((final FileData i) async {
+                files.forEach((final FileData i) async {
                   _mediaDataSource.create(
                     fileData: i,
                     parentId: i.parentId,
-                    fileExtension: "jpg",
+                    fileExtension: i.extension!,
                     productId: response.result?.id,
                     tags: <int>[TagMedia.image.number],
                     onResponse: () {},
                     onError: () {},
                   );
                 });
-                pdfs.forEach((final FileData i) async {
-                  _mediaDataSource.create(
-                    fileData: i,
-                    parentId: i.parentId,
-                    productId: response.result?.id,
-                    fileExtension: "pdf",
-                    tags: <int>[TagMedia.pdf.number],
-                    onResponse: () {},
-                    onError: () {},
-                  );
-                });
-
                 state.loaded();
                 action();
                 back();

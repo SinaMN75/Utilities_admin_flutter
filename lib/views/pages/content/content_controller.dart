@@ -127,8 +127,6 @@ mixin ContentController {
             filePickerList(
               title: "افزودن PDF",
               files: pdfs,
-              fileType: FileType.any,
-              allowedExt: <String>["pdf"],
               onFileSelected: (final List<FileData> list) => pdfs = list,
               onFileDeleted: (final List<FileData> list) => list.forEach(
                 (final FileData i) => pdfs.remove(i),

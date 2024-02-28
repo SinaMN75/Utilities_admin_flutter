@@ -26,14 +26,13 @@ class _AddProductPageState extends State<AddProductPage> with AddProductControll
     dto = widget.dto;
     isFromInstagram = widget.isFromInstagram ?? false;
     getProductById(id: dto?.id);
-    images = (dto?.media ?? <MediaReadDto>[])
+    files = (dto?.media ?? <MediaReadDto>[])
         .where(
           (final MediaReadDto i) => i.tags!.contains(TagMedia.image.number),
         )
         .map(
           (final MediaReadDto e) => FileData(
             url: e.url,
-            fileType: FileDataType.image,
             jsonDetail: e.jsonDetail,
             parentId: e.parentId,
             tags: e.tags,
@@ -42,34 +41,6 @@ class _AddProductPageState extends State<AddProductPage> with AddProductControll
                 .map(
                   (final MediaReadDto e) => FileData(
                     url: e.url,
-                    fileType: FileDataType.image,
-                    jsonDetail: e.jsonDetail,
-                    parentId: e.parentId,
-                    tags: e.tags,
-                    id: e.id,
-                  ),
-                )
-                .toList(),
-          ),
-        )
-        .toList();
-    pdfs = (dto?.media ?? <MediaReadDto>[])
-        .where(
-          (final MediaReadDto i) => i.tags!.contains(TagMedia.pdf.number),
-        )
-        .map(
-          (final MediaReadDto e) => FileData(
-            url: e.url,
-            fileType: FileDataType.image,
-            jsonDetail: e.jsonDetail,
-            parentId: e.parentId,
-            tags: e.tags,
-            id: e.id,
-            children: (e.children ?? <MediaReadDto>[])
-                .map(
-                  (final MediaReadDto e) => FileData(
-                    url: e.url,
-                    fileType: FileDataType.image,
                     jsonDetail: e.jsonDetail,
                     parentId: e.parentId,
                     tags: e.tags,
@@ -167,32 +138,17 @@ class _AddProductPageState extends State<AddProductPage> with AddProductControll
               const SizedBox(height: 8),
               filePickerList(
                 title: "افزودن تصویر",
-                files: images,
+                files: files,
                 onFileSelected: (final List<FileData> list) {
-                  images = list;
+                  files = list;
                 },
                 onFileDeleted: (final List<FileData> list) => list.forEach(
                   (final FileData i) {
-                    images.remove(i);
-                    deletedImages.add(i);
+                    files.remove(i);
+                    deletedFiles.add(i);
                   },
                 ),
-                onFileEdited: editedImages.addAll,
-              ),
-              const SizedBox(height: 12),
-              filePickerList(
-                title: "افزودن PDF",
-                files: pdfs,
-                fileType: FileType.any,
-                allowedExt: <String>["pdf"],
-                onFileSelected: (final List<FileData> list) => pdfs = list,
-                onFileDeleted: (final List<FileData> list) => list.forEach(
-                  (final FileData i) {
-                    pdfs.remove(i);
-                    deletedPdfs.add(i);
-                  },
-                ),
-                onFileEdited: editedPdfs.addAll,
+                onFileEdited: editedFiles.addAll,
               ),
               _keyValue().paddingSymmetric(vertical: 12),
               _subProducts().paddingSymmetric(vertical: 12),
