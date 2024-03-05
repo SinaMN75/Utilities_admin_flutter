@@ -28,7 +28,7 @@ class _AddProductPageState extends State<AddProductPage> with AddProductControll
     getProductById(id: dto?.id);
     files = (dto?.media ?? <MediaReadDto>[])
         .where(
-          (final MediaReadDto i) => i.tags!.contains(TagMedia.image.number),
+          (final MediaReadDto i) => i.tags.contains(TagMedia.image.number),
         )
         .map(
           (final MediaReadDto e) => FileData(
@@ -142,7 +142,7 @@ class _AddProductPageState extends State<AddProductPage> with AddProductControll
               filePickerList(
                 title: "افزودن تصویر",
                 files: files,
-                onFileSelected: (final List<FileData> list) => files = list,
+                onFileSelected: (final List<FileData> list) => files.addAll(list.toSet()),
                 onFileEdited: editedFiles.addAll,
                 onFileDeleted: (final List<FileData> list) => list.forEach(
                   (final FileData i) {
@@ -168,7 +168,7 @@ class _AddProductPageState extends State<AddProductPage> with AddProductControll
                 lines: 3,
                 contentPadding: const EdgeInsets.all(10),
               ).paddingSymmetric(vertical: 8),
-              if (Core.user.tags!.contains(TagUser.adminProductUpdate.number))
+              if (Core.user.tags.contains(TagUser.adminProductUpdate.number))
                 button(
                   title: "ثبت",
                   onTap: () => createUpdate(action: () => widget.action?.call()),

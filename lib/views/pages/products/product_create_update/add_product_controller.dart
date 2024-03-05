@@ -135,16 +135,31 @@ mixin AddProductController {
             _productDataSource.create(
               dto: createDto,
               onResponse: (final GenericResponse<ProductReadDto> response) async {
-                files.forEach((final FileData i) async {
-                  _mediaDataSource.create(
-                    parentId: i.parentId,
-                    fileData: i,
-                    fileExtension: i.extension!,
-                    productId: response.result?.id,
-                    tags: <int>[TagMedia.image.number],
-                    onResponse: () {},
-                    onError: () {},
-                  );
+                await Future.forEach(files, (final FileData i) async {
+                  if (i.parentId == null)
+                    await _mediaDataSource.create(
+                      parentId: i.parentId,
+                      fileData: i,
+                      id: i.id,
+                      fileExtension: i.extension!,
+                      productId: response.result?.id,
+                      tags: <int>[TagMedia.image.number],
+                      onResponse: () {},
+                      onError: () {},
+                    );
+                });
+                await Future.forEach(files, (final FileData i) async {
+                  if (i.parentId != null)
+                    await _mediaDataSource.create(
+                      parentId: i.parentId,
+                      id: i.id,
+                      fileData: i,
+                      fileExtension: i.extension!,
+                      productId: response.result?.id,
+                      tags: <int>[TagMedia.image.number],
+                      onResponse: () {},
+                      onError: () {},
+                    );
                 });
                 files.clear();
 
@@ -206,7 +221,7 @@ mixin AddProductController {
                   );
                 });
                 files.forEach((final FileData i) async {
-                  _mediaDataSource.create(
+                  await _mediaDataSource.create(
                     fileData: i,
                     parentId: i.parentId,
                     fileExtension: i.extension!,
