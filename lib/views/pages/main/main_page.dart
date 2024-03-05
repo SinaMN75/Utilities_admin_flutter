@@ -8,6 +8,7 @@ import 'package:utilities_admin_flutter/views/pages/main/main_controller.dart';
 import 'package:utilities_admin_flutter/views/pages/orders/order_page.dart';
 import 'package:utilities_admin_flutter/views/pages/products/product_page.dart';
 import 'package:utilities_admin_flutter/views/pages/report/report_page.dart';
+import 'package:utilities_admin_flutter/views/pages/specialities/specialities_page.dart';
 import 'package:utilities_admin_flutter/views/pages/splash/splash_page.dart';
 import 'package:utilities_admin_flutter/views/pages/transactions/transactions_page.dart';
 import 'package:utilities_admin_flutter/views/pages/users/user_page.dart';
@@ -47,6 +48,11 @@ class _MainPageState extends State<MainPage> with MainController, TickerProvider
           AdminMenuItem(
             title: 'دسته بندی',
             route: MainPageType.category.title,
+            icon: Icons.category,
+          ),
+          AdminMenuItem(
+            title: 'تخصص‌ها',
+            route: MainPageType.specialities.title,
             icon: Icons.category,
           ),
           AdminMenuItem(
@@ -94,6 +100,7 @@ class _MainPageState extends State<MainPage> with MainController, TickerProvider
         onSelected: (final AdminMenuItem item) {
           if (item.route == MainPageType.dashboard.title) addTab(const DashboardPage());
           if (item.route == MainPageType.category.title) addTab(const CategoryPage());
+          if (item.route == MainPageType.specialities.title) addTab(const SpecialitiesPage());
           if (item.route == MainPageType.product.title) addTab(const ProductPage());
           if (item.route == MainPageType.comment.title) addTab(const CommentsPage());
           if (item.route == MainPageType.report.title) addTab(const ReportPage());

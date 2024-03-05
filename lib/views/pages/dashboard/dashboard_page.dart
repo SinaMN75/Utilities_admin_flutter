@@ -50,7 +50,12 @@ class _DashboardPageState extends State<DashboardPage> with DashboardController,
                   _cards(),
                   const SizedBox(height: 16),
                   Obx(
-                    () => orderState.isLoaded() && Core.user.tags!.contains(TagUser.adminOrderRead.number) ? _completedOrders() : const SizedBox(),
+                    () => orderState.isLoaded() &&
+                            Core.user.tags.contains(
+                              TagUser.adminOrderRead.number,
+                            )
+                        ? _completedOrders()
+                        : const SizedBox(),
                   ),
                   if (Responsive.isMobile()) const SizedBox(height: 16),
                   if (Responsive.isMobile()) _products(),
@@ -79,7 +84,7 @@ class _DashboardPageState extends State<DashboardPage> with DashboardController,
       );
 
   Widget _products() => Obx(
-        () => cardsState.isLoaded() && Core.user.tags!.contains(TagUser.adminProductRead.number)
+        () => cardsState.isLoaded() && Core.user.tags.contains(TagUser.adminProductRead.number)
             ? Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
@@ -88,24 +93,43 @@ class _DashboardPageState extends State<DashboardPage> with DashboardController,
                     iconData: Icons.queue,
                     title: "در صف بررسی",
                     trailing: dashboardDataReadDto.inQueueProducts.toString(),
-                    onTap: () => Core.user.tags!.contains(TagUser.adminProductRead.number) ? tabWidget.insert(0, const ProductPage()) : null,
+                    onTap: () => Core.user.tags.contains(TagUser.adminProductRead.number)
+                        ? tabWidget.insert(
+                            0,
+                            const ProductPage(),
+                          )
+                        : null,
                   ),
                   _chartDataCard(
                     iconData: Icons.done,
                     title: "منتشر شده",
                     trailing: dashboardDataReadDto.releasedProducts.toString(),
-                    onTap: () => Core.user.tags!.contains(TagUser.adminProductRead.number) ? tabWidget.insert(0, const ProductPage()) : null,
+                    onTap: () => Core.user.tags.contains(TagUser.adminProductRead.number)
+                        ? tabWidget.insert(
+                            0,
+                            const ProductPage(),
+                          )
+                        : null,
                   ),
                   _chartDataCard(
                     iconData: Icons.remove,
                     title: "رد شده",
                     trailing: dashboardDataReadDto.notAcceptedProducts.toString(),
-                    onTap: () => Core.user.tags!.contains(TagUser.adminProductRead.number) ? tabWidget.insert(0, const ProductPage()) : null,
+                    onTap: () => Core.user.tags.contains(TagUser.adminProductRead.number)
+                        ? tabWidget.insert(
+                            0,
+                            const ProductPage(),
+                          )
+                        : null,
                   ),
                 ],
               )
             : const SizedBox(),
-      ).container(padding: const EdgeInsets.all(16), backgroundColor: context.theme.colorScheme.background, radius: 10);
+      ).container(
+        padding: const EdgeInsets.all(16),
+        backgroundColor: context.theme.colorScheme.background,
+        radius: 10,
+      );
 
   Widget _chartDataCard({
     required final String title,
@@ -175,25 +199,53 @@ class _DashboardPageState extends State<DashboardPage> with DashboardController,
                         count: dashboardDataReadDto.categories.toString(),
                         color: Colors.red,
                         iconData: Icons.category_outlined,
-                      ).onTap(() => Core.user.tags!.contains(TagUser.adminCategoryRead.number) ? tabWidget.insert(0, const CategoryPage()) : null),
+                      ).onTap(
+                        () => Core.user.tags.contains(TagUser.adminCategoryRead.number)
+                            ? tabWidget.insert(
+                                0,
+                                const CategoryPage(),
+                              )
+                            : null,
+                      ),
                       _card(
                         title: "کاربران",
                         count: dashboardDataReadDto.users.toString(),
                         color: Colors.blue,
                         iconData: Icons.person_outline,
-                      ).onTap(() => Core.user.tags!.contains(TagUser.adminUserRead.number) ? tabWidget.insert(0, const UserPage()) : null),
+                      ).onTap(
+                        () => Core.user.tags.contains(TagUser.adminUserRead.number)
+                            ? tabWidget.insert(
+                                0,
+                                const UserPage(),
+                              )
+                            : null,
+                      ),
                       _card(
                         title: "سفارشات",
                         count: dashboardDataReadDto.orders.toString(),
                         color: Colors.green,
                         iconData: Icons.shopping_cart_outlined,
-                      ).onTap(() => Core.user.tags!.contains(TagUser.adminOrderRead.number) ? tabWidget.insert(0, const OrderPage()) : null),
+                      ).onTap(
+                        () => Core.user.tags.contains(TagUser.adminOrderRead.number)
+                            ? tabWidget.insert(
+                                0,
+                                const OrderPage(),
+                              )
+                            : null,
+                      ),
                       _card(
                         title: "محصولات",
                         count: dashboardDataReadDto.products.toString(),
                         color: Colors.orange,
                         iconData: Icons.dashboard_outlined,
-                      ).onTap(() => Core.user.tags!.contains(TagUser.adminProductRead.number) ? tabWidget.insert(0, const ProductPage()) : null),
+                      ).onTap(
+                        () => Core.user.tags.contains(TagUser.adminProductRead.number)
+                            ? tabWidget.insert(
+                                0,
+                                const ProductPage(),
+                              )
+                            : null,
+                      ),
                       _card(
                         title: "فایل‌ها",
                         count: dashboardDataReadDto.media.toString(),
@@ -205,13 +257,27 @@ class _DashboardPageState extends State<DashboardPage> with DashboardController,
                         count: dashboardDataReadDto.transactions.toString(),
                         color: Colors.indigo,
                         iconData: Icons.dashboard_outlined,
-                      ).onTap(() => Core.user.tags!.contains(TagUser.adminTransactionRead.number) ? tabWidget.insert(0, const TransactionsPage()) : null),
+                      ).onTap(
+                        () => Core.user.tags.contains(TagUser.adminTransactionRead.number)
+                            ? tabWidget.insert(
+                                0,
+                                const TransactionsPage(),
+                              )
+                            : null,
+                      ),
                       _card(
                         title: "ریپورت‌ها",
                         count: dashboardDataReadDto.reports.toString(),
                         color: Colors.brown,
                         iconData: Icons.dashboard_outlined,
-                      ).onTap(() => Core.user.tags!.contains(TagUser.adminReportRead.number) ? tabWidget.insert(0, const ReportPage()) : null),
+                      ).onTap(
+                        () => Core.user.tags.contains(TagUser.adminReportRead.number)
+                            ? tabWidget.insert(
+                                0,
+                                const ReportPage(),
+                              )
+                            : null,
+                      ),
                       _card(
                         title: "آدرس‌ها",
                         count: dashboardDataReadDto.address.toString(),
@@ -235,7 +301,11 @@ class _DashboardPageState extends State<DashboardPage> with DashboardController,
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
-          Icon(iconData, color: color).container(padding: const EdgeInsets.all(8), backgroundColor: color.withOpacity(0.1), radius: 12),
+          Icon(iconData, color: color).container(
+            padding: const EdgeInsets.all(8),
+            backgroundColor: color.withOpacity(0.1),
+            radius: 12,
+          ),
           Text(title, maxLines: 1, overflow: TextOverflow.ellipsis),
           LinearProgressIndicator(color: color, value: 1),
           Text(count).bodySmall(color: color),

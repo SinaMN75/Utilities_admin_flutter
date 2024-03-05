@@ -14,7 +14,7 @@ mixin ProductController {
   late Rx<CategoryReadDto> selectedSubCategory;
   RxList<CategoryReadDto> categories = Core.categories.where((final CategoryReadDto e) => !e.children.isNullOrEmpty()).toList().obs;
   RxList<CategoryReadDto> subCategories = (Core.categories.first.children ?? <CategoryReadDto>[]).obs;
-  CategoryReadDto all = CategoryReadDto(id: '', title: 'همه');
+  CategoryReadDto all = CategoryReadDto(id: '', title: 'همه', jsonDetail: CategoryJsonDetail(), tags: <int>[]);
 
   int pageNumber = 1;
   int pageCount = 0;

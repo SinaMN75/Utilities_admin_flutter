@@ -12,6 +12,7 @@ enum MainPageType {
   comment("comment"),
   productDetail("productDetail"),
   category("category"),
+  specialities("specialities"),
   transaction("transactions"),
   content("content"),
   media("media"),

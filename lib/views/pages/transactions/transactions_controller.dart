@@ -61,7 +61,7 @@ mixin TransactionsController {
     final TextEditingController controllerRefId = TextEditingController();
     final TextEditingController controllerCardNumber = TextEditingController();
     final TextEditingController controllerUser = TextEditingController();
-    final Rx<UserReadDto> selectUser = UserReadDto(id: '').obs;
+    final Rx<UserReadDto> selectUser = UserReadDto(id: '', jsonDetail: UserJsonDetail(), tags: <int>[]).obs;
     final UserDataSource userDataSource = UserDataSource(baseUrl: AppConstants.baseUrl);
     bottomSheet(
       child: column(

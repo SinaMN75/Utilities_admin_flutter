@@ -41,29 +41,18 @@ mixin ContentController {
   void createUpdate({final ContentReadDto? dto}) {
     final TextEditingController controllerTitle = TextEditingController(text: dto?.title);
     final TextEditingController controllerDescription = TextEditingController(text: dto?.description);
-    final TextEditingController controllerInstagram = TextEditingController(text: dto?.jsonDetail?.instagram);
-    final TextEditingController controllerTelegram = TextEditingController(text: dto?.jsonDetail?.telegram);
-    final TextEditingController controllerWhatsapp = TextEditingController(text: dto?.jsonDetail?.whatsApp);
-    final TextEditingController controllerPhoneNumber = TextEditingController(text: dto?.jsonDetail?.phoneNumber1);
-    final TextEditingController controllerAddress = TextEditingController(text: dto?.jsonDetail?.address1);
-    final TextEditingController controllerWebSite = TextEditingController(text: dto?.jsonDetail?.website);
+    final TextEditingController controllerInstagram = TextEditingController(text: dto?.jsonDetail.instagram);
+    final TextEditingController controllerTelegram = TextEditingController(text: dto?.jsonDetail.telegram);
+    final TextEditingController controllerWhatsapp = TextEditingController(text: dto?.jsonDetail.whatsApp);
+    final TextEditingController controllerPhoneNumber = TextEditingController(text: dto?.jsonDetail.phoneNumber1);
+    final TextEditingController controllerAddress = TextEditingController(text: dto?.jsonDetail.address1);
+    final TextEditingController controllerWebSite = TextEditingController(text: dto?.jsonDetail.website);
     final Rx<TagContent> selectedTag = UtilitiesTagUtils.tagContentFromIntList(dto?.tags ?? <int>[]).obs;
-    final List<FileData> deletedImages = <FileData>[];
-    final List<FileData> editedImages = <FileData>[];
-    final List<FileData> deletedPdfs = <FileData>[];
-    final List<FileData> editedPdfs = <FileData>[];
-    List<FileData> pdfs = (dto?.media ?? <MediaReadDto>[])
-        .where((final MediaReadDto i) => i.tags!.contains(TagMedia.pdf.number))
-        .map(
-          (final MediaReadDto e) => FileData(url: e.url, id: e.id),
-        )
-        .toList();
-    List<FileData> images = (dto?.media ?? <MediaReadDto>[])
-        .where((final MediaReadDto i) => i.tags!.contains(TagMedia.image.number))
-        .map(
-          (final MediaReadDto e) => FileData(url: e.url, id: e.id),
-        )
-        .toList();
+
+    final List<FileData> deletedFiles = <FileData>[];
+    final List<FileData> editedFiles = <FileData>[];
+    List<FileData> files = <FileData>[];
+
     final GlobalKey<FormState> formKey = GlobalKey();
     dialogAlert(
       Form(
@@ -83,6 +72,7 @@ mixin ContentController {
                   DropdownMenuItem<TagContent>(value: TagContent.smallDetail1, child: Text(TagContent.smallDetail1.title)),
                   DropdownMenuItem<TagContent>(value: TagContent.smallDetail2, child: Text(TagContent.smallDetail2.title)),
                   DropdownMenuItem<TagContent>(value: TagContent.news, child: Text(TagContent.news.title)),
+                  DropdownMenuItem<TagContent>(value: TagContent.premium, child: Text(TagContent.premium.title)),
                 ],
                 onChanged: selectedTag,
               ),
@@ -112,26 +102,18 @@ mixin ContentController {
                 textField(labelText: "وبسایت", controller: controllerWebSite).paddingAll(4).expanded(),
               ],
             ),
+            const SizedBox(height: 8),
             filePickerList(
               title: "افزودن تصویر",
-              files: images,
-              onFileSelected: (final List<FileData> list) {
-                images = list;
-              },
+              files: files,
+              onFileSelected: (final List<FileData> list) => files = list,
+              onFileEdited: editedFiles.addAll,
               onFileDeleted: (final List<FileData> list) => list.forEach(
-                (final FileData i) => pdfs.remove(i),
+                (final FileData i) {
+                  files.remove(i);
+                  deletedFiles.add(i);
+                },
               ),
-              onFileEdited: editedImages.addAll,
-            ),
-            const SizedBox(height: 12),
-            filePickerList(
-              title: "افزودن PDF",
-              files: pdfs,
-              onFileSelected: (final List<FileData> list) => pdfs = list,
-              onFileDeleted: (final List<FileData> list) => list.forEach(
-                (final FileData i) => pdfs.remove(i),
-              ),
-              onFileEdited: editedPdfs.addAll,
             ),
             button(
               title: "ثبت",
@@ -153,23 +135,10 @@ mixin ContentController {
                         tags: <int>[selectedTag.value.number],
                       ),
                       onResponse: (final GenericResponse<ContentReadDto> response) {
-                        deletedImages.forEach((final FileData i) {
+                        deletedFiles.forEach((final FileData i) {
                           _mediaDataSource.delete(id: i.id!, onResponse: () {}, onError: () {});
                         });
-                        deletedPdfs.forEach((final FileData i) {
-                          _mediaDataSource.delete(id: i.id!, onResponse: () {}, onError: () {});
-                        });
-                        images.forEach((final FileData i) async {
-                          _mediaDataSource.create(
-                            fileData: i,
-                            fileExtension: "jpg",
-                            contentId: response.result?.id,
-                            tags: <int>[TagMedia.image.number],
-                            onResponse: () {},
-                            onError: () {},
-                          );
-                        });
-                        pdfs.forEach((final FileData i) async {
+                        files.forEach((final FileData i) async {
                           _mediaDataSource.create(
                             fileData: i,
                             fileExtension: "jpg",
@@ -202,7 +171,7 @@ mixin ContentController {
                         tags: <int>[selectedTag.value.number],
                       ),
                       onResponse: (final GenericResponse<ContentReadDto> response) {
-                        images.forEach(
+                        files.forEach(
                           (final FileData i) async => _mediaDataSource.create(
                             fileData: i,
                             fileExtension: "jpg",
@@ -212,7 +181,7 @@ mixin ContentController {
                             onError: () {},
                           ),
                         );
-                        deletedImages.forEach(
+                        deletedFiles.forEach(
                           (final FileData i) => _mediaDataSource.delete(id: i.id!, onResponse: () {}, onError: () {}),
                         );
                         dismissEasyLoading();
