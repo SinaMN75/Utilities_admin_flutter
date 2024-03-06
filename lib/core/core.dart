@@ -1,5 +1,4 @@
 import 'package:flutter/foundation.dart';
-import 'package:intl/intl.dart';
 import 'package:utilities/utilities.dart';
 import 'package:utilities_admin_flutter/generated/l10n.dart';
 

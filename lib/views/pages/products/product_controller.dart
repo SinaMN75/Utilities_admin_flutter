@@ -85,7 +85,7 @@ mixin ProductController {
   }
 
   void delete({required final ProductReadDto dto}) => alertDialog(
-        title: "خذف",
+        title: "حذف",
         subtitle: "آیا از حذف محصول اطمینان دارید",
         action1: (
           "بله",
@@ -94,9 +94,10 @@ mixin ProductController {
             _productDataSource.delete(
               id: dto.id,
               onResponse: (final GenericResponse<dynamic> response) {
-                snackbarGreen(title: "", subtitle: "حذف محصول ${dto.title} انجام شد");
                 list.removeWhere((final ProductReadDto i) => i.id == dto.id);
                 filteredList.removeWhere((final ProductReadDto i) => i.id == dto.id);
+                dismissEasyLoading();
+                back();
               },
               onError: (final GenericResponse<dynamic> response) {},
             );

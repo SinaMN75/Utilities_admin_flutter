@@ -161,14 +161,9 @@ mixin AddProductController {
                       onError: () {},
                     );
                 });
-                files.clear();
-
-                /// keyValueList.clear();
-                /// subProducts.clear();
-                controllerTitle.clear();
-                controllerDescription.clear();
                 state.loaded();
                 action();
+                back();
               },
               onError: (final GenericResponse<dynamic> response) {},
               failure: (final String error) {},
