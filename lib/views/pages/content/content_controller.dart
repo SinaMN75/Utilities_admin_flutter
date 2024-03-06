@@ -139,7 +139,7 @@ mixin ContentController {
                           _mediaDataSource.delete(id: i.id!, onResponse: () {}, onError: () {});
                         });
                         files.forEach((final FileData i) async {
-                          _mediaDataSource.create(
+                          await _mediaDataSource.create(
                             fileData: i,
                             fileExtension: "jpg",
                             contentId: response.result?.id,

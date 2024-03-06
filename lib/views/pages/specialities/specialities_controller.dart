@@ -90,39 +90,40 @@ mixin SpecialitiesController {
     );
   }
 
-  void update({required final CategoryReadDto dto}) {
+  void update({required final CategoryReadDto dto, required final int index}) {
     final TextEditingController controllerTitle = TextEditingController(text: dto.title);
     final TextEditingController controllerTitleTr1 = TextEditingController(text: dto.titleTr1);
     dialogAlert(
-      Obx(
-        () => Column(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            textField(text: "عنوان", controller: controllerTitle).paddingSymmetric(vertical: 12),
-            textField(text: "عنوان انگلیسی", controller: controllerTitleTr1).paddingSymmetric(vertical: 12),
-            button(
-              title: "ثبت",
-              onTap: () {
-                showEasyLoading();
-                _categoryDataSource.update(
-                  dto: CategoryCreateUpdateDto(
-                    id: dto.id,
+      Column(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          textField(text: "عنوان", controller: controllerTitle).paddingSymmetric(vertical: 12),
+          textField(text: "عنوان انگلیسی", controller: controllerTitleTr1).paddingSymmetric(vertical: 12),
+          button(
+            title: "ثبت",
+            onTap: () {
+              showEasyLoading();
+              _categoryDataSource.update(
+                dto: CategoryCreateUpdateDto(
+                  id: dto.id,
                     title: controllerTitle.text,
                     titleTr1: controllerTitleTr1.text,
                     tags: <int>[TagCategory.speciality.number],
                   ),
                   onResponse: (final GenericResponse<CategoryReadDto> response) {
-                    dismissEasyLoading();
-                    controllerTitle.clear();
-                    controllerTitleTr1.clear();
-                    back();
-                  },
+                  filteredList[index].title = controllerTitle.text;
+                  filteredList[index].titleTr1 = controllerTitleTr1.text;
+                  Get.forceAppUpdate();
+                  controllerTitle.clear();
+                  controllerTitleTr1.clear();
+                  dismissEasyLoading();
+                  back();
+                },
                   onError: (final GenericResponse<dynamic> response) {},
                 );
               },
             ).paddingSymmetric(vertical: 12),
           ],
-        ),
       ).container(width: 500),
       contentPadding: const EdgeInsets.all(20),
     );

@@ -46,7 +46,6 @@ class _SpecialitiesPageState extends State<SpecialitiesPage> with SpecialitiesCo
                   DataTable(
                     columns: const <DataColumn>[
                       DataColumn(label: Text("ردیف")),
-                      DataColumn(label: Text("تصویر")),
                       DataColumn(label: Text("عنوان")),
                       DataColumn(label: Text("عنوان انگلیسی")),
                       DataColumn(label: Text("عملیات‌ها")),
@@ -58,7 +57,6 @@ class _SpecialitiesPageState extends State<SpecialitiesPage> with SpecialitiesCo
                               color: dataTableRowColor(index),
                               cells: <DataCell>[
                                 DataCell(Text(index.toString())),
-                                DataCell(dataTableImage(i.media.getImage() ?? AppImages.logo)),
                                 DataCell(Text(i.title ?? "")),
                                 DataCell(Text(i.titleTr1 ?? "")),
                                 DataCell(
@@ -71,7 +69,7 @@ class _SpecialitiesPageState extends State<SpecialitiesPage> with SpecialitiesCo
                                         ).paddingSymmetric(horizontal: 8),
                                       if (Core.user.tags.contains(TagUser.adminCategoryUpdate.number))
                                         IconButton(
-                                          onPressed: () => update(dto: i),
+                                          onPressed: () => update(dto: i, index: index),
                                           icon: Icon(Icons.edit, color: context.theme.colorScheme.primary),
                                         ).paddingSymmetric(horizontal: 8),
                                     ],

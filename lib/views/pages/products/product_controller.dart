@@ -9,7 +9,8 @@ mixin ProductController {
   final RxList<ProductReadDto> filteredList = <ProductReadDto>[].obs;
 
   final TextEditingController controllerTitle = TextEditingController();
-  final RxInt selectedProductTag = TagProduct.all.number.obs;
+  final RxInt selectedProductStatus = TagProduct.all.number.obs;
+  final RxInt selectedProductType = TagProduct.all.number.obs;
   late Rx<CategoryReadDto> selectedCategory;
   late Rx<CategoryReadDto> selectedSubCategory;
   RxList<CategoryReadDto> categories = Core.categories.where((final CategoryReadDto e) => !e.children.isNullOrEmpty()).toList().obs;
@@ -47,16 +48,9 @@ mixin ProductController {
 
   void read() {
     state.loading();
-    List<int> tags = <int>[
-      // TagProduct.physical.number,
-    ];
-    if (selectedProductTag.value != TagProduct.all.number) {
-      tags.add(selectedProductTag.value);
-    } else {
-      tags = <int>[
-        // TagProduct.physical.number,
-      ];
-    }
+    final List<int> tags = <int>[];
+    if (selectedProductStatus.value != TagProduct.all.number) tags.add(selectedProductStatus.value);
+    if (selectedProductType.value != TagProduct.all.number) tags.add(selectedProductType.value);
 
     final List<String> categoryIds = <String>[];
     categoryIds.clear();
