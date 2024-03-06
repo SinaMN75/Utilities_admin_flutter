@@ -74,7 +74,6 @@ mixin SpecialitiesController {
                   tags: <int>[TagCategory.speciality.number],
                 ),
                 onResponse: (final GenericResponse<CategoryReadDto> response) {
-                  list.add(response.result!);
                   filteredList.add(response.result!);
                   dismissEasyLoading();
                   controllerTitle.clear();
