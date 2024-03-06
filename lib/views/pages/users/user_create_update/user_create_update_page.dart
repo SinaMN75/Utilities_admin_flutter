@@ -94,6 +94,14 @@ class _UserCreateUpdatePageState extends State<UserCreateUpdatePage> with UserCr
               controllerBirthdate.text = jalali.formatCompactDate();
             },
           ),
+          textFieldPersianDatePicker(
+            controller: controllerPremium,
+            text: "تاریخ پریمیوم",
+            onChange: (final DateTime dateTime, final Jalali jalali) {
+              premium = dateTime;
+              controllerPremium.text = jalali.formatCompactDate();
+            },
+          ),
           textField(text: "بیوگرافی", controller: controllerBio, lines: 4),
           const SizedBox(height: 16),
           textField(text: "شماره تماس", controller: controllerPhoneNumber, keyboardType: TextInputType.number, maxLength: 12),

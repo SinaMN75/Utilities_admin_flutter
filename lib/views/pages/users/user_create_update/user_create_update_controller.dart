@@ -12,6 +12,7 @@ mixin UserCreateUpdateController {
   RxBool suspend = false.obs;
 
   DateTime birthDate = DateTime.now();
+  DateTime premium = DateTime.now();
   final Rx<GenderType> genderType = GenderType.male.obs;
   final TextEditingController controllerFirstName = TextEditingController();
   final TextEditingController controllerLastName = TextEditingController();
@@ -21,6 +22,7 @@ mixin UserCreateUpdateController {
   final TextEditingController controllerState = TextEditingController();
   final TextEditingController controllerPhoneNumber = TextEditingController();
   final TextEditingController controllerBirthdate = TextEditingController();
+  final TextEditingController controllerPremium = TextEditingController();
   final TextEditingController controllerAdminUserName = TextEditingController();
   final TextEditingController controllerPassword = TextEditingController();
 
@@ -56,10 +58,11 @@ mixin UserCreateUpdateController {
     controllerBio.text = dto.bio ?? "";
     controllerState.text = dto.state ?? "";
     controllerPhoneNumber.text = dto.appPhoneNumber ?? "";
-    controllerInstagram.text = dto.jsonDetail?.instagram ?? "";
+    controllerInstagram.text = dto.jsonDetail.instagram ?? "";
     controllerAdminUserName.text = dto.email ?? "";
     controllerBirthdate.text = Jalali.fromDateTime(DateTime.parse(dto.birthdate ?? DateTime.now().toIso8601String())).formatCompactDate();
-    if (dto.tags!.contains(GenderType.male.number))
+    controllerPremium.text = Jalali.fromDateTime(DateTime.parse(dto.premiumExpireDate ?? DateTime.now().toIso8601String())).formatCompactDate();
+    if (dto.tags.contains(GenderType.male.number))
       genderType(GenderType.male);
     else
       genderType(GenderType.female);
@@ -116,6 +119,8 @@ mixin UserCreateUpdateController {
         appPhoneNumber: controllerPhoneNumber.text,
         state: controllerState.text,
         instagram: controllerInstagram.text,
+        birthDate: birthDate.toIso8601String(),
+        premiumExpireDate: premium.toIso8601String(),
         suspend: suspend.value,
         email: controllerAdminUserName.text,
         password: controllerPassword.text.isNotEmpty ? controllerPassword.text : null,

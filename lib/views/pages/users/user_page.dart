@@ -48,7 +48,7 @@ class _UserPageState extends State<UserPage> with UserController, AutomaticKeepA
                         const DataColumn(label: Text("آیدی اینستاگرام")),
                         const DataColumn(label: Text("شماره موبایل")),
                         const DataColumn(label: Text("وضعیت")),
-                        if (Core.user.tags!.contains(TagUser.adminCategoryUpdate.number)) const DataColumn(label: Text("عملیات")),
+                        if (Core.user.tags.contains(TagUser.adminCategoryUpdate.number)) const DataColumn(label: Text("عملیات")),
                       ],
                       rows: <DataRow>[
                         ...list
@@ -61,7 +61,7 @@ class _UserPageState extends State<UserPage> with UserController, AutomaticKeepA
                                   DataCell(Text(i.firstName ?? "--")),
                                   DataCell(Text(i.lastName ?? "--")),
                                   DataCell(Text(i.appUserName ?? "--")),
-                                  DataCell(Text(i.jsonDetail?.instagram ?? "--")),
+                                  DataCell(Text(i.jsonDetail.instagram ?? "--")),
                                   DataCell(Text(i.phoneNumber ?? "--")),
                                   DataCell(
                                     (i.suspend ?? false)
@@ -71,7 +71,7 @@ class _UserPageState extends State<UserPage> with UserController, AutomaticKeepA
                                             color: Colors.green,
                                           ),
                                   ),
-                                  if (Core.user.tags!.contains(TagUser.adminCategoryUpdate.number))
+                                  if (Core.user.tags.contains(TagUser.adminCategoryUpdate.number))
                                     DataCell(
                                       PopupMenuButton<int>(
                                         child: const Icon(Icons.menu),

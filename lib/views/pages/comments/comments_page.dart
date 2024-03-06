@@ -47,23 +47,34 @@ class _CommentsPageState extends State<CommentsPage> with CommentsController, Au
                         const DataColumn(label: Text("کاربر")),
                         const DataColumn(label: Text("محصول")),
                         const DataColumn(label: Text("نظر")),
-                        if (Core.user.tags!.contains(TagUser.adminCategoryRead.number)) const DataColumn(label: Text("عملیات‌ها")),
+                        if (Core.user.tags.contains(TagUser.adminCategoryRead.number))
+                          const DataColumn(
+                            label: Text("عملیات‌ها"),
+                          ),
                       ],
                       rows: <DataRow>[
                         ...list.mapIndexed(
                           (final int index, final CommentReadDto i) {
                             final Rx<TagComment> selectedCommentTag = TagComment.inQueue.obs;
-                            if (i.tags!.contains(TagComment.inQueue.number)) selectedCommentTag(TagComment.inQueue);
-                            if (i.tags!.contains(TagComment.rejected.number)) selectedCommentTag(TagComment.rejected);
-                            if (i.tags!.contains(TagComment.released.number)) selectedCommentTag(TagComment.released);
+                            if (i.tags.contains(TagComment.inQueue.number)) selectedCommentTag(TagComment.inQueue);
+                            if (i.tags.contains(TagComment.rejected.number)) selectedCommentTag(TagComment.rejected);
+                            if (i.tags.contains(TagComment.released.number)) selectedCommentTag(TagComment.released);
                             return DataRow(
                               color: dataTableRowColor(index),
                               cells: <DataCell>[
                                 DataCell(Text(index.toString())),
                                 DataCell(Text("${i.user?.firstName} ${i.user?.lastName}")),
                                 DataCell(Text(i.product?.title ?? "")),
-                                DataCell(const Text("نمایش نظر").bodyMedium(color: context.theme.primaryColor).onTap(() => alertDialog(title: "", subtitle: i.comment ?? "", action1: ("باشه", back)))),
-                                if (Core.user.tags!.contains(TagUser.adminCategoryRead.number))
+                                DataCell(
+                                  const Text("نمایش نظر").bodyMedium(color: context.theme.primaryColor).onTap(
+                                        () => alertDialog(
+                                          title: "",
+                                          subtitle: i.comment ?? "",
+                                          action1: ("باشه", back),
+                                        ),
+                                      ),
+                                ),
+                                if (Core.user.tags.contains(TagUser.adminCategoryRead.number))
                                   DataCell(
                                     Row(
                                       children: <Widget>[
@@ -74,9 +85,18 @@ class _CommentsPageState extends State<CommentsPage> with CommentsController, Au
                                         DropdownButtonFormField<TagComment>(
                                           value: selectedCommentTag.value,
                                           items: <DropdownMenuItem<TagComment>>[
-                                            DropdownMenuItem<TagComment>(value: TagComment.released, child: Text(TagComment.released.title)),
-                                            DropdownMenuItem<TagComment>(value: TagComment.rejected, child: Text(TagComment.rejected.title)),
-                                            DropdownMenuItem<TagComment>(value: TagComment.inQueue, child: Text(TagComment.inQueue.title)),
+                                            DropdownMenuItem<TagComment>(
+                                              value: TagComment.released,
+                                              child: Text(TagComment.released.title),
+                                            ),
+                                            DropdownMenuItem<TagComment>(
+                                              value: TagComment.rejected,
+                                              child: Text(TagComment.rejected.title),
+                                            ),
+                                            DropdownMenuItem<TagComment>(
+                                              value: TagComment.inQueue,
+                                              child: Text(TagComment.inQueue.title),
+                                            ),
                                           ],
                                           onChanged: (final TagComment? value) {
                                             selectedCommentTag(value);
