@@ -27,9 +27,10 @@ jobs:
       - name: Build Web
         run: flutter build web --release
       - name: Deploy
-        uses: SamKirkland/FTP-Deploy-Action@4.0.0
+        uses: SamKirkland/FTP-Deploy-Action@4.3.5
         with:
           local-dir: Build/web/
           server: 82.115.20.41
           username: scimedadminsinamn75com
           password: scimedadminsinamn75com
+          timeout: 60000
