@@ -27,14 +27,15 @@ mixin ContentController {
         subtitle: "آیا از حذف محتوا اطمینان دارید",
         action1: (
           "بله",
-          () => _dataSource.delete(
-                id: dto.id!,
-                onResponse: (final GenericResponse<dynamic> response) {
-                  list.removeWhere((final ContentReadDto i) => i.id == dto.id);
-                  back();
-                },
-                onError: (final GenericResponse<dynamic> response) {},
-              )
+          () {
+            _dataSource.delete(
+              id: dto.id!,
+              onResponse: (final GenericResponse<dynamic> response) {},
+              onError: (final GenericResponse<dynamic> response) {},
+            );
+            list.removeWhere((final ContentReadDto i) => i.id == dto.id);
+            back();
+          }
         ),
       );
 
@@ -134,23 +135,35 @@ mixin ContentController {
                         address1: controllerAddress.text,
                         tags: <int>[selectedTag.value.number],
                       ),
-                      onResponse: (final GenericResponse<ContentReadDto> response) {
-                        deletedFiles.forEach((final FileData i) {
-                          _mediaDataSource.delete(id: i.id!, onResponse: () {}, onError: () {});
+                      onResponse: (final GenericResponse<ContentReadDto> response) async {
+                        await Future.forEach(files, (final FileData i) async {
+                          if (i.parentId == null)
+                            await _mediaDataSource.create(
+                              parentId: i.parentId,
+                              fileData: i,
+                              id: i.id,
+                              fileExtension: i.extension!,
+                              contentId: response.result?.id,
+                              tags: <int>[TagMedia.media.number],
+                              onResponse: () {},
+                              onError: () {},
+                            );
                         });
-                        files.forEach((final FileData i) async {
-                          await _mediaDataSource.create(
-                            fileData: i,
-                            fileExtension: "jpg",
-                            contentId: response.result?.id,
-                            tags: <int>[TagMedia.image.number],
-                            onResponse: () {},
-                            onError: () {},
-                          );
+                        await Future.forEach(files, (final FileData i) async {
+                          if (i.parentId != null)
+                            await _mediaDataSource.create(
+                              parentId: i.parentId,
+                              id: i.id,
+                              fileData: i,
+                              fileExtension: i.extension!,
+                              contentId: response.result?.id,
+                              tags: <int>[TagMedia.media.number],
+                              onResponse: () {},
+                              onError: () {},
+                            );
                         });
                         list.add(response.result!);
-                        snackbarDone();
-                        dismissEasyLoading();
+                        await dismissEasyLoading();
                         back();
                       },
                       onError: (final GenericResponse<dynamic> response) {},
@@ -174,9 +187,9 @@ mixin ContentController {
                         files.forEach(
                           (final FileData i) async => _mediaDataSource.create(
                             fileData: i,
-                            fileExtension: "jpg",
+                            fileExtension: i.extension!,
                             contentId: response.result?.id,
-                            tags: <int>[TagMedia.image.number],
+                            tags: <int>[TagMedia.media.number],
                             onResponse: () {},
                             onError: () {},
                           ),

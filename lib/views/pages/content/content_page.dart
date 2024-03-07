@@ -30,7 +30,7 @@ class _ContentPageState extends State<ContentPage> with ContentController, Autom
       constraints: const BoxConstraints(),
       appBar: AppBar(
         actions: <Widget>[
-          if (Core.user.tags!.contains(TagUser.adminContentUpdate.number))
+          if (Core.user.tags.contains(TagUser.adminContentUpdate.number))
             IconButton(
               onPressed: createUpdate,
               icon: const Icon(Icons.add_box_outlined, size: 40),
@@ -58,16 +58,16 @@ class _ContentPageState extends State<ContentPage> with ContentController, Autom
                                 DataCell(Text(index.toString())),
                                 DataCell(dataTableImage(i.media.getImage() ?? AppImages.logo)),
                                 DataCell(Text(i.title ?? "")),
-                                DataCell(Text(UtilitiesTagUtils.tagContentFromIntList(i.tags!).title)),
+                                DataCell(Text(UtilitiesTagUtils.tagContentFromIntList(i.tags).title)),
                                 DataCell(
                                   Row(
                                     children: <Widget>[
-                                      if (Core.user.tags!.contains(TagUser.adminContentUpdate.number))
+                                      if (Core.user.tags.contains(TagUser.adminContentUpdate.number))
                                         IconButton(
                                           onPressed: () => delete(dto: i),
                                           icon: Icon(Icons.delete, color: context.theme.colorScheme.error),
                                         ).paddingSymmetric(horizontal: 8),
-                                      if (Core.user.tags!.contains(TagUser.adminContentUpdate.number))
+                                      if (Core.user.tags.contains(TagUser.adminContentUpdate.number))
                                         IconButton(
                                           onPressed: () => createUpdate(dto: i),
                                           icon: Icon(Icons.edit, color: context.theme.colorScheme.primary),

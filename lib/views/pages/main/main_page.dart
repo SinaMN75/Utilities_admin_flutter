@@ -3,7 +3,6 @@ import 'package:utilities/utilities.dart';
 import 'package:utilities_admin_flutter/views/pages/categories/category_page.dart';
 import 'package:utilities_admin_flutter/views/pages/comments/comments_page.dart';
 import 'package:utilities_admin_flutter/views/pages/content/content_page.dart';
-import 'package:utilities_admin_flutter/views/pages/dashboard/dashboard_page.dart';
 import 'package:utilities_admin_flutter/views/pages/main/main_controller.dart';
 import 'package:utilities_admin_flutter/views/pages/orders/order_page.dart';
 import 'package:utilities_admin_flutter/views/pages/products/product_page.dart';
@@ -40,11 +39,6 @@ class _MainPageState extends State<MainPage> with MainController, TickerProvider
       appBar: AppBar(title: const Text('ادمین پنل')),
       sideBar: SideBar(
         items: <AdminMenuItem>[
-          AdminMenuItem(
-            title: 'داشبورد',
-            route: MainPageType.dashboard.title,
-            icon: Icons.dashboard,
-          ),
           AdminMenuItem(
             title: 'دسته بندی',
             route: MainPageType.category.title,
@@ -98,7 +92,6 @@ class _MainPageState extends State<MainPage> with MainController, TickerProvider
           const AdminMenuItem(title: 'خروج از سیستم', icon: Icons.logout, route: "logout"),
         ],
         onSelected: (final AdminMenuItem item) {
-          if (item.route == MainPageType.dashboard.title) addTab(const DashboardPage());
           if (item.route == MainPageType.category.title) addTab(const CategoryPage());
           if (item.route == MainPageType.specialities.title) addTab(const SpecialitiesPage());
           if (item.route == MainPageType.product.title) addTab(const ProductPage());
@@ -132,7 +125,7 @@ class _MainPageState extends State<MainPage> with MainController, TickerProvider
                       children: <Widget>[
                         IconButton(
                           onPressed: () {
-                            if (tabWidget.length != 1) tabWidget.removeAt(index);
+                            if (tabWidget.length != 1 && index != tabWidget.length - 1) tabWidget.removeAt(index);
                           },
                           icon: const Icon(Icons.close),
                         ),
