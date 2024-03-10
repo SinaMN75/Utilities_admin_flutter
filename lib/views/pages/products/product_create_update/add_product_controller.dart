@@ -16,7 +16,8 @@ mixin AddProductController {
   final ProductDataSource _productDataSource = ProductDataSource(baseUrl: AppConstants.baseUrl);
   final MediaDataSource _mediaDataSource = MediaDataSource(baseUrl: AppConstants.baseUrl);
 
-  /// final RxList<KeyValueViewModel> keyValueList = <KeyValueViewModel>[].obs;
+  final RxList<KeyValueViewModel> keyValueList = <KeyValueViewModel>[].obs;
+
   /// final RxList<ProductCreateUpdateDto> subProducts = <ProductCreateUpdateDto>[].obs;
   /// final RxList<ProductCreateUpdateDto> deletedSubProducts = <ProductCreateUpdateDto>[].obs;
 
@@ -65,7 +66,8 @@ mixin AddProductController {
     controllerTitle.text = dto!.title ?? "";
     controllerDescription.text = dto!.description ?? "";
 
-    /// keyValueList(dto!.jsonDetail?.keyValues ?? <KeyValueViewModel>[]);
+    keyValueList(dto!.jsonDetail.keyValues ?? <KeyValueViewModel>[]);
+
     /// subProducts((dto!.children ?? <ProductReadDto>[])
     ///     .map(
     ///      (final ProductReadDto i) => ProductCreateUpdateDto(
@@ -128,7 +130,7 @@ mixin AddProductController {
               /// categories: <String>[selectedCategory.value.id, selectedSubCategory.value.id],
               /// children: subProducts,
               /// price: subProducts.first.price,
-              /// keyValues: keyValueList,
+              keyValues: keyValueList,
               website: controllerWebSite.text,
               tags: <int>[selectedProductType.value, selectedProductStatus.value],
             );
@@ -188,7 +190,7 @@ mixin AddProductController {
                 /// categories: <String>[selectedCategory.value.id, selectedSubCategory.value.id],
                 /// children: subProducts,
                 /// price: subProducts.first.price,
-                /// keyValues: keyValueList,
+                keyValues: keyValueList,
                 tags: <int>[selectedProductStatus.value, selectedProductType.value],
               ),
               onResponse: (final GenericResponse<ProductReadDto> response) {

@@ -158,7 +158,8 @@ class _AddProductPageState extends State<AddProductPage> with AddProductControll
                 contentPadding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
               ).paddingSymmetric(vertical: 8),
 
-              /// _keyValue().paddingSymmetric(vertical: 12),
+              _keyValue().paddingSymmetric(vertical: 12),
+
               /// _subProducts().paddingSymmetric(vertical: 12),
               const SizedBox(height: 20),
               textField(
@@ -180,80 +181,80 @@ class _AddProductPageState extends State<AddProductPage> with AddProductControll
     );
   }
 
-  /// Widget _keyValue() {
-  ///   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  ///   final TextEditingController controllerKey = TextEditingController();
-  ///   final TextEditingController controllerValue = TextEditingController();
-  ///   return Obx(
-  ///     () => Column(
-  ///       crossAxisAlignment: CrossAxisAlignment.start,
-  ///       children: <Widget>[
-  ///         const Text("ویژگی‌ها").bodyLarge().paddingOnly(bottom: 8),
-  ///         if (keyValueList.length <= 4)
-  ///           Form(
-  ///             key: _formKey,
-  ///             child: Row(
-  ///               children: <Widget>[
-  ///                 textField(
-  ///                   controller: controllerKey,
-  ///                   hintText: "مثال: جنس",
-  ///                   validator: validateNotEmpty(),
-  ///                 ).expanded(),
-  ///                 const SizedBox(width: 16),
-  ///                 textField(
-  ///                   controller: controllerValue,
-  ///                   hintText: "مثال: چرم",
-  ///                   validator: validateNotEmpty(),
-  ///                 ).expanded(),
-  ///                 const Icon(Icons.add).paddingSymmetric(horizontal: 8).onTap(() {
-  ///                   validateForm(
-  ///                     key: _formKey,
-  ///                     action: () {
-  ///                       keyValueList.add(KeyValueViewModel(controllerKey.text, controllerValue.text));
-  ///                       controllerKey.clear();
-  ///                       controllerValue.clear();
-  ///                     },
-  ///                   );
-  ///                 }),
-  ///               ],
-  ///             ),
-  ///           ).marginOnly(bottom: 4),
-  ///         ...keyValueList
-  ///             .map(
-  ///               (final KeyValueViewModel e) => Row(
-  ///                 children: <Widget>[
-  ///                   Text(e.key)
-  ///                       .bodyMedium()
-  ///                       .container(
-  ///                         backgroundColor: context.theme.hintColor.withOpacity(0.1),
-  ///                         radius: 12,
-  ///                         padding: const EdgeInsets.all(8),
-  ///                       )
-  ///                       .expanded(),
-  ///                   const SizedBox(width: 16),
-  ///                   Text(e.value)
-  ///                       .bodyMedium()
-  ///                       .container(
-  ///                         backgroundColor: context.theme.hintColor.withOpacity(0.1),
-  ///                         radius: 12,
-  ///                         padding: const EdgeInsets.all(8),
-  ///                       )
-  ///                       .expanded(),
-  ///                   Icon(
-  ///                     Icons.remove,
-  ///                     color: context.theme.colorScheme.error,
-  ///                   ).paddingSymmetric(horizontal: 8).onTap(() {
-  ///                     keyValueList.remove(e);
-  ///                   }),
-  ///                 ],
-  ///               ).paddingSymmetric(vertical: 4),
-  ///             )
-  ///             .toList(),
-  ///       ],
-  ///     ),
-  ///   );
-  /// }
-  ///
+  Widget _keyValue() {
+    final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+    final TextEditingController controllerKey = TextEditingController();
+    final TextEditingController controllerValue = TextEditingController();
+    return Obx(
+      () => Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          const Text("ویژگی‌ها").bodyLarge().paddingOnly(bottom: 8),
+          if (keyValueList.length <= 4)
+            Form(
+              key: _formKey,
+              child: Row(
+                children: <Widget>[
+                  textField(
+                    controller: controllerKey,
+                    hintText: "مثال: جنس",
+                    validator: validateNotEmpty(),
+                  ).expanded(),
+                  const SizedBox(width: 16),
+                  textField(
+                    controller: controllerValue,
+                    hintText: "مثال: چرم",
+                    validator: validateNotEmpty(),
+                  ).expanded(),
+                  const Icon(Icons.add).paddingSymmetric(horizontal: 8).onTap(() {
+                    validateForm(
+                      key: _formKey,
+                      action: () {
+                        keyValueList.add(KeyValueViewModel(controllerKey.text, controllerValue.text));
+                        controllerKey.clear();
+                        controllerValue.clear();
+                      },
+                    );
+                  }),
+                ],
+              ),
+            ).marginOnly(bottom: 4),
+          ...keyValueList
+              .map(
+                (final KeyValueViewModel e) => Row(
+                  children: <Widget>[
+                    Text(e.key)
+                        .bodyMedium()
+                        .container(
+                          backgroundColor: context.theme.hintColor.withOpacity(0.1),
+                          radius: 12,
+                          padding: const EdgeInsets.all(8),
+                        )
+                        .expanded(),
+                    const SizedBox(width: 16),
+                    Text(e.value)
+                        .bodyMedium()
+                        .container(
+                          backgroundColor: context.theme.hintColor.withOpacity(0.1),
+                          radius: 12,
+                          padding: const EdgeInsets.all(8),
+                        )
+                        .expanded(),
+                    Icon(
+                      Icons.remove,
+                      color: context.theme.colorScheme.error,
+                    ).paddingSymmetric(horizontal: 8).onTap(() {
+                      keyValueList.remove(e);
+                    }),
+                  ],
+                ).paddingSymmetric(vertical: 4),
+              )
+              .toList(),
+        ],
+      ),
+    );
+  }
+
   /// Widget _subProducts() {
   ///   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   ///   final TextEditingController des = TextEditingController();
