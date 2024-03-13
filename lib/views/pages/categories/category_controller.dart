@@ -82,7 +82,6 @@ mixin CategoryController {
           button(
             title: "ثبت",
             onTap: () {
-              showEasyLoading();
               _categoryDataSource.create(
                 dto: CategoryCreateUpdateDto(
                   title: controllerTitle.text,
@@ -91,15 +90,17 @@ mixin CategoryController {
                   tags: <int>[TagCategory.category.number],
                 ),
                 onResponse: (final GenericResponse<CategoryReadDto> response) {
-                  if (fileData != null)
+                  if (fileData != null) {
+                    Core.fileUploadingCount(Core.fileUploadingCount.value += 1);
                     _mediaDataSource.create(
                       fileData: fileData!,
                       categoryId: response.result!.id,
                       fileExtension: "png",
                       tags: <int>[TagMedia.image.number],
-                      onResponse: () {},
+                      onResponse: () => Core.fileUploadingCount(Core.fileUploadingCount.value - 1),
                       onError: () {},
                     );
+                  }
                   list.add(response.result!);
                   filteredList.add(response.result!);
                   dismissEasyLoading();

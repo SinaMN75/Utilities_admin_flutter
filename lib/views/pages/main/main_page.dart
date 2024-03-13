@@ -1,5 +1,6 @@
 import 'package:flutter_admin_scaffold/admin_scaffold.dart';
 import 'package:utilities/utilities.dart';
+import 'package:utilities_admin_flutter/core/core.dart';
 import 'package:utilities_admin_flutter/views/pages/categories/category_page.dart';
 import 'package:utilities_admin_flutter/views/pages/comments/comments_page.dart';
 import 'package:utilities_admin_flutter/views/pages/content/content_page.dart';
@@ -35,107 +36,131 @@ class _MainPageState extends State<MainPage> with MainController, TickerProvider
   @override
   Widget build(final BuildContext context) {
     super.build(context);
-    return AdminScaffold(
-      appBar: AppBar(title: const Text('ادمین پنل')),
-      sideBar: SideBar(
-        items: <AdminMenuItem>[
-          AdminMenuItem(
-            title: 'دسته بندی',
-            route: MainPageType.category.title,
-            icon: Icons.category,
+    return Stack(
+      children: <Widget>[
+        AdminScaffold(
+          appBar: AppBar(title: const Text('ادمین پنل')),
+          sideBar: SideBar(
+            items: <AdminMenuItem>[
+              AdminMenuItem(
+                title: 'دسته بندی',
+                route: MainPageType.category.title,
+                icon: Icons.category,
+              ),
+              AdminMenuItem(
+                title: 'تخصص‌ها',
+                route: MainPageType.specialities.title,
+                icon: Icons.category,
+              ),
+              AdminMenuItem(
+                title: "محصولات",
+                route: MainPageType.product.title,
+                icon: Icons.card_travel_outlined,
+              ),
+              AdminMenuItem(
+                title: "نظرات",
+                route: MainPageType.comment.title,
+                icon: Icons.comment_outlined,
+              ),
+              AdminMenuItem(
+                title: "کاربران",
+                route: MainPageType.user.title,
+                icon: Icons.person_outline,
+              ),
+              AdminMenuItem(
+                title: "ریپورت‌ها",
+                route: MainPageType.report.title,
+                icon: Icons.report_outlined,
+              ),
+              AdminMenuItem(
+                title: "تراکنش‌ها",
+                route: MainPageType.transaction.title,
+                icon: Icons.credit_card_outlined,
+              ),
+              AdminMenuItem(
+                title: "سفارشات",
+                route: MainPageType.order.title,
+                icon: Icons.shopping_cart_outlined,
+              ),
+              AdminMenuItem(
+                title: 'محتوا',
+                icon: Icons.file_copy,
+                route: MainPageType.content.title,
+              ),
+              AdminMenuItem(
+                title: 'فایل‌ها',
+                icon: Icons.perm_media_outlined,
+                route: MainPageType.media.title,
+              ),
+              const AdminMenuItem(title: 'خروج از سیستم', icon: Icons.logout, route: "logout"),
+            ],
+            onSelected: (final AdminMenuItem item) {
+              if (item.route == MainPageType.category.title) addTab(const CategoryPage());
+              if (item.route == MainPageType.specialities.title) addTab(const SpecialitiesPage());
+              if (item.route == MainPageType.product.title) addTab(const ProductPage());
+              if (item.route == MainPageType.comment.title) addTab(const CommentsPage());
+              if (item.route == MainPageType.report.title) addTab(const ReportPage());
+              if (item.route == MainPageType.transaction.title) addTab(const TransactionsPage());
+              if (item.route == MainPageType.content.title) addTab(const ContentPage());
+              if (item.route == MainPageType.user.title) addTab(const UserPage());
+              if (item.route == MainPageType.order.title) addTab(const OrderPage());
+              if (item.route == "logout")
+                logout(onLoggedOut: () {
+                  clearData();
+                  offAll(const SplashPage());
+                });
+              Get.forceAppUpdate();
+            },
+            selectedRoute: '',
           ),
-          AdminMenuItem(
-            title: 'تخصص‌ها',
-            route: MainPageType.specialities.title,
-            icon: Icons.category,
-          ),
-          AdminMenuItem(
-            title: "محصولات",
-            route: MainPageType.product.title,
-            icon: Icons.card_travel_outlined,
-          ),
-          AdminMenuItem(
-            title: "نظرات",
-            route: MainPageType.comment.title,
-            icon: Icons.comment_outlined,
-          ),
-          AdminMenuItem(
-            title: "کاربران",
-            route: MainPageType.user.title,
-            icon: Icons.person_outline,
-          ),
-          AdminMenuItem(
-            title: "ریپورت‌ها",
-            route: MainPageType.report.title,
-            icon: Icons.report_outlined,
-          ),
-          AdminMenuItem(
-            title: "تراکنش‌ها",
-            route: MainPageType.transaction.title,
-            icon: Icons.credit_card_outlined,
-          ),
-          AdminMenuItem(
-            title: "سفارشات",
-            route: MainPageType.order.title,
-            icon: Icons.shopping_cart_outlined,
-          ),
-          AdminMenuItem(
-            title: 'محتوا',
-            icon: Icons.file_copy,
-            route: MainPageType.content.title,
-          ),
-          AdminMenuItem(
-            title: 'فایل‌ها',
-            icon: Icons.perm_media_outlined,
-            route: MainPageType.media.title,
-          ),
-          const AdminMenuItem(title: 'خروج از سیستم', icon: Icons.logout, route: "logout"),
-        ],
-        onSelected: (final AdminMenuItem item) {
-          if (item.route == MainPageType.category.title) addTab(const CategoryPage());
-          if (item.route == MainPageType.specialities.title) addTab(const SpecialitiesPage());
-          if (item.route == MainPageType.product.title) addTab(const ProductPage());
-          if (item.route == MainPageType.comment.title) addTab(const CommentsPage());
-          if (item.route == MainPageType.report.title) addTab(const ReportPage());
-          if (item.route == MainPageType.transaction.title) addTab(const TransactionsPage());
-          if (item.route == MainPageType.content.title) addTab(const ContentPage());
-          if (item.route == MainPageType.user.title) addTab(const UserPage());
-          if (item.route == MainPageType.order.title) addTab(const OrderPage());
-          if (item.route == "logout")
-            logout(onLoggedOut: () {
-              clearData();
-              offAll(const SplashPage());
-            });
-          Get.forceAppUpdate();
-        },
-        selectedRoute: '',
-      ),
-      body: Obx(
-        () => defaultTabBar(
-          controller: tabController,
-          children: tabWidget,
-          physics: const NeverScrollableScrollPhysics(),
-          tabBar: TabBar(
+          body: Obx(
+            () => defaultTabBar(
               controller: tabController,
-              indicatorSize: TabBarIndicatorSize.tab,
-              tabs: tabWidget
-                  .mapIndexed(
-                    (final int index, final Widget i) => Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        IconButton(
-                          onPressed: () {
-                            if (tabWidget.length != 1 && index != tabWidget.length - 1) tabWidget.removeAt(index);
-                          },
-                          icon: const Icon(Icons.close),
+              children: tabWidget,
+              physics: const NeverScrollableScrollPhysics(),
+              tabBar: TabBar(
+                  controller: tabController,
+                  indicatorSize: TabBarIndicatorSize.tab,
+                  tabs: tabWidget
+                      .mapIndexed(
+                        (final int index, final Widget i) => Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            IconButton(
+                              onPressed: () {
+                                if (tabWidget.length != 1 && index != tabWidget.length - 1) tabWidget.removeAt(index);
+                              },
+                              icon: const Icon(Icons.close),
+                            ),
+                            Text(i.key.toString().replaceAll("[<'", "").replaceAll("'>]", "")),
+                          ],
                         ),
-                        Text(i.key.toString().replaceAll("[<'", "").replaceAll("'>]", "")),
-                      ],
-                    ),
-                  )
-                  .toList()),
+                      )
+                      .toList()),
+            ),
+          ),
         ),
-      ),
+        Obx(() => Core.fileUploadingCount.value <= 1
+            ? const SizedBox()
+            : Container(
+                decoration: const BoxDecoration(color: Colors.green),
+                padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 40),
+                child: Row(
+                  children: <Widget>[
+                    const CircularProgressIndicator(color: Colors.white),
+                    const SizedBox(width: 12),
+                    Text(
+                      " ${Core.fileUploadingCount.value} فایل در حال اپلود  ",
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20,
+                      ),
+                    ),
+                  ],
+                ),
+              )),
+      ],
     );
   }
 

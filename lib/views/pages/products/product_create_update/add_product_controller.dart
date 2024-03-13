@@ -137,6 +137,7 @@ mixin AddProductController {
             _productDataSource.create(
               dto: createDto,
               onResponse: (final GenericResponse<ProductReadDto> response) async {
+                Core.fileUploadingCount(Core.fileUploadingCount.value += files.length);
                 await Future.forEach(files, (final FileData i) async {
                   if (i.parentId == null)
                     await _mediaDataSource.create(
@@ -146,7 +147,7 @@ mixin AddProductController {
                       fileExtension: i.extension!,
                       productId: response.result?.id,
                       tags: <int>[TagMedia.image.number],
-                      onResponse: () {},
+                      onResponse: () => Core.fileUploadingCount(Core.fileUploadingCount.value - 1),
                       onError: () {},
                     );
                 });
@@ -159,7 +160,7 @@ mixin AddProductController {
                       fileExtension: i.extension!,
                       productId: response.result?.id,
                       tags: <int>[TagMedia.image.number],
-                      onResponse: () {},
+                      onResponse: () => Core.fileUploadingCount(Core.fileUploadingCount.value - 1),
                       onError: () {},
                     );
                 });
@@ -217,6 +218,7 @@ mixin AddProductController {
                     onError: (final GenericResponse<dynamic> response) {},
                   );
                 });
+                Core.fileUploadingCount(Core.fileUploadingCount.value += files.length);
                 files.forEach((final FileData i) async {
                   await _mediaDataSource.create(
                     fileData: i,
@@ -224,7 +226,7 @@ mixin AddProductController {
                     fileExtension: i.extension!,
                     productId: response.result?.id,
                     tags: <int>[TagMedia.image.number],
-                    onResponse: () {},
+                    onResponse: () => Core.fileUploadingCount(Core.fileUploadingCount.value - 1),
                     onError: () {},
                   );
                 });

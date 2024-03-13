@@ -12,4 +12,5 @@ abstract class Core {
   static List<ContentReadDto> contents = <ContentReadDto>[];
   static late AppSettingsReadDto appSettingsReadDto;
   static late UserReadDto user;
+  static RxInt fileUploadingCount = 0.obs;
 }
