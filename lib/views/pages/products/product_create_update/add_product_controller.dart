@@ -166,7 +166,6 @@ mixin AddProductController {
                 });
                 state.loaded();
                 action();
-                back();
               },
               onError: (final GenericResponse<dynamic> response) {},
               failure: (final String error) {},
