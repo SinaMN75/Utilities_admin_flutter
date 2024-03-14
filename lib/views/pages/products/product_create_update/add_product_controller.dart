@@ -148,7 +148,7 @@ mixin AddProductController {
                       productId: response.result?.id,
                       tags: <int>[TagMedia.image.number],
                       onResponse: () => Core.fileUploadingCount(Core.fileUploadingCount.value - 1),
-                      onError: () {},
+                      onError: () => Core.fileUploadingCount(Core.fileUploadingCount.value - 1),
                     );
                 });
                 await Future.forEach(files, (final FileData i) async {
@@ -161,7 +161,7 @@ mixin AddProductController {
                       productId: response.result?.id,
                       tags: <int>[TagMedia.image.number],
                       onResponse: () => Core.fileUploadingCount(Core.fileUploadingCount.value - 1),
-                      onError: () {},
+                      onError: () => Core.fileUploadingCount(Core.fileUploadingCount.value - 1),
                     );
                 });
                 state.loaded();
@@ -226,7 +226,7 @@ mixin AddProductController {
                     productId: response.result?.id,
                     tags: <int>[TagMedia.image.number],
                     onResponse: () => Core.fileUploadingCount(Core.fileUploadingCount.value - 1),
-                    onError: () {},
+                    onError: () => Core.fileUploadingCount(Core.fileUploadingCount.value - 1),
                   );
                 });
                 state.loaded();

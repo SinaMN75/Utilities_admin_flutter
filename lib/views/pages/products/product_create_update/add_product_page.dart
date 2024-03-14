@@ -1,5 +1,4 @@
 import 'package:utilities/utilities.dart';
-import 'package:utilities_admin_flutter/core/core.dart';
 import 'package:utilities_admin_flutter/views/pages/products/product_create_update/add_product_controller.dart';
 
 class AddProductPage extends StatefulWidget {
@@ -169,8 +168,8 @@ class _AddProductPageState extends State<AddProductPage> with AddProductControll
                 lines: 3,
                 contentPadding: const EdgeInsets.all(10),
               ).paddingSymmetric(vertical: 8),
-              if (Core.user.tags.contains(TagUser.adminProductUpdate.number))
-                button(
+              /// if (Core.user.tags.contains(TagUser.adminProductUpdate.number))
+              button(
                   title: "ثبت",
                   onTap: () => createUpdate(action: () => widget.action?.call()),
                 ).paddingOnly(bottom: 40),

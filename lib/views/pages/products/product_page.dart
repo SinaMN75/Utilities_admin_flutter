@@ -35,7 +35,8 @@ class _ProductPageState extends State<ProductPage> with ProductController, Autom
       padding: const EdgeInsets.symmetric(horizontal: 20),
       appBar: AppBar(
         actions: <Widget>[
-          if (Core.user.tags.contains(TagUser.adminProductRead.number)) IconButton(onPressed: create, icon: const Icon(Icons.add_box_outlined)),
+          ///if (Core.user.tags.contains(TagUser.adminProductRead.number))
+          IconButton(onPressed: create, icon: const Icon(Icons.add_box_outlined)),
         ],
       ),
       body: Obx(
