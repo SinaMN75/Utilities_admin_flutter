@@ -30,8 +30,8 @@ class _ContentPageState extends State<ContentPage> with ContentController, Autom
       constraints: const BoxConstraints(),
       appBar: AppBar(
         actions: <Widget>[
-          if (Core.user.tags.contains(TagUser.adminContentUpdate.number))
-            IconButton(
+          /// if (Core.user.tags.contains(TagUser.adminContentUpdate.number))
+          IconButton(
               onPressed: createUpdate,
               icon: const Icon(Icons.add_box_outlined, size: 40),
             ),
@@ -62,13 +62,15 @@ class _ContentPageState extends State<ContentPage> with ContentController, Autom
                                 DataCell(
                                   Row(
                                     children: <Widget>[
-                                      if (Core.user.tags.contains(TagUser.adminContentUpdate.number))
-                                        IconButton(
+
+                                      /// if (Core.user.tags.contains(TagUser.adminContentUpdate.number))
+                                      IconButton(
                                           onPressed: () => delete(dto: i),
                                           icon: Icon(Icons.delete, color: context.theme.colorScheme.error),
                                         ).paddingSymmetric(horizontal: 8),
-                                      if (Core.user.tags.contains(TagUser.adminContentUpdate.number))
-                                        IconButton(
+
+                                      /// if (Core.user.tags.contains(TagUser.adminContentUpdate.number))
+                                      IconButton(
                                           onPressed: () => createUpdate(dto: i),
                                           icon: Icon(Icons.edit, color: context.theme.colorScheme.primary),
                                         ).paddingSymmetric(horizontal: 8),

@@ -86,8 +86,8 @@ class _ProductPageState extends State<ProductPage> with ProductController, Autom
                                   DataCell(
                                     Row(
                                       children: <Widget>[
-                                        if (Core.user.tags.contains(TagUser.adminProductUpdate.number))
-                                          IconButton(
+                                        /// if (Core.user.tags.contains(TagUser.adminProductUpdate.number))
+                                        IconButton(
                                             onPressed: () => delete(dto: i),
                                             icon: Icon(Icons.delete, color: context.theme.colorScheme.error),
                                           ).paddingSymmetric(horizontal: 8),
