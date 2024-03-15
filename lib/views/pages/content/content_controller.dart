@@ -145,8 +145,8 @@ mixin ContentController {
                               fileExtension: i.extension!,
                               contentId: response.result?.id,
                               tags: <int>[TagMedia.media.number],
-                              onResponse: () {},
-                              onError: () {},
+                              onResponse: dismissEasyLoading,
+                              onError: dismissEasyLoading,
                             );
                         });
                         await Future.forEach(files, (final FileData i) async {
@@ -158,8 +158,8 @@ mixin ContentController {
                               fileExtension: i.extension!,
                               contentId: response.result?.id,
                               tags: <int>[TagMedia.media.number],
-                              onResponse: () {},
-                              onError: () {},
+                              onResponse: dismissEasyLoading,
+                              onError: dismissEasyLoading,
                             );
                         });
                         list.add(response.result!);

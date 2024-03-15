@@ -11,10 +11,11 @@ mixin ProductController {
   final TextEditingController controllerTitle = TextEditingController();
   final RxInt selectedProductStatus = TagProduct.all.number.obs;
   final RxInt selectedProductType = TagProduct.all.number.obs;
-  late Rx<CategoryReadDto> selectedCategory;
-  late Rx<CategoryReadDto> selectedSubCategory;
-  RxList<CategoryReadDto> categories = Core.categories.where((final CategoryReadDto e) => !e.children.isNullOrEmpty()).toList().obs;
-  RxList<CategoryReadDto> subCategories = (Core.categories.first.children ?? <CategoryReadDto>[]).obs;
+
+  /// late Rx<CategoryReadDto> selectedCategory;
+  /// late Rx<CategoryReadDto> selectedSubCategory;
+  /// RxList<CategoryReadDto> categories = Core.categories.where((final CategoryReadDto e) => !e.children.isNullOrEmpty()).toList().obs;
+  /// RxList<CategoryReadDto> subCategories = (Core.categories.first.children ?? <CategoryReadDto>[]).obs;
   CategoryReadDto all = CategoryReadDto(id: '', title: 'همه', jsonDetail: CategoryJsonDetail(), tags: <int>[]);
 
   int pageNumber = 1;
@@ -23,10 +24,10 @@ mixin ProductController {
   final ProductDataSource _productDataSource = ProductDataSource(baseUrl: AppConstants.baseUrl);
 
   void init() {
-    categories.insert(0, all);
-    subCategories.insert(0, all);
-    selectedCategory = categories.first.obs;
-    selectedSubCategory = subCategories.first.obs;
+    ///categories.insert(0, all);
+    ///subCategories.insert(0, all);
+    ///selectedCategory = categories.first.obs;
+    ///selectedSubCategory = subCategories.first.obs;
     if (list.isEmpty) {
       read();
     } else {
@@ -34,17 +35,17 @@ mixin ProductController {
     }
   }
 
-  void selectCategory(final CategoryReadDto? dto) {
-    selectedCategory(dto);
-    if ((dto?.children ?? <CategoryReadDto>[]).isNotEmpty) {
-      subCategories(categories.singleWhere((final CategoryReadDto e) => e.id == selectedCategory.value.id).children);
-      subCategories.insert(0, all);
-      selectedSubCategory(subCategories.where((final CategoryReadDto e) => e.parentId == selectedCategory.value.id).first);
-    } else {
-      subCategories(<CategoryReadDto>[all]);
-      selectedSubCategory(subCategories.first);
-    }
-  }
+  /// void selectCategory(final CategoryReadDto? dto) {
+  ///   selectedCategory(dto);
+  ///   if ((dto?.children ?? <CategoryReadDto>[]).isNotEmpty) {
+  ///     subCategories(categories.singleWhere((final CategoryReadDto e) => e.id == selectedCategory.value.id).children);
+  ///     subCategories.insert(0, all);
+  ///     selectedSubCategory(subCategories.where((final CategoryReadDto e) => e.parentId == selectedCategory.value.id).first);
+  ///   } else {
+  ///     subCategories(<CategoryReadDto>[all]);
+  ///     selectedSubCategory(subCategories.first);
+  ///   }
+  /// }
 
   void read() {
     state.loading();
@@ -52,14 +53,14 @@ mixin ProductController {
     if (selectedProductStatus.value != TagProduct.all.number) tags.add(selectedProductStatus.value);
     if (selectedProductType.value != TagProduct.all.number) tags.add(selectedProductType.value);
 
-    final List<String> categoryIds = <String>[];
-    categoryIds.clear();
+    ///final List<String> categoryIds = <String>[];
+    ///categoryIds.clear();
 
-    if (selectedSubCategory.value.id != '') {
-      categoryIds.add(selectedSubCategory.value.id);
-    } else if (selectedCategory.value.id != '') {
-      categoryIds.add(selectedCategory.value.id);
-    }
+    ///if (selectedSubCategory.value.id != '') {
+    ///  categoryIds.add(selectedSubCategory.value.id);
+    ///} else if (selectedCategory.value.id != '') {
+    ///  categoryIds.add(selectedCategory.value.id);
+    ///}
 
     _productDataSource.filter(
       dto: ProductFilterDto(
@@ -67,7 +68,8 @@ mixin ProductController {
         pageSize: 20,
         pageNumber: pageNumber,
         query: controllerTitle.text,
-        categories: categoryIds,
+
+        /// categories: categoryIds,
         showCategories: true,
         showChildren: true,
         showMedia: true,

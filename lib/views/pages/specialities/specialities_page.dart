@@ -1,5 +1,4 @@
 import 'package:utilities/utilities.dart';
-import 'package:utilities_admin_flutter/core/core.dart';
 import 'package:utilities_admin_flutter/views/pages/specialities/specialities_controller.dart';
 import 'package:utilities_admin_flutter/views/widget/table.dart';
 
@@ -31,7 +30,6 @@ class _SpecialitiesPageState extends State<SpecialitiesPage> with SpecialitiesCo
       appBar: AppBar(
         title: const Text("تخصص‌ها"),
         actions: <Widget>[
-          if (Core.user.tags.contains(TagUser.adminCategoryRead.number))
             IconButton(
               onPressed: create,
               icon: const Icon(Icons.add_box_outlined, size: 40),
@@ -62,12 +60,10 @@ class _SpecialitiesPageState extends State<SpecialitiesPage> with SpecialitiesCo
                                 DataCell(
                                   Row(
                                     children: <Widget>[
-                                      if (Core.user.tags.contains(TagUser.adminCategoryUpdate.number))
                                         IconButton(
                                           onPressed: () => _delete(dto: i),
                                           icon: Icon(Icons.delete, color: context.theme.colorScheme.error),
                                         ).paddingSymmetric(horizontal: 8),
-                                      if (Core.user.tags.contains(TagUser.adminCategoryUpdate.number))
                                         IconButton(
                                           onPressed: () => update(dto: i, index: index),
                                           icon: Icon(Icons.edit, color: context.theme.colorScheme.primary),
