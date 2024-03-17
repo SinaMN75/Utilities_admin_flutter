@@ -2,7 +2,7 @@ import 'package:utilities/utilities.dart';
 import 'package:utilities_admin_flutter/views/pages/products/product_create_update/add_product_controller.dart';
 
 class AddProductPage extends StatefulWidget {
-  const AddProductPage({super.key, this.dto, this.action, this.isFromInstagram, this.images, this.description});
+  const AddProductPage({super.key, this.dto, this.isFromInstagram, this.images, this.description});
 
   @override
   Key? get key => const Key("ساخت محصول");
@@ -10,7 +10,6 @@ class AddProductPage extends StatefulWidget {
   final List<String>? images;
   final String? description;
   final bool? isFromInstagram;
-  final VoidCallback? action;
 
   @override
   State<AddProductPage> createState() => _AddProductPageState();
@@ -168,11 +167,9 @@ class _AddProductPageState extends State<AddProductPage> with AddProductControll
                 lines: 3,
                 contentPadding: const EdgeInsets.all(10),
               ).paddingSymmetric(vertical: 8),
+
               /// if (Core.user.tags.contains(TagUser.adminProductUpdate.number))
-              button(
-                  title: "ثبت",
-                  onTap: () => createUpdate(action: () => widget.action?.call()),
-                ).paddingOnly(bottom: 40),
+              button(title: "ثبت", onTap: createUpdate).paddingOnly(bottom: 40),
             ],
           ).paddingOnly(top: 8, right: 16, left: 16, bottom: 50),
         ),

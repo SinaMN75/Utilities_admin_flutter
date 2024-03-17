@@ -112,7 +112,7 @@ mixin AddProductController {
   ///   selectedSubCategory(dto);
   /// }
 
-  void createUpdate({required final VoidCallback action}) => validateForm(
+  void createUpdate() => validateForm(
         key: formKey,
         action: () {
           /// if (keyValueList.isEmpty) return snackbarRed(title: s.error, subtitle: "حداقل یک ویژگی وارد کنید");
@@ -122,7 +122,6 @@ mixin AddProductController {
           ///     subtitle: "حداقل یک نوع محصول با قیمت و موجودی وارد کنید",
           ///   );
           if (dto == null) {
-            state.loading();
             final ProductCreateUpdateDto createDto = ProductCreateUpdateDto(
               title: controllerTitle.text,
               description: controllerDescription.text,
@@ -137,8 +136,9 @@ mixin AddProductController {
             _productDataSource.create(
               dto: createDto,
               onResponse: (final GenericResponse<ProductReadDto> response) async {
-                Core.fileUploadingCount(Core.fileUploadingCount.value += files.length);
-                await Future.forEach(files, (final FileData i) async {
+                back();
+                Core.fileUploadingCount(Core.fileUploadingCount.value += files.where((final FileData i) => i.url == null).length);
+                await Future.forEach(files.where((final FileData i) => i.url == null), (final FileData i) async {
                   if (i.parentId == null)
                     await _mediaDataSource.create(
                       parentId: i.parentId,
@@ -151,7 +151,7 @@ mixin AddProductController {
                       onError: () => Core.fileUploadingCount(Core.fileUploadingCount.value - 1),
                     );
                 });
-                await Future.forEach(files, (final FileData i) async {
+                await Future.forEach(files.where((final FileData i) => i.url == null), (final FileData i) async {
                   if (i.parentId != null)
                     await _mediaDataSource.create(
                       parentId: i.parentId,
@@ -164,23 +164,11 @@ mixin AddProductController {
                       onError: () => Core.fileUploadingCount(Core.fileUploadingCount.value - 1),
                     );
                 });
-                state.loaded();
-                action();
               },
               onError: (final GenericResponse<dynamic> response) {},
               failure: (final String error) {},
             );
           } else {
-            state.loading();
-
-            /// deletedSubProducts.forEach((final ProductCreateUpdateDto i) {
-            ///   if (i.id != null)
-            ///     _productDataSource.delete(
-            ///       id: i.id!,
-            ///       onResponse: (final GenericResponse<dynamic> response) {},
-            ///       onError: (final GenericResponse<dynamic> response) {},
-            ///     );
-            /// });
             _productDataSource.update(
               dto: ProductCreateUpdateDto(
                 id: dto!.id,
@@ -193,7 +181,8 @@ mixin AddProductController {
                 keyValues: keyValueList,
                 tags: <int>[selectedProductStatus.value, selectedProductType.value],
               ),
-              onResponse: (final GenericResponse<ProductReadDto> response) {
+              onResponse: (final GenericResponse<ProductReadDto> response) async {
+                back();
                 deletedFiles.forEach((final FileData i) {
                   _mediaDataSource.delete(id: i.id!, onResponse: () {}, onError: () {});
                 });
@@ -217,21 +206,33 @@ mixin AddProductController {
                     onError: (final GenericResponse<dynamic> response) {},
                   );
                 });
-                Core.fileUploadingCount(Core.fileUploadingCount.value += files.length);
-                files.forEach((final FileData i) async {
-                  await _mediaDataSource.create(
-                    fileData: i,
-                    parentId: i.parentId,
-                    fileExtension: i.extension!,
-                    productId: response.result?.id,
-                    tags: <int>[TagMedia.image.number],
-                    onResponse: () => Core.fileUploadingCount(Core.fileUploadingCount.value - 1),
-                    onError: () => Core.fileUploadingCount(Core.fileUploadingCount.value - 1),
-                  );
+                Core.fileUploadingCount(Core.fileUploadingCount.value += files.where((final FileData i) => i.url == null).length);
+                await Future.forEach(files.where((final FileData i) => i.url == null), (final FileData i) async {
+                  if (i.parentId == null)
+                    await _mediaDataSource.create(
+                      parentId: i.parentId,
+                      fileData: i,
+                      id: i.id,
+                      fileExtension: i.extension!,
+                      productId: response.result?.id,
+                      tags: <int>[TagMedia.image.number],
+                      onResponse: () => Core.fileUploadingCount(Core.fileUploadingCount.value - 1),
+                      onError: () => Core.fileUploadingCount(Core.fileUploadingCount.value - 1),
+                    );
                 });
-                state.loaded();
-                action();
-                back();
+                await Future.forEach(files.where((final FileData i) => i.url == null), (final FileData i) async {
+                  if (i.parentId != null)
+                    await _mediaDataSource.create(
+                      parentId: i.parentId,
+                      id: i.id,
+                      fileData: i,
+                      fileExtension: i.extension!,
+                      productId: response.result?.id,
+                      tags: <int>[TagMedia.image.number],
+                      onResponse: () => Core.fileUploadingCount(Core.fileUploadingCount.value - 1),
+                      onError: () => Core.fileUploadingCount(Core.fileUploadingCount.value - 1),
+                    );
+                });
               },
               onError: (final GenericResponse<dynamic> response) {},
             );

@@ -57,6 +57,7 @@ class _ProductPageState extends State<ProductPage> with ProductController, Autom
                         /// DataColumn(label: Text("مشخصات")),
                         DataColumn(label: Text("وضعیت")),
                         DataColumn(label: Text("تعدادبازدید")),
+                        DataColumn(label: Text("تاریخ")),
                         DataColumn(label: Text("عملیات‌ها")),
                       ],
                       rows: <DataRow>[
@@ -83,14 +84,15 @@ class _ProductPageState extends State<ProductPage> with ProductController, Autom
                                       trailing: Text((i.visitProducts ?? <ProductInsight>[]).length.toString()),
                                     ),
                                   ),
+                                  DataCell(Text(i.updatedAt!.toJalali().formatCompactDate())),
                                   DataCell(
                                     Row(
                                       children: <Widget>[
                                         /// if (Core.user.tags.contains(TagUser.adminProductUpdate.number))
                                         IconButton(
-                                            onPressed: () => delete(dto: i),
-                                            icon: Icon(Icons.delete, color: context.theme.colorScheme.error),
-                                          ).paddingSymmetric(horizontal: 8),
+                                          onPressed: () => delete(dto: i),
+                                          icon: Icon(Icons.delete, color: context.theme.colorScheme.error),
+                                        ).paddingSymmetric(horizontal: 8),
                                         IconButton(
                                           onPressed: () => update(dto: i),
                                           icon: Icon(Icons.edit, color: context.theme.colorScheme.primary),
