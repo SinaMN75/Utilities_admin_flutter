@@ -39,16 +39,16 @@ class _UserPageState extends State<UserPage> with UserController, AutomaticKeepA
                   children: <Widget>[
                     _filters(),
                     DataTable(
-                      columns: <DataColumn>[
-                        const DataColumn(label: Text("ردیف")),
-                        const DataColumn(label: Text("عکس")),
-                        const DataColumn(label: Text("نام")),
-                        const DataColumn(label: Text("نام خانوادگی")),
-                        const DataColumn(label: Text("نام کاربری")),
-                        const DataColumn(label: Text("آیدی اینستاگرام")),
-                        const DataColumn(label: Text("شماره موبایل")),
-                        const DataColumn(label: Text("وضعیت")),
-                        if (Core.user.tags.contains(TagUser.adminCategoryUpdate.number)) const DataColumn(label: Text("عملیات")),
+                      columns: const <DataColumn>[
+                        DataColumn(label: Text("ردیف")),
+                        DataColumn(label: Text("عکس")),
+                        DataColumn(label: Text("نام")),
+                        DataColumn(label: Text("نام خانوادگی")),
+                        DataColumn(label: Text("نام کاربری")),
+                        DataColumn(label: Text("آیدی اینستاگرام")),
+                        DataColumn(label: Text("شماره موبایل")),
+                        DataColumn(label: Text("وضعیت")),
+                        DataColumn(label: Text("عملیات")),
                       ],
                       rows: <DataRow>[
                         ...list
@@ -65,32 +65,32 @@ class _UserPageState extends State<UserPage> with UserController, AutomaticKeepA
                                   DataCell(Text(i.phoneNumber ?? "--")),
                                   DataCell(
                                     (i.suspend ?? false)
-                                        ? const Icon(Icons.power_settings_new_outlined, color: Colors.green)
+                                        ? const Icon(Icons.power_settings_new_outlined, color: Colors.red)
                                         : const Icon(
                                             Icons.power_settings_new_outlined,
                                             color: Colors.green,
                                           ),
                                   ),
-                                  if (Core.user.tags.contains(TagUser.adminCategoryUpdate.number))
-                                    DataCell(
-                                      PopupMenuButton<int>(
-                                        child: const Icon(Icons.menu),
-                                        itemBuilder: (final BuildContext context) => <PopupMenuItem<int>>[
-                                          PopupMenuItem<int>(value: 0, child: const Text("ویرایش").bodyMedium()),
-                                          PopupMenuItem<int>(value: 1, child: const Text("تراکنش‌ها").bodyMedium()),
-                                          PopupMenuItem<int>(value: 2, child: const Text("سفارشات").bodyMedium()),
-                                          PopupMenuItem<int>(value: 3, child: const Text("محصولات").bodyMedium()),
-                                          PopupMenuItem<int>(value: 4, child: const Text("کامنت‌ها").bodyMedium()),
-                                        ],
-                                        onSelected: (final int value) {
-                                          if (value == 0) edit(i);
-                                          if (value == 1) showTransactions(i);
-                                          if (value == 2) showOrders(i);
-                                          if (value == 3) showProducts(i);
-                                          if (value == 4) showComments(i);
-                                        },
-                                      ),
+                                  // if (Core.user.tags.contains(TagUser.adminCategoryUpdate.number))
+                                  DataCell(
+                                    PopupMenuButton<int>(
+                                      child: const Icon(Icons.menu),
+                                      itemBuilder: (final BuildContext context) => <PopupMenuItem<int>>[
+                                        const PopupMenuItem<int>(value: 0, child: Text("ویرایش")),
+                                        const PopupMenuItem<int>(value: 1, child: Text("تراکنش‌ها")),
+                                        const PopupMenuItem<int>(value: 2, child: Text("سفارشات")),
+                                        const PopupMenuItem<int>(value: 3, child: Text("محصولات")),
+                                        const PopupMenuItem<int>(value: 4, child: Text("کامنت‌ها")),
+                                      ],
+                                      onSelected: (final int value) {
+                                        if (value == 0) edit(i);
+                                        if (value == 1) showTransactions(i);
+                                        if (value == 2) showOrders(i);
+                                        if (value == 3) showProducts(i);
+                                        if (value == 4) showComments(i);
+                                      },
                                     ),
+                                  ),
                                 ],
                               ),
                             )
@@ -117,10 +117,22 @@ class _UserPageState extends State<UserPage> with UserController, AutomaticKeepA
   Widget _filters() => Wrap(
         crossAxisAlignment: WrapCrossAlignment.center,
         children: <Widget>[
-          textField(labelText: "نام", controller: controllerFirstName).container(width: 200, padding: const EdgeInsets.symmetric(horizontal: 4)),
-          textField(labelText: "نام خانوادگی", controller: controllerLastName).container(width: 200, padding: const EdgeInsets.symmetric(horizontal: 4)),
-          textField(labelText: "شماره موبایل", controller: controllerPhoneNumber).container(width: 200, padding: const EdgeInsets.symmetric(horizontal: 4)),
-          textField(labelText: "نام کاربری", controller: controllerUserName).container(width: 200, padding: const EdgeInsets.symmetric(horizontal: 4)),
+          textField(
+            labelText: "نام",
+            controller: controllerFirstName,
+          ).container(width: 200, padding: const EdgeInsets.all(4)),
+          textField(
+            labelText: "نام خانوادگی",
+            controller: controllerLastName,
+          ).container(width: 200, padding: const EdgeInsets.all(4)),
+          textField(
+            labelText: "شماره موبایل",
+            controller: controllerPhoneNumber,
+          ).container(width: 200, padding: const EdgeInsets.all(4)),
+          textField(
+            labelText: "نام کاربری",
+            controller: controllerUserName,
+          ).container(width: 200, padding: const EdgeInsets.all(4)),
           DropdownButtonFormField<bool>(
             value: suspend.value,
             items: const <DropdownMenuItem<bool>>[
@@ -128,8 +140,8 @@ class _UserPageState extends State<UserPage> with UserController, AutomaticKeepA
               DropdownMenuItem<bool>(value: true, child: Text("غیر فعال")),
             ],
             onChanged: suspend,
-          ).container(width: 200, margin: const EdgeInsets.symmetric(horizontal: 4)),
-          button(title: "فیلتر", onTap: filter, width: 200).paddingSymmetric(horizontal: 4),
+          ).container(width: 200, margin: const EdgeInsets.all(4)),
+          button(title: "فیلتر", onTap: filter, width: 200).paddingAll(4),
         ],
-      ).paddingSymmetric(vertical: 4);
+      ).paddingAll(4);
 }

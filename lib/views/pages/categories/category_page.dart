@@ -34,7 +34,6 @@ class _CategoryPageState extends State<CategoryPage> with CategoryController, Au
       appBar: AppBar(
         title: dto == null ? const Text("دسته بندی‌ها") : Text("زیر دسته های ${dto?.title}"),
         actions: <Widget>[
-          /// if (Core.user.tags!.contains(TagUser.adminCategoryRead.number))
           IconButton(
               onPressed: () => create(dto: widget.dto),
               icon: const Icon(Icons.add_box_outlined, size: 40),
@@ -68,14 +67,10 @@ class _CategoryPageState extends State<CategoryPage> with CategoryController, Au
                                 DataCell(
                                   Row(
                                     children: <Widget>[
-
-                                      /// if (Core.user.tags!.contains(TagUser.adminCategoryUpdate.number))
                                       IconButton(
                                           onPressed: () => _delete(dto: i),
                                           icon: Icon(Icons.delete, color: context.theme.colorScheme.error),
                                         ).paddingSymmetric(horizontal: 8),
-
-                                      /// if (Core.user.tags!.contains(TagUser.adminCategoryUpdate.number))
                                       IconButton(
                                           onPressed: () => update(dto: i),
                                           icon: Icon(Icons.edit, color: context.theme.colorScheme.primary),

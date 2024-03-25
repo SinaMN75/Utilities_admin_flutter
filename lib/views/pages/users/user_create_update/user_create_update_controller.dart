@@ -60,8 +60,17 @@ mixin UserCreateUpdateController {
     controllerPhoneNumber.text = dto.appPhoneNumber ?? "";
     controllerInstagram.text = dto.jsonDetail.instagram ?? "";
     controllerAdminUserName.text = dto.email ?? "";
-    controllerBirthdate.text = Jalali.fromDateTime(DateTime.parse(dto.birthdate ?? DateTime.now().toIso8601String())).formatCompactDate();
-    controllerPremium.text = Jalali.fromDateTime(DateTime.parse(dto.premiumExpireDate ?? DateTime.now().toIso8601String())).formatCompactDate();
+
+    try {
+      controllerBirthdate.text = DateTime.parse(dto.birthdate ?? DateTime.now().toIso8601String()).toJalali().formatCompactDate();
+    } catch (e) {
+      controllerBirthdate.text = "";
+    }
+    try {
+      controllerPremium.text = DateTime.parse(dto.premiumExpireDate ?? DateTime.now().toIso8601String()).toJalali().formatCompactDate();
+    } catch (e) {
+      controllerPremium.text = "";
+    }
     if (dto.tags.contains(GenderType.male.number))
       genderType(GenderType.male);
     else

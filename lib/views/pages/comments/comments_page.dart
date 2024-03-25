@@ -1,6 +1,5 @@
 import 'package:utilities/components/pagination.dart';
 import 'package:utilities/utilities.dart';
-import 'package:utilities_admin_flutter/core/core.dart';
 import 'package:utilities_admin_flutter/views/pages/comments/comments_controller.dart';
 import 'package:utilities_admin_flutter/views/widget/table.dart';
 import 'package:utilities_admin_flutter/views/widget/widgets.dart';
@@ -42,15 +41,12 @@ class _CommentsPageState extends State<CommentsPage> with CommentsController, Au
                   children: <Widget>[
                     _filters(),
                     DataTable(
-                      columns: <DataColumn>[
-                        const DataColumn(label: Text("ردیف")),
-                        const DataColumn(label: Text("کاربر")),
-                        const DataColumn(label: Text("محصول")),
-                        const DataColumn(label: Text("نظر")),
-                        if (Core.user.tags.contains(TagUser.adminCategoryRead.number))
-                          const DataColumn(
-                            label: Text("عملیات‌ها"),
-                          ),
+                      columns: const <DataColumn>[
+                        DataColumn(label: Text("ردیف")),
+                        DataColumn(label: Text("کاربر")),
+                        DataColumn(label: Text("محصول")),
+                        DataColumn(label: Text("نظر")),
+                        DataColumn(label: Text("عملیات‌ها")),
                       ],
                       rows: <DataRow>[
                         ...list.mapIndexed(
@@ -74,38 +70,39 @@ class _CommentsPageState extends State<CommentsPage> with CommentsController, Au
                                         ),
                                       ),
                                 ),
-                                if (Core.user.tags.contains(TagUser.adminCategoryRead.number))
-                                  DataCell(
-                                    Row(
-                                      children: <Widget>[
-                                        IconButton(
-                                          onPressed: () => delete(dto: i),
-                                          icon: Icon(Icons.delete, color: context.theme.colorScheme.error),
-                                        ).paddingSymmetric(horizontal: 8),
-                                        DropdownButtonFormField<TagComment>(
-                                          value: selectedCommentTag.value,
-                                          items: <DropdownMenuItem<TagComment>>[
-                                            DropdownMenuItem<TagComment>(
-                                              value: TagComment.released,
-                                              child: Text(TagComment.released.title),
-                                            ),
-                                            DropdownMenuItem<TagComment>(
-                                              value: TagComment.rejected,
-                                              child: Text(TagComment.rejected.title),
-                                            ),
-                                            DropdownMenuItem<TagComment>(
-                                              value: TagComment.inQueue,
-                                              child: Text(TagComment.inQueue.title),
-                                            ),
-                                          ],
-                                          onChanged: (final TagComment? value) {
-                                            selectedCommentTag(value);
-                                            update(dto: CommentCreateUpdateDto(id: i.id, tags: <int>[value!.number]));
-                                          },
-                                        ).container(width: 200),
-                                      ],
-                                    ),
+                                DataCell(
+                                  Row(
+                                    children: <Widget>[
+                                      IconButton(
+                                        onPressed: () => delete(dto: i),
+                                        icon: Icon(Icons.delete, color: context.theme.colorScheme.error),
+                                      ).paddingSymmetric(horizontal: 8),
+                                      DropdownButtonFormField<TagComment>(
+                                        value: selectedCommentTag.value,
+                                        items: <DropdownMenuItem<TagComment>>[
+                                          DropdownMenuItem<TagComment>(
+                                            value: TagComment.released,
+                                            child: Text(TagComment.released.title),
+                                          ),
+                                          DropdownMenuItem<TagComment>(
+                                            value: TagComment.rejected,
+                                            child: Text(TagComment.rejected.title),
+                                          ),
+                                          DropdownMenuItem<TagComment>(
+                                            value: TagComment.inQueue,
+                                            child: Text(TagComment.inQueue.title),
+                                          ),
+                                        ],
+                                        onChanged: (final TagComment? value) {
+                                          selectedCommentTag(value);
+                                          update(
+                                            dto: CommentCreateUpdateDto(id: i.id, tags: <int>[value!.number]),
+                                          );
+                                        },
+                                      ).container(width: 200),
+                                    ],
                                   ),
+                                ),
                               ],
                             );
                           },

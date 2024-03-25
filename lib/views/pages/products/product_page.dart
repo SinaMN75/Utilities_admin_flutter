@@ -35,7 +35,6 @@ class _ProductPageState extends State<ProductPage> with ProductController, Autom
       padding: const EdgeInsets.symmetric(horizontal: 20),
       appBar: AppBar(
         actions: <Widget>[
-          ///if (Core.user.tags.contains(TagUser.adminProductRead.number))
           IconButton(onPressed: create, icon: const Icon(Icons.add_box_outlined)),
         ],
       ),
@@ -88,7 +87,6 @@ class _ProductPageState extends State<ProductPage> with ProductController, Autom
                                   DataCell(
                                     Row(
                                       children: <Widget>[
-                                        /// if (Core.user.tags.contains(TagUser.adminProductUpdate.number))
                                         IconButton(
                                           onPressed: () => delete(dto: i),
                                           icon: Icon(Icons.delete, color: context.theme.colorScheme.error),
@@ -132,7 +130,7 @@ class _ProductPageState extends State<ProductPage> with ProductController, Autom
           /// textFieldUser(onUserSelected: (final UserReadDto dto) => userId = dto.id, text: "شماره همراه کاربر"),
           iconTextVertical(
             crossAxisAlignment: CrossAxisAlignment.start,
-            leading: const Text('وضعیت').bodyMedium(),
+            leading: const Text('وضعیت'),
             trailing: DropdownButtonFormField<int>(
               value: selectedProductStatus.value,
               items: <DropdownMenuItem<int>>[
@@ -146,7 +144,7 @@ class _ProductPageState extends State<ProductPage> with ProductController, Autom
           ).paddingSymmetric(horizontal: 8),
           iconTextVertical(
             crossAxisAlignment: CrossAxisAlignment.start,
-            leading: const Text('نوع').bodyMedium(),
+            leading: const Text('نوع'),
             trailing: DropdownButtonFormField<int>(
               value: selectedProductType.value,
               items: <DropdownMenuItem<int>>[
@@ -164,7 +162,7 @@ class _ProductPageState extends State<ProductPage> with ProductController, Autom
 
           /// iconTextVertical(
           ///   crossAxisAlignment: CrossAxisAlignment.start,
-          ///   leading: const Text('دسته').bodyMedium(),
+          ///   leading: const Text('دسته'),
           ///   trailing: DropdownButtonFormField<CategoryReadDto>(
           ///     value: selectedCategory.value,
           ///     items: <DropdownMenuItem<CategoryReadDto>>[
@@ -179,7 +177,7 @@ class _ProductPageState extends State<ProductPage> with ProductController, Autom
           /// ).paddingSymmetric(horizontal: 8),
           /// iconTextVertical(
           ///   crossAxisAlignment: CrossAxisAlignment.start,
-          ///   leading: const Text('زیر دسته').bodyMedium(),
+          ///   leading: const Text('زیر دسته'),
           ///   trailing: DropdownButtonFormField<CategoryReadDto>(
           ///     value: selectedSubCategory.value,
           ///     items: <DropdownMenuItem<CategoryReadDto>>[

@@ -156,7 +156,7 @@ class _DashboardPageState extends State<DashboardPage> with DashboardController,
   Widget _completedOrders() => Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          const Text("سفارشات تکمیل شده اخیر").bodyMedium(),
+          const Text("سفارشات تکمیل شده اخیر"),
           SizedBox(
             width: double.infinity,
             child: DataTable(

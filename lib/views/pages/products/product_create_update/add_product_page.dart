@@ -25,9 +25,6 @@ class _AddProductPageState extends State<AddProductPage> with AddProductControll
     isFromInstagram = widget.isFromInstagram ?? false;
     getProductById(id: dto?.id);
     files = (dto?.media ?? <MediaReadDto>[])
-        .where(
-          (final MediaReadDto i) => i.tags.contains(TagMedia.image.number),
-        )
         .map(
           (final MediaReadDto e) => FileData(
             url: e.url,
@@ -97,7 +94,7 @@ class _AddProductPageState extends State<AddProductPage> with AddProductControll
                 ).paddingSymmetric(vertical: 8),
               ),
 
-              /// const Text("انتخاب دسته‌بندی").bodyMedium(),
+              /// const Text("انتخاب دسته‌بندی"),
               /// Obx(
               ///   () => DropdownButtonFormField<CategoryReadDto>(
               ///     value: selectedCategory.value,
@@ -114,7 +111,7 @@ class _AddProductPageState extends State<AddProductPage> with AddProductControll
               ///     onChanged: selectCategory,
               ///   ),
               /// ).paddingSymmetric(vertical: 8),
-              /// const Text("انتخاب زیر دسته").bodyMedium(),
+              /// const Text("انتخاب زیر دسته"),
               /// Obx(
               ///   () => DropdownButtonFormField<CategoryReadDto>(
               ///     value: selectedSubCategory.value,
@@ -138,16 +135,16 @@ class _AddProductPageState extends State<AddProductPage> with AddProductControll
               ).paddingSymmetric(vertical: 8),
               const SizedBox(height: 8),
               filePickerList(
-                title: "افزودن تصویر",
                 files: files,
-                onFileSelected: (final List<FileData> list) => files.addAll(list.toSet()),
+                onFileSelected: (final List<FileData> list) => files = list.toSet().toList(),
                 onFileEdited: editedFiles.addAll,
-                onFileDeleted: (final List<FileData> list) => list.forEach(
-                  (final FileData i) {
-                    files.remove(i);
-                    deletedFiles.add(i);
-                  },
-                ),
+                onFileDeleted: (final List<FileData> list) =>
+                    list.forEach(
+                          (final FileData i) {
+                        files.remove(i);
+                        deletedFiles.add(i);
+                      },
+                    ),
               ),
               textField(
                 text: "وب‌سایت",
@@ -220,7 +217,7 @@ class _AddProductPageState extends State<AddProductPage> with AddProductControll
                 (final KeyValueViewModel e) => Row(
                   children: <Widget>[
                     Text(e.key)
-                        .bodyMedium()
+
                         .container(
                           backgroundColor: context.theme.hintColor.withOpacity(0.1),
                           radius: 12,
@@ -229,7 +226,7 @@ class _AddProductPageState extends State<AddProductPage> with AddProductControll
                         .expanded(),
                     const SizedBox(width: 16),
                     Text(e.value)
-                        .bodyMedium()
+
                         .container(
                           backgroundColor: context.theme.hintColor.withOpacity(0.1),
                           radius: 12,
@@ -350,51 +347,51 @@ class _AddProductPageState extends State<AddProductPage> with AddProductControll
   ///               (final ProductCreateUpdateDto i) => Column(
   ///                 children: <Widget>[
   ///                   Row(
-  ///                     children: <Widget>[
-  ///                       Container(
-  ///                         width: 50,
-  ///                         height: 50,
-  ///                         decoration: BoxDecoration(
-  ///                           color: hexStringToColor(i.color!),
-  ///                           shape: BoxShape.circle,
-  ///                           border: Border.all(),
-  ///                         ),
-  ///                       ),
-  ///                       Text(i.title!)
-  ///                           .bodyMedium()
-  ///                           .container(
-  ///                             backgroundColor: context.theme.hintColor.withOpacity(0.1),
-  ///                             radius: 12,
-  ///                             padding: const EdgeInsets.all(8),
-  ///                             margin: const EdgeInsets.symmetric(horizontal: 8),
-  ///                           )
-  ///                           .expanded(),
-  ///                     ],
-  ///                   ).paddingSymmetric(vertical: 8),
-  ///                   Row(
-  ///                     children: <Widget>[
-  ///                       Text(i.price.toString().separateNumbers3By3())
-  ///                           .bodyMedium()
-  ///                           .container(
-  ///                             backgroundColor: context.theme.hintColor.withOpacity(0.1),
-  ///                             radius: 12,
-  ///                             padding: const EdgeInsets.all(8),
-  ///                             margin: const EdgeInsets.symmetric(horizontal: 8),
-  ///                           )
-  ///                           .expanded(),
-  ///                       Text(i.stock.toString())
-  ///                           .bodyMedium()
-  ///                           .container(
-  ///                             backgroundColor: context.theme.hintColor.withOpacity(0.1),
-  ///                             radius: 12,
-  ///                             padding: const EdgeInsets.all(8),
-  ///                             margin: const EdgeInsets.symmetric(horizontal: 8),
-  ///                           )
-  ///                           .expanded(),
-  ///                       Icon(Icons.remove, color: context.theme.colorScheme.error).onTap(() {
-  ///                         subProducts.remove(i);
-  ///                         deletedSubProducts.add(i);
-  ///                       }),
+///                     children: <Widget>[
+///                       Container(
+///                         width: 50,
+///                         height: 50,
+///                         decoration: BoxDecoration(
+///                           color: hexStringToColor(i.color!),
+///                           shape: BoxShape.circle,
+///                           border: Border.all(),
+///                         ),
+///                       ),
+///                       Text(i.title!)
+///
+///                           .container(
+///                             backgroundColor: context.theme.hintColor.withOpacity(0.1),
+///                             radius: 12,
+///                             padding: const EdgeInsets.all(8),
+///                             margin: const EdgeInsets.symmetric(horizontal: 8),
+///                           )
+///                           .expanded(),
+///                     ],
+///                   ).paddingSymmetric(vertical: 8),
+///                   Row(
+///                     children: <Widget>[
+///                       Text(i.price.toString().separateNumbers3By3())
+///
+///                           .container(
+///                             backgroundColor: context.theme.hintColor.withOpacity(0.1),
+///                             radius: 12,
+///                             padding: const EdgeInsets.all(8),
+///                             margin: const EdgeInsets.symmetric(horizontal: 8),
+///                           )
+///                           .expanded(),
+///                       Text(i.stock.toString())
+///
+///                           .container(
+///                             backgroundColor: context.theme.hintColor.withOpacity(0.1),
+///                             radius: 12,
+///                             padding: const EdgeInsets.all(8),
+///                             margin: const EdgeInsets.symmetric(horizontal: 8),
+///                           )
+///                           .expanded(),
+///                       Icon(Icons.remove, color: context.theme.colorScheme.error).onTap(() {
+///                         subProducts.remove(i);
+///                         deletedSubProducts.add(i);
+///                       }),
   ///                     ],
   ///                   ).paddingSymmetric(vertical: 8),
   ///                   Divider(

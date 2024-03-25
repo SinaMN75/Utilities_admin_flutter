@@ -84,7 +84,7 @@ class _TransactionDetailPageState extends State<TransactionDetailPage> with Auto
               Icons.add_circle,
               size: 24,
             ),
-            Text(totalPrice.toString()).bodyMedium(),
+            Text(totalPrice.toString()),
           ],
         )
       ],
@@ -103,9 +103,9 @@ class _TransactionDetailPageState extends State<TransactionDetailPage> with Auto
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Text(orderDetail.product?.parent?.title ?? '').bodyMedium(),
+                  Text(orderDetail.product?.parent?.title ?? ''),
                   const SizedBox(height: 8),
-                  Text(orderDetail.product?.price?.toString() ?? '').bodyMedium(),
+                  Text(orderDetail.product?.price?.toString() ?? ''),
                 ],
               ),
             ),

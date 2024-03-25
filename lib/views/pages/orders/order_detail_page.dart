@@ -63,7 +63,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> with OrderController,
           button(
             title: "ذخیره",
             onTap: () {
-              if (Core.user.tags!.contains(TagUser.adminOrderRead.number)) {}
+              if (Core.user.tags.contains(TagUser.adminOrderRead.number)) {}
             },
           ).paddingSymmetric(vertical: 20),
         ],
@@ -89,9 +89,9 @@ class _OrderDetailPageState extends State<OrderDetailPage> with OrderController,
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Text(orderDetail.product?.parent?.title ?? '').bodyMedium(),
+              Text(orderDetail.product?.parent?.title ?? ''),
               const SizedBox(height: 8),
-              Text(orderDetail.product?.price?.toString() ?? '').bodyMedium(),
+              Text(orderDetail.product?.price?.toString() ?? ''),
             ],
           ).expanded(),
           Text("${orderDetail.count} عدد ").titleMedium(color: Colors.green).bold(),
