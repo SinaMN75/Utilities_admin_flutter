@@ -31,15 +31,16 @@ class _ContentPageState extends State<ContentPage> with ContentController, Autom
       appBar: AppBar(
         actions: <Widget>[
           IconButton(
-              onPressed: createUpdate,
-              icon: const Icon(Icons.add_box_outlined, size: 40),
-            ),
+            onPressed: createUpdate,
+            icon: const Icon(Icons.add_box_outlined, size: 40),
+          ),
         ],
       ),
       body: Obx(
         () => state.isLoaded()
             ? Column(
                 children: <Widget>[
+                  _filter(),
                   DataTable(
                     columns: const <DataColumn>[
                       DataColumn(label: Text("ردیف")),
@@ -49,7 +50,7 @@ class _ContentPageState extends State<ContentPage> with ContentController, Autom
                       DataColumn(label: Text("عملیات‌ها")),
                     ],
                     rows: <DataRow>[
-                      ...list
+                      ...filteredList
                           .mapIndexed(
                             (final int index, final ContentReadDto i) => DataRow(
                               color: dataTableRowColor(index),
@@ -62,13 +63,13 @@ class _ContentPageState extends State<ContentPage> with ContentController, Autom
                                   Row(
                                     children: <Widget>[
                                       IconButton(
-                                          onPressed: () => delete(dto: i),
-                                          icon: Icon(Icons.delete, color: context.theme.colorScheme.error),
-                                        ).paddingSymmetric(horizontal: 8),
+                                        onPressed: () => delete(dto: i),
+                                        icon: Icon(Icons.delete, color: context.theme.colorScheme.error),
+                                      ).paddingSymmetric(horizontal: 8),
                                       IconButton(
-                                          onPressed: () => createUpdate(dto: i),
-                                          icon: Icon(Icons.edit, color: context.theme.colorScheme.primary),
-                                        ).paddingSymmetric(horizontal: 8),
+                                        onPressed: () => createUpdate(dto: i),
+                                        icon: Icon(Icons.edit, color: context.theme.colorScheme.primary),
+                                      ).paddingSymmetric(horizontal: 8),
                                     ],
                                   ),
                                 ),
@@ -84,4 +85,22 @@ class _ContentPageState extends State<ContentPage> with ContentController, Autom
       ),
     );
   }
+
+  Widget _filter() => Row(
+        children: <Widget>[
+          DropdownButtonFormField<int>(
+            value: selectedContentTag.value,
+            items: <DropdownMenuItem<int>>[
+              DropdownMenuItem<int>(value: TagContent.all.number, child: const Text("همه")),
+              DropdownMenuItem<int>(value: TagContent.aboutUs.number, child: const Text("درباره ما")),
+              DropdownMenuItem<int>(value: TagContent.terms.number, child: const Text("قوانین مقررات")),
+              DropdownMenuItem<int>(value: TagContent.homeBanner1.number, child: const Text("بنر ۱")),
+              DropdownMenuItem<int>(value: TagContent.homeBanner2.number, child: const Text("بنر ۲")),
+              DropdownMenuItem<int>(value: TagContent.premium.number, child: const Text("پریمیوم")),
+            ],
+            onChanged: selectedContentTag,
+          ).container(width: 200, margin: const EdgeInsets.all(8)),
+          button(title: "فیلتر", onTap: filter, width: 200),
+        ],
+      ).paddingSymmetric(horizontal: 20, vertical: 20);
 }

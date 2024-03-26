@@ -6,9 +6,25 @@ mixin ContentController {
   final MediaDataSource _mediaDataSource = MediaDataSource(baseUrl: AppConstants.baseUrl);
   final Rx<PageState> state = PageState.initial.obs;
   final RxList<ContentReadDto> list = <ContentReadDto>[].obs;
+  final RxList<ContentReadDto> filteredList = <ContentReadDto>[].obs;
+  final RxInt selectedContentTag = TagContent.all.number.obs;
 
   void init() {
     read();
+  }
+
+  void filter() {
+    filteredList(
+      list
+          .where(
+            (final ContentReadDto i) => selectedContentTag.value == 100
+                ? true
+                : i.tags.contains(
+                    selectedContentTag.value,
+                  ),
+          )
+          .toList(),
+    );
   }
 
   void read() {
@@ -16,6 +32,7 @@ mixin ContentController {
     _dataSource.read(
       onResponse: (final GenericResponse<ContentReadDto> response) {
         list(response.resultList);
+        filteredList(response.resultList);
         state.loaded();
       },
       onError: (final GenericResponse<dynamic> response) {},
@@ -40,21 +57,60 @@ mixin ContentController {
       );
 
   void createUpdate({final ContentReadDto? dto}) {
-    final TextEditingController controllerTitle = TextEditingController(text: dto?.title);
-    final TextEditingController controllerDescription = TextEditingController(text: dto?.description);
-    final TextEditingController controllerInstagram = TextEditingController(text: dto?.jsonDetail.instagram);
-    final TextEditingController controllerTelegram = TextEditingController(text: dto?.jsonDetail.telegram);
-    final TextEditingController controllerWhatsapp = TextEditingController(text: dto?.jsonDetail.whatsApp);
-    final TextEditingController controllerPhoneNumber = TextEditingController(text: dto?.jsonDetail.phoneNumber1);
-    final TextEditingController controllerAddress = TextEditingController(text: dto?.jsonDetail.address1);
-    final TextEditingController controllerWebSite = TextEditingController(text: dto?.jsonDetail.website);
-    final Rx<TagContent> selectedTag = UtilitiesTagUtils.tagContentFromIntList(dto?.tags ?? <int>[]).obs;
+    final GlobalKey<FormState> formKey = GlobalKey();
+    final TextEditingController controllerTitle = TextEditingController(
+      text: dto?.title,
+    );
+    final TextEditingController controllerDescription = TextEditingController(
+      text: dto?.description,
+    );
+    final TextEditingController controllerInstagram = TextEditingController(
+      text: dto?.jsonDetail.instagram,
+    );
+    final TextEditingController controllerTelegram = TextEditingController(
+      text: dto?.jsonDetail.telegram,
+    );
+    final TextEditingController controllerWhatsapp = TextEditingController(
+      text: dto?.jsonDetail.whatsApp,
+    );
+    final TextEditingController controllerPhoneNumber = TextEditingController(
+      text: dto?.jsonDetail.phoneNumber1,
+    );
+    final TextEditingController controllerAddress = TextEditingController(
+      text: dto?.jsonDetail.address1,
+    );
+    final TextEditingController controllerWebSite = TextEditingController(
+      text: dto?.jsonDetail.website,
+    );
+    final Rx<TagContent> selectedTag = UtilitiesTagUtils.tagContentFromIntList(
+      dto?.tags ?? <int>[],
+    ).obs;
 
     final List<FileData> deletedFiles = <FileData>[];
     final List<FileData> editedFiles = <FileData>[];
-    List<FileData> files = <FileData>[];
+    List<FileData> files = (dto?.media ?? <MediaReadDto>[])
+        .map(
+          (final MediaReadDto e) => FileData(
+            url: e.url,
+            jsonDetail: e.jsonDetail,
+            parentId: e.parentId,
+            tags: e.tags,
+            id: e.id,
+            children: (e.children ?? <MediaReadDto>[])
+                .map(
+                  (final MediaReadDto e) => FileData(
+                    url: e.url,
+                    jsonDetail: e.jsonDetail,
+                    parentId: e.parentId,
+                    tags: e.tags,
+                    id: e.id,
+                  ),
+                )
+                .toList(),
+          ),
+        )
+        .toList();
 
-    final GlobalKey<FormState> formKey = GlobalKey();
     dialogAlert(
       Form(
         key: formKey,
@@ -64,21 +120,54 @@ mixin ContentController {
               () => DropdownButtonFormField<TagContent>(
                 value: selectedTag.value,
                 items: <DropdownMenuItem<TagContent>>[
-                  DropdownMenuItem<TagContent>(value: TagContent.aboutUs, child: Text(TagContent.aboutUs.title)),
-                  DropdownMenuItem<TagContent>(value: TagContent.terms, child: Text(TagContent.terms.title)),
-                  DropdownMenuItem<TagContent>(value: TagContent.homeBanner1, child: Text(TagContent.homeBanner1.title)),
-                  DropdownMenuItem<TagContent>(value: TagContent.homeBanner2, child: Text(TagContent.homeBanner2.title)),
-                  DropdownMenuItem<TagContent>(value: TagContent.homeBannerSmall1, child: Text(TagContent.homeBannerSmall1.title)),
-                  DropdownMenuItem<TagContent>(value: TagContent.homeBannerSmall2, child: Text(TagContent.homeBannerSmall2.title)),
-                  DropdownMenuItem<TagContent>(value: TagContent.smallDetail1, child: Text(TagContent.smallDetail1.title)),
-                  DropdownMenuItem<TagContent>(value: TagContent.smallDetail2, child: Text(TagContent.smallDetail2.title)),
-                  DropdownMenuItem<TagContent>(value: TagContent.news, child: Text(TagContent.news.title)),
-                  DropdownMenuItem<TagContent>(value: TagContent.premium, child: Text(TagContent.premium.title)),
+                  DropdownMenuItem<TagContent>(
+                    value: TagContent.aboutUs,
+                    child: Text(TagContent.aboutUs.title),
+                  ),
+                  DropdownMenuItem<TagContent>(
+                    value: TagContent.terms,
+                    child: Text(TagContent.terms.title),
+                  ),
+                  DropdownMenuItem<TagContent>(
+                    value: TagContent.homeBanner1,
+                    child: Text(TagContent.homeBanner1.title),
+                  ),
+                  DropdownMenuItem<TagContent>(
+                    value: TagContent.homeBanner2,
+                    child: Text(TagContent.homeBanner2.title),
+                  ),
+                  DropdownMenuItem<TagContent>(
+                    value: TagContent.homeBannerSmall1,
+                    child: Text(TagContent.homeBannerSmall1.title),
+                  ),
+                  DropdownMenuItem<TagContent>(
+                    value: TagContent.homeBannerSmall2,
+                    child: Text(TagContent.homeBannerSmall2.title),
+                  ),
+                  DropdownMenuItem<TagContent>(
+                    value: TagContent.smallDetail1,
+                    child: Text(TagContent.smallDetail1.title),
+                  ),
+                  DropdownMenuItem<TagContent>(
+                    value: TagContent.smallDetail2,
+                    child: Text(TagContent.smallDetail2.title),
+                  ),
+                  DropdownMenuItem<TagContent>(
+                    value: TagContent.news,
+                    child: Text(TagContent.news.title),
+                  ),
+                  DropdownMenuItem<TagContent>(
+                    value: TagContent.premium,
+                    child: Text(TagContent.premium.title),
+                  ),
                 ],
                 onChanged: selectedTag,
               ),
             ).paddingSymmetric(vertical: 4),
-            textField(labelText: "عنوان", controller: controllerTitle).paddingSymmetric(vertical: 4),
+            textField(
+              labelText: "عنوان",
+              controller: controllerTitle,
+            ).paddingSymmetric(vertical: 4),
             textField(
               labelText: "توضیحات",
               controller: controllerDescription,
@@ -87,27 +176,44 @@ mixin ContentController {
             ).paddingSymmetric(vertical: 4),
             Row(
               children: <Widget>[
-                textField(labelText: "اینستاگرام", controller: controllerInstagram).paddingAll(4).expanded(),
-                textField(labelText: "تلگرام", controller: controllerTelegram).paddingAll(4).expanded(),
+                textField(
+                  labelText: "اینستاگرام",
+                  controller: controllerInstagram,
+                ).paddingAll(4).expanded(),
+                textField(
+                  labelText: "تلگرام",
+                  controller: controllerTelegram,
+                ).paddingAll(4).expanded(),
               ],
             ),
             Row(
               children: <Widget>[
-                textField(labelText: "واتساپ", controller: controllerWhatsapp).paddingAll(4).expanded(),
-                textField(labelText: "شماره تماس", controller: controllerPhoneNumber).paddingAll(4).expanded(),
+                textField(
+                  labelText: "واتساپ",
+                  controller: controllerWhatsapp,
+                ).paddingAll(4).expanded(),
+                textField(
+                  labelText: "شماره تماس",
+                  controller: controllerPhoneNumber,
+                ).paddingAll(4).expanded(),
               ],
             ),
             Row(
               children: <Widget>[
-                textField(labelText: "آدرس", controller: controllerAddress).paddingAll(4).expanded(),
-                textField(labelText: "وبسایت", controller: controllerWebSite).paddingAll(4).expanded(),
+                textField(
+                  labelText: "آدرس",
+                  controller: controllerAddress,
+                ).paddingAll(4).expanded(),
+                textField(
+                  labelText: "وبسایت",
+                  controller: controllerWebSite,
+                ).paddingAll(4).expanded(),
               ],
             ),
             const SizedBox(height: 8),
             filePickerList(
-              title: "افزودن تصویر",
               files: files,
-              onFileSelected: (final List<FileData> list) => files = list,
+              onFileSelected: (final List<FileData> list) => files = list.toSet().toList(),
               onFileEdited: editedFiles.addAll,
               onFileDeleted: (final List<FileData> list) => list.forEach(
                 (final FileData i) {
@@ -136,6 +242,8 @@ mixin ContentController {
                         tags: <int>[selectedTag.value.number],
                       ),
                       onResponse: (final GenericResponse<ContentReadDto> response) async {
+                        await dismissEasyLoading();
+                        back();
                         await Future.forEach(files, (final FileData i) async {
                           if (i.parentId == null)
                             await _mediaDataSource.create(
@@ -169,7 +277,6 @@ mixin ContentController {
                       onError: (final GenericResponse<dynamic> response) {},
                     );
                   } else {
-                    showEasyLoading();
                     _dataSource.update(
                       dto: ContentCreateUpdateDto(
                         id: dto.id,
@@ -183,7 +290,9 @@ mixin ContentController {
                         address1: controllerAddress.text,
                         tags: <int>[selectedTag.value.number],
                       ),
-                      onResponse: (final GenericResponse<ContentReadDto> response) {
+                      onResponse: (final GenericResponse<ContentReadDto> response) async {
+                        await dismissEasyLoading();
+                        back();
                         files.forEach(
                           (final FileData i) async => _mediaDataSource.create(
                             fileData: i,
@@ -195,10 +304,32 @@ mixin ContentController {
                           ),
                         );
                         deletedFiles.forEach(
-                          (final FileData i) => _mediaDataSource.delete(id: i.id!, onResponse: () {}, onError: () {}),
+                          (final FileData i) => _mediaDataSource.delete(
+                            id: i.id!,
+                            onResponse: () {},
+                            onError: () {},
+                          ),
                         );
-                        dismissEasyLoading();
-                        back();
+                        editedFiles.forEach((final FileData i) {
+                          _mediaDataSource.update(
+                            dto: MediaUpdateDto(
+                              id: i.id,
+                              title: i.jsonDetail?.title,
+                              link2: i.jsonDetail?.link2,
+                              description: i.jsonDetail?.description,
+                              time: i.jsonDetail?.time,
+                              size: i.jsonDetail?.size,
+                              order: i.order,
+                              tags: i.tags,
+                              link1: i.jsonDetail?.link1,
+                              link3: i.jsonDetail?.link3,
+                              album: i.jsonDetail?.album,
+                              artist: i.jsonDetail?.artist,
+                            ),
+                            onResponse: (final GenericResponse<MediaReadDto> response) {},
+                            onError: (final GenericResponse<dynamic> response) {},
+                          );
+                        });
                       },
                       onError: (final GenericResponse<dynamic> response) {},
                     );
