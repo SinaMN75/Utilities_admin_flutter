@@ -7,7 +7,6 @@ mixin AddProductController {
   final RxInt selectedProductType = TagProduct.all.number.obs;
   ProductReadDto? dto;
   String? description;
-  bool? isFromInstagram;
 
   List<FileData> deletedFiles = <FileData>[];
   List<FileData> editedFiles = <FileData>[];
@@ -39,9 +38,7 @@ mixin AddProductController {
   void init() {
     /// selectedCategory = categories.first.obs;
     /// selectedSubCategory = categories.first.children!.first.obs;
-    if (isFromInstagram ?? false) {
-      readyProductFromInstagram();
-    } else if (dto == null) {
+    if (dto == null) {
       state.loaded();
     } else {
       readyProductForEdit();
@@ -65,8 +62,39 @@ mixin AddProductController {
   void readyProductForEdit() {
     controllerTitle.text = dto!.title ?? "";
     controllerDescription.text = dto!.description ?? "";
-
     keyValueList(dto!.jsonDetail.keyValues ?? <KeyValueViewModel>[]);
+    if (dto!.tags.contains(TagProduct.released.number)) selectedProductStatus(TagProduct.released.number);
+    if (dto!.tags.contains(TagProduct.inQueue.number)) selectedProductStatus(TagProduct.inQueue.number);
+    if (dto!.tags.contains(TagProduct.notAccepted.number)) selectedProductStatus(TagProduct.notAccepted.number);
+    if (dto!.tags.contains(TagProduct.book.number)) selectedProductType(TagProduct.book.number);
+    if (dto!.tags.contains(TagProduct.journal.number)) selectedProductType(TagProduct.journal.number);
+    if (dto!.tags.contains(TagProduct.video.number)) selectedProductType(TagProduct.video.number);
+    if (dto!.tags.contains(TagProduct.news.number)) selectedProductType(TagProduct.news.number);
+    if (dto!.tags.contains(TagProduct.product.number)) selectedProductType(TagProduct.product.number);
+    if (dto!.tags.contains(TagProduct.link.number)) selectedProductType(TagProduct.link.number);
+
+    files = (dto?.media ?? <MediaReadDto>[])
+        .map(
+          (final MediaReadDto e) => FileData(
+            url: e.url,
+            jsonDetail: e.jsonDetail,
+            parentId: e.parentId,
+            tags: e.tags,
+            id: e.id,
+            children: (e.children ?? <MediaReadDto>[])
+                .map(
+                  (final MediaReadDto e) => FileData(
+                    url: e.url,
+                    jsonDetail: e.jsonDetail,
+                    parentId: e.parentId,
+                    tags: e.tags,
+                    id: e.id,
+                  ),
+                )
+                .toList(),
+          ),
+        )
+        .toList();
 
     /// subProducts((dto!.children ?? <ProductReadDto>[])
     ///     .map(

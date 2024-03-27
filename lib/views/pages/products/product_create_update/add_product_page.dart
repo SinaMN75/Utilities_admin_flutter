@@ -22,30 +22,6 @@ class _AddProductPageState extends State<AddProductPage> with AddProductControll
   @override
   void initState() {
     dto = widget.dto;
-    isFromInstagram = widget.isFromInstagram ?? false;
-    getProductById(id: dto?.id);
-    files = (dto?.media ?? <MediaReadDto>[])
-        .map(
-          (final MediaReadDto e) => FileData(
-            url: e.url,
-            jsonDetail: e.jsonDetail,
-            parentId: e.parentId,
-            tags: e.tags,
-            id: e.id,
-            children: (e.children ?? <MediaReadDto>[])
-                .map(
-                  (final MediaReadDto e) => FileData(
-                    url: e.url,
-                    jsonDetail: e.jsonDetail,
-                    parentId: e.parentId,
-                    tags: e.tags,
-                    id: e.id,
-                  ),
-                )
-                .toList(),
-          ),
-        )
-        .toList();
     init();
 
     super.initState();

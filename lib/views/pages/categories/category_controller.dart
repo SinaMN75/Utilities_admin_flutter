@@ -158,7 +158,6 @@ mixin CategoryController {
                     id: dto.id,
                     title: controllerTitle.text,
                     titleTr1: controllerTitleTr1.text,
-                    tags: <int>[TagCategory.category.number],
                   ),
                   onResponse: (final GenericResponse<CategoryReadDto> response) {
                     if (fileData != null)
