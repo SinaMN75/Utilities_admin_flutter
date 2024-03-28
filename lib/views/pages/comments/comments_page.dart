@@ -63,10 +63,8 @@ class _CommentsPageState extends State<CommentsPage> with CommentsController, Au
                                 DataCell(Text(i.product?.title ?? "")),
                                 DataCell(
                                   const Text("نمایش نظر").bodyMedium(color: context.theme.primaryColor).onTap(
-                                        () => alertDialog(
-                                          title: "",
-                                          subtitle: i.comment ?? "",
-                                          action1: ("باشه", back),
+                                        () => dialogAlert(
+                                          Text(i.comment ?? "").paddingAll(24),
                                         ),
                                       ),
                                 ),

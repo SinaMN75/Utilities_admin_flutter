@@ -2,14 +2,18 @@ import 'package:utilities/utilities.dart';
 import 'package:utilities_admin_flutter/views/pages/products/product_create_update/add_product_controller.dart';
 
 class AddProductPage extends StatefulWidget {
-  const AddProductPage({super.key, this.dto, this.isFromInstagram, this.images, this.description});
+  const AddProductPage({
+    super.key,
+    this.dto,
+    this.images,
+    this.description,
+  });
 
   @override
   Key? get key => const Key("ساخت محصول");
   final ProductReadDto? dto;
   final List<String>? images;
   final String? description;
-  final bool? isFromInstagram;
 
   @override
   State<AddProductPage> createState() => _AddProductPageState();
@@ -114,13 +118,12 @@ class _AddProductPageState extends State<AddProductPage> with AddProductControll
                 files: files,
                 onFileSelected: (final List<FileData> list) => files = list.toSet().toList(),
                 onFileEdited: editedFiles.addAll,
-                onFileDeleted: (final List<FileData> list) =>
-                    list.forEach(
-                          (final FileData i) {
-                        files.remove(i);
-                        deletedFiles.add(i);
-                      },
-                    ),
+                onFileDeleted: (final List<FileData> list) => list.forEach(
+                  (final FileData i) {
+                    files.remove(i);
+                    deletedFiles.add(i);
+                  },
+                ),
               ),
               textField(
                 text: "وب‌سایت",
@@ -193,7 +196,6 @@ class _AddProductPageState extends State<AddProductPage> with AddProductControll
                 (final KeyValueViewModel e) => Row(
                   children: <Widget>[
                     Text(e.key)
-
                         .container(
                           backgroundColor: context.theme.hintColor.withOpacity(0.1),
                           radius: 12,
@@ -202,7 +204,6 @@ class _AddProductPageState extends State<AddProductPage> with AddProductControll
                         .expanded(),
                     const SizedBox(width: 16),
                     Text(e.value)
-
                         .container(
                           backgroundColor: context.theme.hintColor.withOpacity(0.1),
                           radius: 12,
@@ -323,51 +324,51 @@ class _AddProductPageState extends State<AddProductPage> with AddProductControll
   ///               (final ProductCreateUpdateDto i) => Column(
   ///                 children: <Widget>[
   ///                   Row(
-///                     children: <Widget>[
-///                       Container(
-///                         width: 50,
-///                         height: 50,
-///                         decoration: BoxDecoration(
-///                           color: hexStringToColor(i.color!),
-///                           shape: BoxShape.circle,
-///                           border: Border.all(),
-///                         ),
-///                       ),
-///                       Text(i.title!)
-///
-///                           .container(
-///                             backgroundColor: context.theme.hintColor.withOpacity(0.1),
-///                             radius: 12,
-///                             padding: const EdgeInsets.all(8),
-///                             margin: const EdgeInsets.symmetric(horizontal: 8),
-///                           )
-///                           .expanded(),
-///                     ],
-///                   ).paddingSymmetric(vertical: 8),
-///                   Row(
-///                     children: <Widget>[
-///                       Text(i.price.toString().separateNumbers3By3())
-///
-///                           .container(
-///                             backgroundColor: context.theme.hintColor.withOpacity(0.1),
-///                             radius: 12,
-///                             padding: const EdgeInsets.all(8),
-///                             margin: const EdgeInsets.symmetric(horizontal: 8),
-///                           )
-///                           .expanded(),
-///                       Text(i.stock.toString())
-///
-///                           .container(
-///                             backgroundColor: context.theme.hintColor.withOpacity(0.1),
-///                             radius: 12,
-///                             padding: const EdgeInsets.all(8),
-///                             margin: const EdgeInsets.symmetric(horizontal: 8),
-///                           )
-///                           .expanded(),
-///                       Icon(Icons.remove, color: context.theme.colorScheme.error).onTap(() {
-///                         subProducts.remove(i);
-///                         deletedSubProducts.add(i);
-///                       }),
+  ///                     children: <Widget>[
+  ///                       Container(
+  ///                         width: 50,
+  ///                         height: 50,
+  ///                         decoration: BoxDecoration(
+  ///                           color: hexStringToColor(i.color!),
+  ///                           shape: BoxShape.circle,
+  ///                           border: Border.all(),
+  ///                         ),
+  ///                       ),
+  ///                       Text(i.title!)
+  ///
+  ///                           .container(
+  ///                             backgroundColor: context.theme.hintColor.withOpacity(0.1),
+  ///                             radius: 12,
+  ///                             padding: const EdgeInsets.all(8),
+  ///                             margin: const EdgeInsets.symmetric(horizontal: 8),
+  ///                           )
+  ///                           .expanded(),
+  ///                     ],
+  ///                   ).paddingSymmetric(vertical: 8),
+  ///                   Row(
+  ///                     children: <Widget>[
+  ///                       Text(i.price.toString().separateNumbers3By3())
+  ///
+  ///                           .container(
+  ///                             backgroundColor: context.theme.hintColor.withOpacity(0.1),
+  ///                             radius: 12,
+  ///                             padding: const EdgeInsets.all(8),
+  ///                             margin: const EdgeInsets.symmetric(horizontal: 8),
+  ///                           )
+  ///                           .expanded(),
+  ///                       Text(i.stock.toString())
+  ///
+  ///                           .container(
+  ///                             backgroundColor: context.theme.hintColor.withOpacity(0.1),
+  ///                             radius: 12,
+  ///                             padding: const EdgeInsets.all(8),
+  ///                             margin: const EdgeInsets.symmetric(horizontal: 8),
+  ///                           )
+  ///                           .expanded(),
+  ///                       Icon(Icons.remove, color: context.theme.colorScheme.error).onTap(() {
+  ///                         subProducts.remove(i);
+  ///                         deletedSubProducts.add(i);
+  ///                       }),
   ///                     ],
   ///                   ).paddingSymmetric(vertical: 8),
   ///                   Divider(

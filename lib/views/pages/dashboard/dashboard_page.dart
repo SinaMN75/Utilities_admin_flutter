@@ -49,19 +49,11 @@ class _DashboardPageState extends State<DashboardPage> with DashboardController,
                 children: <Widget>[
                   _cards(),
                   const SizedBox(height: 16),
-                  Obx(
-                    () => orderState.isLoaded() &&
-                            Core.user.tags.contains(
-                              TagUser.adminOrderRead.number,
-                            )
-                        ? _completedOrders()
-                        : const SizedBox(),
-                  ),
+                  Obx(() => orderState.isLoaded() ? _completedOrders() : const SizedBox()),
                   if (Responsive.isMobile()) const SizedBox(height: 16),
                   if (Responsive.isMobile()) _products(),
                 ],
               ).expanded(flex: 5),
-              if (!Responsive.isMobile()) const SizedBox(width: 16),
               if (!Responsive.isMobile()) Expanded(flex: 2, child: _products()),
             ],
           ),
@@ -73,7 +65,7 @@ class _DashboardPageState extends State<DashboardPage> with DashboardController,
   Widget _header() => Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
-          const Text("داشبورد مدیریت دایرکت‌شد").titleLarge(),
+          const Text("داشبورد مدیریت").titleLarge(),
           Text(Core.user.firstName ?? "").container(
             radius: 10,
             backgroundColor: context.theme.colorScheme.secondary.withOpacity(0.1),
@@ -84,7 +76,7 @@ class _DashboardPageState extends State<DashboardPage> with DashboardController,
       );
 
   Widget _products() => Obx(
-        () => cardsState.isLoaded() && Core.user.tags.contains(TagUser.adminProductRead.number)
+        () => cardsState.isLoaded()
             ? Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
@@ -156,7 +148,6 @@ class _DashboardPageState extends State<DashboardPage> with DashboardController,
   Widget _completedOrders() => Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          const Text("سفارشات تکمیل شده اخیر"),
           SizedBox(
             width: double.infinity,
             child: DataTable(
@@ -188,8 +179,6 @@ class _DashboardPageState extends State<DashboardPage> with DashboardController,
 
   Widget _cards() => Column(
         children: <Widget>[
-          const Text("گزارش‌ها").titleMedium(),
-          const SizedBox(height: 16),
           Obx(
             () => cardsState.isLoaded()
                 ? Wrap(

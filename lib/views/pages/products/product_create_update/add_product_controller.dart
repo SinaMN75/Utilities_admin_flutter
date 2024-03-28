@@ -38,11 +38,10 @@ mixin AddProductController {
   void init() {
     /// selectedCategory = categories.first.obs;
     /// selectedSubCategory = categories.first.children!.first.obs;
-    if (dto == null) {
+    if (dto == null)
       state.loaded();
-    } else {
+    else
       readyProductForEdit();
-    }
   }
 
   int count = 0;
